@@ -1,0 +1,67 @@
+@font-face {
+	font-family: Laila_Med;
+	src: url('./assets/fonts/Laila/Laila-Medium.ttf');
+}
+
+@font-face {
+	font-family: Roboto;
+	src: url('./assets/fonts/Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+	font-family: Orbitron;
+	src: 	url('./assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf'),
+				format('truetype');
+}
+
+@font-face {
+	font-family: Ubuntu_Reg;
+	src: url('./assets/fonts/Ubuntu/Ubuntu-Regular.ttf');
+}
+
+@font-face {
+	font-family: KodeMono_Var;
+	src: url('./assets/fonts/Kode_Mono/KodeMono-VariableFont_wght.ttf');
+}
+
+:root {
+	--ac-sand: 					#F7DE8D;
+	--ac-orange:				#FBB040;
+	--ac-green: 				#AAC27E;
+	--ac-green-opaque: 	#AAC27E69;
+	--ac-blue:					#9FCFCA;
+	--ac-brown: 				#594A42;
+	--grayd-a-grey:			#aaaaaa;
+	--special-blue:			#007bff;
+}
+
+*,
+*:before,
+*:after {
+	margin: 0;
+	box-sizing: border-box;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+button {
+	cursor: pointer;
+	display: inline-block;
+	border: none;
+	margin: 0;
+	text-decoration: none;
+	background: none;
+	text-align: center;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+html, body {
+	box-sizing: border-box;
+	overflow: auto;
+}
