@@ -2,6 +2,17 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const PORT = process.env.PORT || 3648
+const devMode = process.env.NODE_ENV === 'development'
+
+const webpack = require('webpack')
+const webpackDevMiddleware = require('webpack-dev-middleware')
+const webpackConfig = require('./webpack.common.js')('development')
+const compiler = webpack(webpackConfig)
+
+app.use(webpackDevMiddleware(compiler, ({
+    publicPath: webpackConfig.output.publicPath
+  })
+))
 
 const auth_router = require('./Auth/auth_router.js')
 const bucketlab_router = require('./BucketLab/bucketlab_router.js')

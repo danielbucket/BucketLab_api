@@ -3,16 +3,29 @@ import styles from './index.css'
 function Main() {
   const body = document.getElementById('body')
 
-  const header = document.createElement('header')
-    header.className = 'header'
-    header.innerHTML = 'BucketLab Server UI'
-
-  const main = document.createElement('main')
-    main.className = 'main'
-  
-  const footer = document.createElement('footer')
-    footer.className = 'footer'
+  const pageContainer = document.createElement('div')
+    pageContainer.className = 'app-container'
     
-  const githubLink = document.createElement('a')
-    githubLink.href = 'https://github.com/danielbucket/BucketLab_server'
+    const header = document.createElement('header')
+      header.className = 'page-header'
+      header.innerHTML = 'BucketLab Server UI'
+    
+    const content = document.createElement('div')
+      content.className = 'page-content'
+      content.innerHTML = 'This is the main page of the BucketLab Server UI'
+    
+    const footer = document.createElement('footer')
+      footer.className = 'page-footer'
+    
+    const githubLink = document.createElement('a')
+      githubLink.href = 'https://github.com/danielbucket/BucketLab_server'
+      githubLink.innerHTML = 'GitHub'
+      
+    footer.appendChild(githubLink)
+    
+    
+    pageContainer.appendChild(header)
+    pageContainer.appendChild(content)
+    pageContainer.appendChild(footer)
+  body.appendChild(pageContainer)
 }

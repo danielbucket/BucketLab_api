@@ -5,18 +5,22 @@
   "main": "router.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js",
+    "dev": "NODE_ENV=development nodemon server.js --mode development",
     "start": "PORT=1220 node server.js"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.21.1"
-  },
   "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
     "cors": "^2.8.5",
+    "css-loader": "^7.1.2",
+    "express": "^4.21.1",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.2",
     "nodemon": "^3.1.7",
     "webpack": "^5.96.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-middleware": "^7.4.2"
   }
 }
