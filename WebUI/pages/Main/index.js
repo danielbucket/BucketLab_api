@@ -1,8 +1,4 @@
-import styles from './index.css'
-
-function Main() {
-  const body = document.getElementById('body')
-
+export default function Main() {
   const pageContainer = document.createElement('div')
     pageContainer.className = 'app-container'
     
@@ -17,15 +13,14 @@ function Main() {
     const footer = document.createElement('footer')
       footer.className = 'page-footer'
     
-    const githubLink = document.createElement('a')
-      githubLink.href = 'https://github.com/danielbucket/BucketLab_server'
-      githubLink.innerHTML = 'GitHub'
+      const githubLink = document.createElement('a')
+        githubLink.href = 'https://github.com/danielbucket/BucketLab_server'
+        githubLink.innerHTML = 'GitHub'
       
     footer.appendChild(githubLink)
     
     
-    pageContainer.appendChild(header)
-    pageContainer.appendChild(content)
-    pageContainer.appendChild(footer)
-  body.appendChild(pageContainer)
+  pageContainer.appendChild(header)
+  pageContainer.appendChild(content)
+  pageContainer.appendChild(footer)
 }

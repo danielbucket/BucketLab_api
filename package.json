@@ -5,8 +5,9 @@
   "main": "router.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development nodemon server.js --mode development",
-    "start": "PORT=1220 node server.js"
+    "dev": "NODE_ENV=development nodemon server.js",
+    "build": "webpack --config webpack.common.js --env production",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -22,5 +23,9 @@
     "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-middleware": "^7.4.2"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.8",
+    "style-loader": "^4.0.0"
   }
 }

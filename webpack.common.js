@@ -3,30 +3,29 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const { merge } = require('webpack-merge')
 
-module.exports = (env) => {
-  const config = env.development ? require('./webpack.dev') : require('./webpack.prod')
-
+module.exports = (env = false) => {
+  const config = env.production ? require('./webpack.prod') : require('./webpack.dev')
+  
   return merge(config, {
-    mode: env.development ? 'development' : 'production',
-    entry: './WebUI/index.html',
-
+    mode: env.production ? 'production' : 'development',
+    entry: './WebUI/index.js',
     output: {
       filename: 'main.[contenthash].js',
       path: path.resolve(__dirname, 'dist'),
-      publicPath: '/',
+      publicPath: './dist',
       clean: true,
     },
-
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
 				title: 'BucketLab',
 				filename: 'index.html',
+        template: './WebUI/index.hbs',
 				description: 'BucketLab Server UI.',
 				minify: true,
+        type: 'module',
 			})
     ],
-
     module: {
       rules: [
         {

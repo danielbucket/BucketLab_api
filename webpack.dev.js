@@ -1,8 +1,6 @@
-const path = require('path')
-
 module.exports = {
   devtool: 'inline-source-map',
-  modules: {
+  module: {
     rules: [
       {
         test: /\.css$/,
@@ -10,5 +8,5 @@ module.exports = {
         use: ['style-loader', 'css-loader'], // loaders are applied in reverse order, from right to left. Order matters!
       }
     ]
-  }
+  },
 }
