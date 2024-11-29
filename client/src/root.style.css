@@ -1,0 +1,48 @@
+@font-face {
+	font-family: Roboto;
+	src: url('./assets/fonts/Roboto/Roboto-Black.ttf');
+}
+
+@font-face {
+	font-family: Ubuntu;
+	src: url(./assets/fonts/Ubuntu/Ubuntu-Regular.ttf);
+}
+
+:root {
+	--ac-sand: 					#F7DE8D;
+	--ac-orange:				#FBB040;
+	--ac-green: 				#AAC27E;
+	--ac-green-opaque: 	#AAC27E69;
+	--ac-blue:					#9FCFCA;
+	--ac-brown: 				#594A42;
+}
+
+* {
+	margin: 0;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+html, body {
+	box-sizing: border-box;
+	overflow: auto;
+}
+
+.root-wrapper {
+  height: 100vh;
+	display: flex;
+	flex-direction: row;
+	background-color: #3366fa;
+	font-size: 2rem;
+	font-family: Ubuntu;
+	padding: 1rem;
+	box-shadow: inset 0rem 0rem 1.5rem rgb(0, 255, 68);
+}
