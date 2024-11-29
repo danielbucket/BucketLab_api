@@ -1,5 +1,6 @@
 import './index.style.css'
 const PORT = 3000
+import { routeSwitch } from '../routes'
 
 export default function ServerRoot() {
   const serverRoot = document.createElement('div')
@@ -10,10 +11,8 @@ export default function ServerRoot() {
     serverRootTitle.innerText = 'Server Root Paths'
 
   const serverRouteBtn = document.createElement('button')
-    serverRouteBtn.innerText = `https://localhost:${PORT}/api/v1`
-    // serverRouteBtn.onclick = () => {
-    //   window.location.hash = '/server-route'
-    // }
+    serverRouteBtn.innerText = `https://localhost:${PORT}/api/v1/user`
+    serverRouteBtn.onclick = () => routeSwitch('/user')
 
     const auRouteBtn = document.createElement('button')
     auRouteBtn.innerText = `https://localhost:${PORT}/api/v1/auth`
