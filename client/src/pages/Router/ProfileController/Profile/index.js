@@ -9,13 +9,12 @@ export const profile = () => {
   const profileBtn1 = document.createElement('button')
     profileBtn1.innerText = '/user'
     profileBtn1.onclick = () => {
-      window.location.hash = '/user'
+
     }
 
   const profileBtn2 = document.createElement('button')
     profileBtn2.innerText = '/user/profile'
     profileBtn2.onclick = () => {
-      window.location.hash = '/user/profile'
     }
 
   profile.appendChild(profileTitle)

@@ -1,5 +1,5 @@
 import './index.style.css'
-import ServerRoot from '../ServerRoot'
+import ServerRoot from '../Server'
 
 export default function SideBar() {
   const sideBar = document.createElement('div')
