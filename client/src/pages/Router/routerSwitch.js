@@ -1,5 +1,5 @@
-const userController = require('./UserController')
-const profileController = require('./ProfileController')
+import UserController from './UserController'
+import ProfileController from './ProfileController'
 
 export function routerSwitch(path) {
   const parentNode = document.getElementById('routerSwitch')
@@ -7,10 +7,10 @@ export function routerSwitch(path) {
   
   switch (path) {
     case '/user':
-      element = userController(path)
+      element = UserController(path)
       break
     case '/profile':
-      element = profileController(path)
+      element = ProfileController(path)
       break
     default:
       return '404'

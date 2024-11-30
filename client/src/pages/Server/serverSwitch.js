@@ -9,7 +9,7 @@ export function serverSwitch(path) {
     case '/api/v1':
       element = Router(path)
       break
-    case '/authRouter':
+    case '/api/v1/auth':
       element = AuthRouter(path)
       break
     default:

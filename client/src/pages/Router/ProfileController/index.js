@@ -1,14 +1,19 @@
-export default function Controllers(path) {
+import { profileControllerSwitch } from './profileControllerSwitch'
+
+export default function ProfileController(path) {
+  const childNode = document.createElement('div')
+    childNode.id = 'profileControllerSwitch'
+  
   const wrapper = document.createElement('div')
-    wrapper.classList.add('controllers-wrapper')
+    wrapper.classList.add('controller-wrapper')
 
   const title = document.createElement('div')
-    title.classList.add('controllers-title')
-    title.innerText = `Controllers Route Paths`
+    title.classList.add('title')
+    title.innerText = 'Profile Controller'
 
   const description = document.createElement('p')
-    description.classList.add('controllers-description')
-    description.innerText = 'This is the controllers route path.'
+    description.classList.add('description')
+    description.innerText = 'This is the path@ the Profile Controller.'
   
   const thisPath = document.createElement('p')
   const thisPathText = document.createElement('span')
@@ -16,14 +21,16 @@ export default function Controllers(path) {
     thisPath.innerText = `Path: `
     thisPath.appendChild(thisPathText)
 
-  const button = document.createElement('button')
-    button.classList.add('controllers-btn')
-    button.innerText = '/users_all'
-    button.onclick = () => controllersSwitch('/users_all')
+  const button1 = document.createElement('button')
+    button1.classList.add('path-btn')
+    button1.innerText = '/users_all'
+    button1.onclick = () => profileControllerSwitch('/profile/:id')
 
     wrapper.appendChild(title)
+    wrapper.appendChild(description)
     wrapper.appendChild(thisPath)
-    wrapper.appendChild(button)
-  
+    wrapper.appendChild(button1)
+    wrapper.appendChild(childNode)
+
   return wrapper
 }
