@@ -1,8 +1,0 @@
-.sidebar-wrapper {
-  display: flex;
-  flex-direction: column;
-  padding-right: 1rem;
-
-  width: 25rem;
-  border-right: .25rem solid rgb(157, 157, 157);
-}

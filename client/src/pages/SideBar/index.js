@@ -1,15 +1,21 @@
-import './index.style.css'
-import ServerRoot from '../Server'
+import './index.css'
+import Server from '../Server'
 
 export default function SideBar() {
-  const sideBar = document.createElement('div')
-  sideBar.classList.add('sidebar-wrapper')
+  const server = Server({
+    path: '/api/v1',
+    trace: '/api/v1',
+  })
 
-  const sideBarTitle = document.createElement('div')
-  sideBarTitle.innerText = 'BucketLab Server UI'
+  const wrapper = document.createElement('div')
+    wrapper.classList.add('sidebar-wrapper')
 
-  sideBar.appendChild(sideBarTitle)
-  sideBar.appendChild(ServerRoot())
+  const title = document.createElement('div')
+    title.classList.add('sidebar-title')
+    title.innerText = 'BucketLab Server UI'
+
+    wrapper.appendChild(title)
+    wrapper.appendChild(server)
   
-  return sideBar
+  return wrapper
 }

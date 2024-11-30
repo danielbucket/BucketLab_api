@@ -1,43 +1,48 @@
 import './index.css'
-import { routerSwitch } from "./routerSwitch.js"
+import { redirect } from "./redirect.js"
 
-export default function Router(path) {
-  const childNode = document.createElement('div')
-    childNode.id = 'routerSwitch'
-
+export default function Router({ path, trace }) {
   const wrapper = document.createElement('div')
     wrapper.classList.add('route-wrapper')
   
-  const title = document.createElement('div')
-    title.classList.add('path-title')
-    title.innerText = 'Router Path'
+  const title = document.createElement('p')
+    title.classList.add('title')
+    title.innerText = 'Router'
 
-  const discription = document.createElement('div')
-    discription.classList.add('router-discription')
-    discription.innerText = 'This is the path @ the router.'
+  const discription = document.createElement('p')
+    discription.classList.add('route-discription')
+    discription.innerText = 'Path @ the router.'
 
-  const thisPath = document.createElement('div')
+  const thisPath = document.createElement('p')
     thisPath.classList.add('this-path')
   const thisPathText = document.createElement('span')
     thisPathText.innerText = path
     thisPath.innerText = 'Path: '
     thisPath.appendChild(thisPathText)
+
+  const content = document.createElement('div')
+    content.classList.add('route-content')
+    content.appendChild(title)
+    content.appendChild(discription)
+    content.appendChild(thisPath)
   
   const button1 = document.createElement('button')
     button1.classList.add('path-btn')
     button1.innerText = '/user'
-    button1.onclick = () => routerSwitch('/user')
+    button1.onclick = () => redirect('/user', trace)
 
   const button2 = document.createElement('button')
     button2.classList.add('path-btn')
     button2.innerText = '/profile'
-    button2.onclick = () => routerSwitch('/profile')
+    button2.onclick = () => redirect('/profile', trace)
 
-    wrapper.appendChild(title)
-    wrapper.appendChild(discription)
-    wrapper.appendChild(button1)
-    wrapper.appendChild(button2)
-    wrapper.appendChild(childNode)
+  const btnContainer = document.createElement('div')
+    btnContainer.classList.add('btn-container')
+    btnContainer.appendChild(button1)
+    btnContainer.appendChild(button2)
 
-  return wrapper
+    wrapper.appendChild(btnContainer)
+    wrapper.appendChild(content)
+
+    return wrapper
 }

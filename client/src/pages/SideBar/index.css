@@ -1,0 +1,23 @@
+.sidebar-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-right: 1rem;
+
+  width: 25rem;
+  border-right: .25rem solid rgb(157, 157, 157);
+}
+
+.title-wrapper {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.routes-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

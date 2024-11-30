@@ -1,15 +1,29 @@
-import './index.style.css'
+import './index.css'
 
 export default function Main() {
-  const main = document.createElement('div')
-    main.classList.add('main-wrapper')
-    main.innerText = 'Router Path Map:'
+  const wrapper = document.createElement('div')
+    wrapper.classList.add('main-container')
+    wrapper.innerText = 'Router Path Map:'
 
-  const serverRoutes = document.createElement('div')
-    serverRoutes.classList.add('server-wrapper')
-    serverRoutes.id = 'serverRoutes'
+  const stackContainer = document.createElement('div')
 
-    main.appendChild(serverRoutes)
+  const pathStack = document.createElement('p')
+    pathStack.classList.add('path-stack')
+    pathStack.id = 'pathStack'
+    pathStack.innerText = 'Path Stack: '
+    
+  const stackText = document.createElement('span')
+    stackText.id = 'stackText'
 
-  return main
+    pathStack.appendChild(stackText)
+    stackContainer.appendChild(pathStack)
+
+  const routeContent = document.createElement('div')
+    routeContent.classList.add('route-content-container')
+    routeContent.id = 'routeContent'
+
+    wrapper.appendChild(stackContainer)
+    wrapper.appendChild(routeContent)
+
+  return wrapper
 }
