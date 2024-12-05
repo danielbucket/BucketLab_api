@@ -1,0 +1,48 @@
+.element-container {
+  display: flex;
+  flex-direction: column;
+  height: 25rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.element-container:hover {
+  box-shadow: inset 0 0 1rem 0rem rgb(62 102 250);
+}
+
+.controller-name {
+  border-bottom: 0.2rem solid black;
+  margin-bottom: 2rem;
+  font-size: 1.75rem;
+  padding: 0.25rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.controller-name p:first-child {
+  padding-right: 1rem;
+}
+
+.routes-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.route-name {
+  font-size: 1.5rem;
+  padding: 0.25rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.route-name p:first-child {
+  width: 10rem;
+  padding-right: 1rem;
+}
+
+.route-name :nth-child(2):hover {
+  background-color: rgb(62 102 250);
+  color: white;
+  border-radius: 0.25rem;
+  cursor: help;
+}

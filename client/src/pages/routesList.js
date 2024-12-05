@@ -59,3 +59,36 @@ export const userController =  {
     }
   ]
 }
+
+export const phoneController = {
+  name: 'Phone',
+  route: 'api/v1/phone',
+  children: [
+    {
+      name: 'Get Phone',
+      route: '/get',
+      children: [
+        {
+          name: 'Get Phone by ID',
+          route: '/:id'
+        },
+        {
+          name: 'Get Phone by Number',
+          route: '/:number'
+        }
+      ],
+    },
+    {
+      name: 'Create Phone',
+      route: '/create'
+    },
+    {
+      name: 'Update Phone',
+      route: '/update'
+    },
+    {
+      name: 'Delete Phone',
+      route: '/delete'
+    }
+  ]
+}

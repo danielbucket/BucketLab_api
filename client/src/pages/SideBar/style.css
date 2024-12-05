@@ -1,0 +1,29 @@
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
+  border-right: .25rem solid rgb(157, 157, 157);
+  padding-right: 1rem;
+}
+
+.page-name {
+  height: 15rem;
+  border-radius: 0.25rem;
+  background-color:rgb(157, 157, 157);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  margin-bottom: 3rem;
+}
+
+.routes-container {
+  flex-grow: 1;
+  overflow-x: scroll;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color:rgb(157, 157, 157);
+  border-radius: 0.25rem;
+}
