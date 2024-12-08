@@ -1,7 +1,7 @@
 export const profileController = {
   name: 'Profile',
   route: 'api/v1/profile',
-  description: 'Profile Controller',
+  description: 'Profile controller root.',
   children: [
     {
       name: 'Get Profile',
@@ -36,12 +36,12 @@ export const profileController = {
 export const userController =  {
   name: 'User',
   route: 'api/v1/user',
-  description: 'User Controller',
+  description: 'User controller root.',
   children: [
     {
       name: 'Get User',
       route: '/get',
-      decription: 'Get User',
+      description: 'Get User',
       children: [
         {
           name: 'Get User by ID',
@@ -76,7 +76,7 @@ export const userController =  {
 export const phoneController = {
   name: 'Phone',
   route: 'api/v1/phone',
-  description: 'Phone Controller',
+  description: 'Phone controller root.',
   children: [
     {
       name: 'Get Phone',

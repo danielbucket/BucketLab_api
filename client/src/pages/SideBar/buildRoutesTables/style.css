@@ -5,26 +5,72 @@
   border-radius: 0.5rem;
   padding: 1rem;
   border: 0.2rem solid black;
+  margin: 0.5rem 0;
 }
 
-.table-container:hover {
-  box-shadow: inset 0 0 1rem 0rem rgb(62 102 250);
-}
-
-.path-layout {
+.children-wrapper {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+
+}
+
+.child-element {
+  display: inline-flex;
   align-items: center;
-  height: 4rem;
+  justify-content: start;
+  font-size: 1.5rem;
+  padding: 0 0.5rem;
+}
+
+.child-element:nth-of-type(odd) {
   background-color: rgb(129, 129, 129);
 }
 
+.child-element:hover {
+  box-shadow: inset 0 0 1rem 0rem rgb(62 102 250);
+  cursor: pointer;
+}
+
+.child-element p {
+  /* text-align: left; */
+  margin-left: 1rem;
+}
+
+.child-element p:first-child {
+  margin-left: 0;
+  width: 20rem;
+}
+
+.child-element p:nth-child(2) {
+  width: 20rem;
+}
+
+.child-element p:last-child {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.child-element p:last-child:hover {
+  z-index: 1;
+  position: relative;
+  overflow: visible;
+  /* padding: 1rem;
+  border: 0.1rem solid black;
+  border-radius: 0.5rem;
+  width: 20rem;
+  box-shadow: 0 0 1rem 0rem rgb(62 102 250); */
+}
+
 .controller-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 2rem;
   color: white;
 }
 
-.path-layout p {
-  text-align: start;
-  font-size: 1.5rem;
+.active {
+  background-color: rgb(62 102 250) !important;
 }

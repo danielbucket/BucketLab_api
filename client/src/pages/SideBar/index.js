@@ -12,8 +12,8 @@ export default function SideBar() {
   const routesContainer = document.createElement('div')
     routesContainer.classList.add('routes-container')
     routesContainer.appendChild(tables.userControllerElement)
-    // routesContainer.appendChild(tables.profileControllerElement)
-    // routesContainer.appendChild(tables.phoneControllerElement)
+    routesContainer.appendChild(tables.profileControllerElement)
+    routesContainer.appendChild(tables.phoneControllerElement)
     
   container.appendChild(pageName)
   container.appendChild(routesContainer)

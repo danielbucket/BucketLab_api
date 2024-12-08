@@ -3,53 +3,51 @@ import './style.css'
 
 const buildRoutesTables = (object) => {
   const container = document.createElement('div')
-    container.classList.add('table-container')
+  container.classList.add('table-container')
 
   const controller = document.createElement('div')
-    controller.classList.add('controller-name', 'path-layout')
-    controller.innerHTML = `
-      <p>Controller</p>
-      <p>Route</p>
-      <p>Description</p>
+  controller.classList.add('controller-name')
+  controller.innerHTML = `
+    <p>${object.name}</p>
+    <p>${object.route}</p>
+    <p>${object.description}</p>
+  `
+
+  const body = document.createElement('div')
+  body.classList.add('children-wrapper')
+
+  object.children.map(child => {
+    const el = document.createElement('div')
+    el.classList.add('child-element')
+    el.addEventListener('click', (e) => {
+      e.preventDefault()
+      const activeEls = document.getElementsByClassName('active')
+      if (activeEls.length > 0) {
+        Array.from(activeEls).map(el => {
+          el.classList.remove('active')
+        })
+      }
+      el.classList.toggle('active')
+      handleClick(child)
+    })
+    el.innerHTML = `
+      <p><span>${child.name}</span></p>
+      <p>Route:<span>${child.route}</span></p>
+      <p>Description:<span>${child.description}</span></p>
     `
-    const tBody = document.createElement('div')
-      tBody.classList.add('t-body')
-      
-      const routes = document.createElement('div')
-        routes.classList.add('path-layout')
-        routes.innerHTML = `
-          <p>${object.name}</p>
-          <p>${object.route}</p>
-          <p>${object.description}</p>
-        `
 
-        const childrenElementArr = (obj) => {
-          return obj.map(child => {
-            const el = document.createElement('div')
-              el.classList.add('path-layout')
-              el.innerHTML = `
-                <p>${child.name}</p>
-                <p>${child.route}</p>
-                <p>${child.description}</p>
-              `
-            return el
-          })
-        }
+    body.appendChild(el)
+  })
 
-        const children = childrenElementArr(object.children)
-        children.forEach(child => tBody.appendChild(child))
-
-    tBody.appendChild(routes)
-    controller.appendChild(tBody)
 
   container.appendChild(controller)
-  container.appendChild(tBody)
+  container.appendChild(body)
 
   return container
 }
 
-const handleClick = (event) => {
-  console.log(event)
+const handleClick = (childObj) => {
+  // console.log(childObj)
 }
 
 export const tables = {
