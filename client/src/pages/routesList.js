@@ -41,7 +41,7 @@ export const userController =  {
     {
       name: 'Get User',
       route: '/get',
-      description: 'Get User',
+      description: 'Get user information. Used at user login.',
       children: [
         {
           name: 'Get User by ID',
@@ -51,7 +51,7 @@ export const userController =  {
         {
           name: 'Get User by Email',
           route: '/:email',
-          description: 'Get User by Email'
+          description: 'Get the user data using the asscoiated email address.'
         }
       ],
     },

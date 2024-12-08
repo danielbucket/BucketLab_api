@@ -8,9 +8,9 @@ const buildRoutesTables = (object) => {
   const controller = document.createElement('div')
   controller.classList.add('controller-name')
   controller.innerHTML = `
-    <p>${object.name}</p>
-    <p>${object.route}</p>
-    <p>${object.description}</p>
+  <p>${object.name}</p>
+  <p>${object.route}</p>
+  <p>${object.description}</p>
   `
 
   const body = document.createElement('div')
