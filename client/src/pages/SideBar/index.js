@@ -1,5 +1,5 @@
 import './style.css'
-import { tables } from './buildRoutesTable/index.js'
+import { tables } from './buildRoutesTables/index.js'
 
 export default function SideBar() {
   const container = document.createElement('div')
