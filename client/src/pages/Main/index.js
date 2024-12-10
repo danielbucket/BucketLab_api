@@ -1,15 +1,17 @@
 import './index.css'
+import Header from '../Header'
 
 export default function Main() {
-  const wrapper = document.createElement('div')
-    wrapper.classList.add('main-container')
-    wrapper.innerText = 'Router Path Map:'
+  const header = Header()
+  const main = document.createElement('div')
+  main.classList.add('main-container')
 
-  const routeContent = document.createElement('div')
-    routeContent.classList.add('route-content-container')
-    routeContent.id = 'routeContent'
+  const content = document.createElement('div')
+  content.classList.add('route-content-container')
+  content.id = 'routeContent'
 
-    wrapper.appendChild(routeContent)
+  main.appendChild(header)
+  main.appendChild(content)
 
-  return wrapper
+  return main
 }
