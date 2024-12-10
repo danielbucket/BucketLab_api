@@ -9,12 +9,12 @@
 }
 
 :root {
-	--ac-sand: 					#F7DE8D;
-	--ac-orange:				#FBB040;
-	--ac-green: 				#AAC27E;
-	--ac-green-opaque: 	#AAC27E69;
-	--ac-blue:					#9FCFCA;
-	--ac-brown: 				#594A42;
+	--grey: 				rgb(157, 157, 157);
+	--dark-grey:		rgb(129, 129, 129);
+	--blue:					#3366fa;
+	--faded-black:	#282828;
+	--page-shadow: 	rgb(0, 255, 68);
+	--faded-white: 	#ececec;
 }
 
 * {
@@ -37,12 +37,17 @@ html, body {
 }
 
 .root-wrapper {
+	color: var(--faded-black);
+	display: grid;
+	grid-template-columns: 45rem 1fr;
+	grid-template-rows: 8rem 1fr;
+	grid-template-areas:
+		"sidebar header"
+		"sidebar main";
   height: 100vh;
-	display: flex;
-	flex-direction: row;
-	background-color: #3366fa;
+	background-color: var(--blue);
 	font-size: 2rem;
 	font-family: Ubuntu;
 	padding: 1rem;
-	box-shadow: inset 0rem 0rem 1.5rem rgb(0, 255, 68);
+	box-shadow: inset 0rem 0rem 1.5rem var(--page-shadow);
 }

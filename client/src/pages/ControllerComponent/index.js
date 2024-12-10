@@ -33,9 +33,7 @@ function ControllerComponent(object) {
       e.preventDefault()
       const activeEls = document.getElementsByClassName('active')
       if (activeEls.length > 0) {
-        Array.from(activeEls).map(el => {
-          el.classList.remove('active')
-        })
+        Array.from(activeEls).map(el => el.classList.remove('active'))
       }
       el.classList.toggle('active')
       handleClick(child)
@@ -56,7 +54,7 @@ function ControllerComponent(object) {
 
 const handleClick = (childObj) => {
   const content = RouteEndpoint(childObj)
-  document.getElementById('routeContent').replaceChildren(content)
+  document.getElementById('endpointNameContainer').replaceChildren(content)
 }
 
 export const tables = {

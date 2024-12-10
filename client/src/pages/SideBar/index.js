@@ -1,6 +1,5 @@
 import './style.css'
 import { tables } from '../ControllerComponent/index.js'
-import RouteEndpoint from '../RouteEndpoint/index.js'
 
 export default function SideBar() {
   const container = document.createElement('div')
