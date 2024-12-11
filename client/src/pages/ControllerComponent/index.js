@@ -22,7 +22,7 @@ function ControllerComponent(object) {
   colNames.innerHTML = `
     <p>Name</p>
     <p>Route</p>
-    <p>Description</p>
+    <p>Type</p>
   `
   body.appendChild(colNames)
 
@@ -41,7 +41,7 @@ function ControllerComponent(object) {
     el.innerHTML = `
       <p>${child.name}</p>
       <p>${child.route}</p>
-      <p>${child.description}</span></p>
+      <p>${child.type}</span></p>
     `
     body.appendChild(el)
   })

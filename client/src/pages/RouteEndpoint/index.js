@@ -30,6 +30,22 @@ export default function RouteEndpoint(object) {
       </div>
     </div>
   `)
+  
+  const childrenRoutes = object.children?.map(child => {
+    const el = document.createElement('div')
+    el.classList.add('child-container')
+    el.addEventListener('click', () => {
+
+      handleClick(child)}
+    )
+    el.innerHTML = (`
+      <div class='child-name'>
+        <p>${child.name}</p>
+      </div>
+    `)
+    endpointName.appendChild(el)
+  })
+
 
 
   const endpointWrapper = document.createElement('div')
