@@ -12,6 +12,12 @@ const authToken = async (req, res, next) => {
     return res.status(401).json({ message: 'You-aint-token' })
   }
 
+  if (token === 'I-be-token') {
+    console.log('BucketLab Server Success: ', token)
+    return res.status(200).json({ message: 'You-be-token'
+    })
+  }
+  
   next()
 }
 

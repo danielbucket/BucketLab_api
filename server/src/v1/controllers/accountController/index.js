@@ -1,29 +1,34 @@
-const GET_account = (req,res,next) => {
-  res.status(200).send({
-    message: 'GET account'
-  })
+const verifyAccountExists = (req,res,next) => {
+  const { body } = req
+
+  if (!body.email) {
+    res.status(400).send({
+      message: 'Email is required'
+    })
+  }
+
+  // query database for account by email
+  // return account id if found
+  
+
+  req.body = Object.assign({}, body, { id: 1234 })
 
   next()
 }
 
-const GET_accountById = (req,res,next) => {
-  const { params } = req
-
+const accountLogin = (req,res,next) => {
+  const { body} = req
+  
+  // query the database with the supplied id,
+  // if id matches the email id, compare the password
+  // if the password matches, return the account id
+  // if the password does not match, return a 401 error 
+  
   res.status(200).send({
-    message: `GET account by id ${params.id}`
+    login: true,
+    id: body.id,
+    email: body.email
   })
-
-  next()
-}
-
-const PUT_account = (req,res,next) => {
-  const { params, body} = req
-
-  res.status(200).send({
-    message: `PUT acccount by id ${params.id}`
-  })
-
-  next()
 }
 
 const DEL_account = (req,res,next) => {
@@ -47,9 +52,8 @@ const POST_register = (req,res,next) => {
 }
 
 module.exports = {
-  GET_account,
-  GET_accountById,
-  PUT_account,
+  verifyAccountExists,
+  accountLogin,
   DEL_account,
   POST_register
 }
