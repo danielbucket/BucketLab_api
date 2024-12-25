@@ -10,14 +10,12 @@ const verifyAccountExists = (req,res,next) => {
   // query database for account by email
   // return account id if found
   
-
   req.body = Object.assign({}, body, { id: 1234 })
-
   next()
 }
 
 const accountLogin = (req,res,next) => {
-  const { body} = req
+  const { body } = req
   
   // query the database with the supplied id,
   // if id matches the email id, compare the password
@@ -31,21 +29,29 @@ const accountLogin = (req,res,next) => {
   })
 }
 
-const DEL_account = (req,res,next) => {
-  const { params } = req
+const deleteAccount = (req,res,next) => {
+  // query the database for the account by id
+  // if the account is found, delete the account
+  // return a 200 status code
+  // if the account is not found, return a 404 status code
 
   res.status(200).send({
-    message: `DELETE account by id ${params.id}`
+    message: `The account registered with ${body.email} has been permanently destroyed.`
   })
-
-  next()
 }
 
-const POST_register = (req,res,next) => {
+const registerNewAccount = (req,res,next) => {
   const { body } = req
+  // write code to validate that all the required fields are present
+  // write code to validate that the email is unique
+  // write code to hash the password
+  // write code to insert the new account into the database
+  // write code to return the new account id and email
+
 
   res.status(200).send({
-    message: `You've registered a new account with ${body.email}`
+    message: `You've registered a new account with ${body.email}`,
+    id: 1234, // this would be the new account id
   })
 
   next()
@@ -54,6 +60,6 @@ const POST_register = (req,res,next) => {
 module.exports = {
   verifyAccountExists,
   accountLogin,
-  DEL_account,
-  POST_register
+  deleteAccount,
+  registerNewAccount
 }
