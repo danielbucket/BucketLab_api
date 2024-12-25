@@ -1,22 +1,13 @@
-const verifyAccountExists = (req,res,next) => {
+const accountLogin = (req,res) => {
   const { body } = req
 
-  if (!body.email) {
-    res.status(400).send({
-      message: 'Email is required'
-    })
+  for (let requiredParameter of ['email', 'password']) {
+    if (!body[requiredParameter]) {
+      return res.status(422).send({
+        message: `Missing required parameter: ${requiredParameter}`
+      })
+    }
   }
-
-  // query database for account by email
-  // return account id if found
-  
-  req.body = Object.assign({}, body, { id: 1234 })
-  next()
-}
-
-const accountLogin = (req,res,next) => {
-  const { body } = req
-  
   // query the database with the supplied id,
   // if id matches the email id, compare the password
   // if the password matches, return the account id
@@ -29,7 +20,10 @@ const accountLogin = (req,res,next) => {
   })
 }
 
-const deleteAccount = (req,res,next) => {
+const deleteAccount = (req,res) => {
+  const { params } = req
+  const { body } = req
+  
   // query the database for the account by id
   // if the account is found, delete the account
   // return a 200 status code
@@ -40,9 +34,18 @@ const deleteAccount = (req,res,next) => {
   })
 }
 
-const registerNewAccount = (req,res,next) => {
+const registerNewAccount = (req,res) => {
   const { body } = req
+  
   // write code to validate that all the required fields are present
+  for (let requiredParameter of ['email', 'password', 'first_name', 'last_name', 'company', 'website']) {
+      if (!body[requiredParameter]) {
+        return res.status(422).send({
+          message: `Missing required parameter: ${requiredParameter}`
+        })
+      }
+    }
+  
   // write code to validate that the email is unique
   // write code to hash the password
   // write code to insert the new account into the database
@@ -53,12 +56,9 @@ const registerNewAccount = (req,res,next) => {
     message: `You've registered a new account with ${body.email}`,
     id: 1234, // this would be the new account id
   })
-
-  next()
 }
 
 module.exports = {
-  verifyAccountExists,
   accountLogin,
   deleteAccount,
   registerNewAccount

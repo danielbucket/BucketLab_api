@@ -1,18 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const accountController = require('../controllers/accountController')
+const accountMiddleware = require('../controllers/accountController/middleware.js')
 const cors = require('cors')
 const postConfig = { methods: ['POST'] }
 const deleteConfig = { methods: ['DELETE'] }
 
-router.delete('/account/:id',
+router.delete('/account/delete/:id',
   cors(deleteConfig),
   accountController.deleteAccount
 )
 
 router.post('/account/login',
   cors(postConfig),
-  accountController.verifyAccountExists,
+  accountMiddleware.verifyAccountExists,
   accountController.accountLogin
 )
 
