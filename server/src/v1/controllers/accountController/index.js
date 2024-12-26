@@ -53,8 +53,8 @@ const registerNewAccount = (req,res) => {
 
 
   res.status(200).send({
-    message: `You've registered a new account with ${body.email}`,
-    id: 1234, // this would be the new account id
+    message: `Thanks you ${first_name}, you've registered a new account with ${body.email}`,
+    first_name: body.first_name
   })
 }
 
