@@ -1,4 +1,4 @@
-const authToken = async (req, res, next) => {
+const validateToken = async (req, res, next) => {
   const { token } = req.headers
 
   if (!token) {
@@ -22,5 +22,5 @@ const authToken = async (req, res, next) => {
 }
 
 module.exports = {
-  authToken
+  validateToken
 }

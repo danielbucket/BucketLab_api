@@ -14,8 +14,7 @@ server.use(optimization.apiLimiter)
 
 server.get('/', (req, res) => { res.status(200).json({ message: 'BucketLab API'}) })
 server.use('/api/v1', routes)
-server.use('/api/auth/v1',
-  cors({
+server.use('/api/auth/v1', cors({
   methods: ['POST'],
 }),
 authRoutes)

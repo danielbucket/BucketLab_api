@@ -35,10 +35,11 @@ const deleteAccount = (req,res) => {
 }
 
 const registerNewAccount = (req,res) => {
+  console.log('registerNewAccount', req.body)
   const { body } = req
   
   // write code to validate that all the required fields are present
-  for (let requiredParameter of ['email', 'password', 'first_name', 'last_name', 'company', 'website']) {
+  for (let requiredParameter of ['first_name', 'last_name', 'email', 'password']) {
       if (!body[requiredParameter]) {
         return res.status(422).send({
           message: `Missing required parameter: ${requiredParameter}`
@@ -53,8 +54,10 @@ const registerNewAccount = (req,res) => {
 
 
   res.status(200).send({
-    message: `Thanks you ${first_name}, you've registered a new account with ${body.email}`,
-    first_name: body.first_name
+    registerSuccess: true,
+    message: `You've registered a new account with ${body.email}`,
+    email: body.email,
+    id: 1234 // this should be the new account id
   })
 }
 

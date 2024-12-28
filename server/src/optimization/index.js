@@ -11,3 +11,6 @@ const apiLimiter = rateLimit({
 module.exports = {
   apiLimiter
 }
+
+
+// credit to: https://github.com/mehdibafdil-dev/nodejs-examples-and-patterns/blob/main/express-js-optimization.js

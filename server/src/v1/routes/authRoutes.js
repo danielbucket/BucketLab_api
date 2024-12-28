@@ -1,8 +1,8 @@
 const express = require('express')
 const authRoutes = express.Router()
 const authController = require('../controllers/authController/index.js')
-const middleware = require('../middleware/auth.js')
+const authMiddleware = require('../middleware/authMiddleware.js')
 
-authRoutes.post('/login', middleware.authToken, authController.login)
+authRoutes.post('/login', authMiddleware.validateToken, authController.login)
 
 module.exports = authRoutes
