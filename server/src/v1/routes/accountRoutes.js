@@ -19,6 +19,11 @@ router.post('/account/login',
   accountController.accountLogin
 )
 
+router.post('/account/logout',
+  cors(postConfig),
+  accountController.accountLogout
+)
+
 router.post('/account/register',
   cors(postConfig),
   accountController.registerNewAccount

@@ -8,15 +8,37 @@ const accountLogin = (req,res) => {
       })
     }
   }
+  // set login status to true
   // query the database with the supplied id,
   // if id matches the email id, compare the password
   // if the password matches, return the account id
   // if the password does not match, return a 401 error 
+
+  const returnedData = {
+    loggedIn: true,
+    profile: {
+      id: 1234,
+      first_name: 'Fake Broham',
+      last_name: 'McGee',
+      company: 'Fake Company',
+      website: 'https://www.fakecompany.com',
+      email: 'returned@email.fromDB',
+      permissions: {
+        level: 'emperor',
+        role: 'superuser',
+      }
+    }
+  }
   
+  res.status(200).send(returnedData)
+}
+
+const accountLogout = (req,res) => {
+  const { body } = req
+  // set login status to false
   res.status(200).send({
-    login: true,
-    id: body.id,
-    email: body.email
+    loggedIn: false,
+    message: 'You have been logged out.'
   })
 }
 
@@ -63,6 +85,7 @@ const registerNewAccount = (req,res) => {
 
 module.exports = {
   accountLogin,
+  accountLogout,
   deleteAccount,
   registerNewAccount
 }
