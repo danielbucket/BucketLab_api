@@ -1,26 +1,30 @@
-const validateToken = async (req, res, next) => {
-  const { token } = req.headers
+const key = 'I-be-tokin';
+
+const validateToken = (req, res, next) => {
+  const { token } = req.headers;
+  console.log('token', token);
 
   if (!token) {
-    console.log('BucketLab Server Fail: ', token)
-    return res.status(401).json({ message: 'A token is required' })
-  }
+    return res.status(401).json({
+      status: 'error',
+      data: {
+        message: 'A token is required'
+      }
+    });
+  };
 
-  if (token !== 'I-be-token') {
-    const { body } = req
-    console.log('BucketLab Server Success: ', body)
-    return res.status(401).json({ message: 'You-aint-token' })
-  }
+  if (token !== key) {
+    return res.status(401).json({
+      status: 'error',
+      data: {
+        message: 'You aint no token.'
+      }
+    });
+  };
 
-  if (token === 'I-be-token') {
-    console.log('BucketLab Server Success: ', token)
-    return res.status(200).json({ message: 'You-be-token'
-    })
-  }
-  
-  next()
-}
+  if (token === key) next();
+};
 
 module.exports = {
   validateToken
-}
+};

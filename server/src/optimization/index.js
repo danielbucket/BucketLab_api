@@ -1,4 +1,5 @@
-const rateLimit = require('express-rate-limit')
+// credit to: https://github.com/mehdibafdil-dev/nodejs-examples-and-patterns/blob/main/express-js-optimization.js
+const rateLimit = require('express-rate-limit');
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -6,11 +7,8 @@ const apiLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again after 15 minutes',
   standardHeaders: true, // Return rate limit info in RateLimit-* headers
   legacyHeaders: false, // Disabel the 'x-RateLimit-*' headers
-})
+});
 
 module.exports = {
   apiLimiter
-}
-
-
-// credit to: https://github.com/mehdibafdil-dev/nodejs-examples-and-patterns/blob/main/express-js-optimization.js
+};

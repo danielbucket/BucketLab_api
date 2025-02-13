@@ -1,21 +1,35 @@
-const express = require('express')
-const server = express()
-const optimization = require('../optimization')
-const cors = require('cors')
+const morgan = require('morgan');
+const express = require('express');
+const app = express();
+const optimization = require('../optimization');
+const cors = require('cors');
+
+const routes = require('./routes/accountRoutes.js');
 const corsOptions = {
-  origin: ['http://localhost:8080', 'http://localhost:5173'],
-}
-const routes = require('./routes/accountRoutes.js')
-const authRoutes = require('./routes/authRoutes.js')
+  origin: [
+    'http://localhost:8080',
+    'http://localhost:5173'
+  ]
+};
 
-server.use(cors(corsOptions))
-server.use(express.json())
-server.use(optimization.apiLimiter)
+app.use(morgan('dev'));
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(optimization.apiLimiter);
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
 
-server.get('/', (req, res) => { res.status(200).json({ message: 'BucketLab API'}) })
-server.use('/api/v1', routes)
-server.use('/api/auth/v1', cors({
-  methods: ['POST'],
-}), authRoutes)
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    data: {
+      message: 'BucketLab API'
+    }
+  });
+});
 
-module.exports = server
+app.use('/api/v1', routes);
+
+module.exports = app;

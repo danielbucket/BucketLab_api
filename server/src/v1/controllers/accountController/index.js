@@ -1,50 +1,53 @@
+const fs = require('fs');
+const db = require('../../stubs/db.json');
+
 const accountLogin = (req,res) => {
-  const { body } = req
+  const { body } = req;
 
   for (let requiredParameter of ['email', 'password']) {
     if (!body[requiredParameter]) {
       return res.status(422).send({
         message: `Missing required parameter: ${requiredParameter}`
-      })
-    }
-  }
-  // set login status to true
-  // query the database with the supplied id,
-  // if id matches the email id, compare the password
-  // if the password matches, return the account id
-  // if the password does not match, return a 401 error 
+      });
+    };
+  };
 
-  const returnedData = {
-    loggedIn: true,
-    profile: {
-      id: 1234,
-      first_name: 'Fake Broham',
-      last_name: 'McGee',
-      company: 'Fake Company',
-      website: 'https://www.fakecompany.com',
-      email: 'returned@email.fromDB',
-      permissions: {
-        level: 'emperor',
-        role: 'superuser',
-      }
-    }
-  }
-  
-  res.status(200).send(returnedData)
-}
+  db.users.map(user => {
+    if (user.email === body.email && user.password !== body.password) {
+      return res.status(401).send({
+        status: 'error',
+        data: {
+          loggedIn: false,
+          message: 'Incorrect password'
+        }
+      });
+    };
+
+    if (user.email === body.email && user.password === body.password) {
+      return res.status(200).send({
+        status: 'success',
+        data: {
+          loggedIn: true,
+          user
+        }
+      });
+    };
+  });
+};
 
 const accountLogout = (req,res) => {
-  const { body } = req
-  // set login status to false
   res.status(200).send({
-    loggedIn: false,
-    message: 'You have been logged out.'
-  })
-}
+    status: 'success',
+    data: {
+      loggedIn: false,
+      message: 'You have been logged out.'
+    }
+  });
+};
 
 const deleteAccount = (req,res) => {
-  const { params } = req
-  const { body } = req
+  const { params } = req;
+  const { body } = req;
   
   // query the database for the account by id
   // if the account is found, delete the account
@@ -53,21 +56,21 @@ const deleteAccount = (req,res) => {
 
   res.status(200).send({
     message: `The account registered with ${body.email} has been permanently destroyed.`
-  })
-}
+  });
+};
 
-const registerNewAccount = (req,res) => {
-  console.log('registerNewAccount', req.body)
-  const { body } = req
+const createNewAccount = (req,res) => {
+  console.log('createNewAccount', req.body);
+  const { body } = req;
   
   // write code to validate that all the required fields are present
   for (let requiredParameter of ['first_name', 'last_name', 'email', 'password']) {
       if (!body[requiredParameter]) {
         return res.status(422).send({
           message: `Missing required parameter: ${requiredParameter}`
-        })
-      }
-    }
+        });
+      };
+    };
   
   // write code to validate that the email is unique
   // write code to hash the password
@@ -80,12 +83,12 @@ const registerNewAccount = (req,res) => {
     message: `You've registered a new account with ${body.email}`,
     email: body.email,
     id: 1234 // this should be the new account id
-  })
-}
+  });
+};
 
 module.exports = {
   accountLogin,
   accountLogout,
   deleteAccount,
-  registerNewAccount
-}
+  createNewAccount
+};
