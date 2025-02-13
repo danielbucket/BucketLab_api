@@ -2,7 +2,6 @@ const key = 'I-be-tokin';
 
 const validateToken = (req, res, next) => {
   const { token } = req.headers;
-  console.log('token', token);
 
   if (!token) {
     return res.status(401).json({

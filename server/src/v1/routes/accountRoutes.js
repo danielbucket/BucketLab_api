@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const accountController = require('../controllers/accountController');
-const accountMiddleware = require('../controllers/accountController/middleware.js');
 const authMiddleware = require('../middleware/authMiddleware');
 const cors = require('cors');
 const postConfig = { methods: ['POST'] };
@@ -24,7 +23,7 @@ router.post('/account/logout',
   accountController.accountLogout
 );
 
-router.post('/account/register',
+router.post('/account/create',
   cors(postConfig),
   accountController.createNewAccount
 );
