@@ -1,31 +1,38 @@
 const express = require('express');
-const router = express.Router();
-const accountController = require('../controllers/accountController');
-const authMiddleware = require('../middleware/authMiddleware');
 const cors = require('cors');
+
+const {
+  deleteAccount,
+  accountLogin,
+  accountLogout,
+  createAccount,
+  getAllAccounts,
+  getAccountByID,
+  updateAccount,
+  checkID,
+} = require('../controllers/accountController');
+const { validateToken } = require('../middleware/authMiddleware');
+
+const router = express.Router();
 const postConfig = { methods: ['POST'] };
+const patchConfig = { methods: ['PATCH'] };
 const deleteConfig = { methods: ['DELETE'] };
 
-router.delete('/account/delete/:id',
-  authMiddleware.validateToken,
-  cors(deleteConfig),
-  accountController.deleteAccount
-);
+router.param('id', checkID);
 
-router.post('/account/login',
-  cors(postConfig),
-  authMiddleware.validateToken,
-  accountController.accountLogin
-);
+router.route('/')
+  .get(getAllAccounts)
+  .post(cors(postConfig), createAccount);
 
-router.post('/account/logout',
-  cors(postConfig),
-  accountController.accountLogout
-);
+router.route('/:id')
+  .get(cors(postConfig), getAccountByID)
+  .patch(cors(patchConfig), updateAccount)
+  .delete(cors(deleteConfig), deleteAccount);
 
-router.post('/account/create',
-  cors(postConfig),
-  accountController.createNewAccount
-);
+router.route('/login')
+  .post(cors(postConfig), validateToken, accountLogin);
+
+router.route('/logout')
+  .post( cors(postConfig), accountLogout);
 
 module.exports = router;

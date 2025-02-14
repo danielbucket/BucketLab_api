@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watch --verbose",
-    "dev": "nodemon server.js",
-    "start": "node index.js"
+    "start:dev": "nodemon server.js",
+    "start:prod": "NODE_ENV=production node server.js"
   },
   "jest": {
     "testEnvironment": "node",

@@ -3,7 +3,59 @@ const path = require('path');
 const database = fs.readFileSync(path.resolve(__dirname, '../../stubs/db.json'));
 const db = JSON.parse(database);
 
-const accountLogin = (req,res) => {
+exports.checkID = (req, res, next, id) => {
+  const ID =  id.slice(1) * 1;
+  const account = db.users.find(user => user.id === ID);
+
+  if (!account) {
+    return res.status(404).send({
+      status: 'error',
+      data: {
+        message: 'Invalid ID'
+      }
+    });
+  };
+
+  res.validID = true;
+  next();
+};
+
+exports.getAllAccounts = (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    results: db.users.length,
+    requestedAt: req.requestTime,
+    data: {
+      accounts: db.users
+    }
+  });
+};
+
+exports.getAccountByID = (req, res) => {
+  if (!res.validID) {
+    return res.status(404).send({
+      status: 'error',
+      data: {
+        message: 'Invalid ID'
+      }
+    });
+  };
+
+  const id = req.params.id.slice(1) * 1;
+  const account = db.users.find(user => user.id === id);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      account
+    }
+  });
+};
+
+exports.updateAccount = (req, res) => {
+
+};
+
+exports.accountLogin = (req,res) => {
   const { body } = req;
 
   for (let requiredParameter of ['email', 'password']) {
@@ -37,7 +89,7 @@ const accountLogin = (req,res) => {
   };
 };
 
-const accountLogout = (req,res) => {
+exports.accountLogout = (req, res) => {
   res.status(200).send({
     status: 'success',
     data: {
@@ -47,7 +99,7 @@ const accountLogout = (req,res) => {
   });
 };
 
-const deleteAccount = (req,res) => {
+exports.deleteAccount = (req, res) => {
   const id = req.params.id.slice(1) * 1;
   const { body } = req;
 
@@ -101,9 +153,7 @@ const deleteAccount = (req,res) => {
   };
 };
 
-
-
-const createNewAccount = (req,res) => {
+exports.createAccount = (req, res) => {
   const { body } = req;
   
   for (let requiredParameter of ['first_name', 'last_name', 'email', 'password']) {
@@ -140,11 +190,4 @@ const createNewAccount = (req,res) => {
       }
     });
   });
-};
-
-module.exports = {
-  accountLogin,
-  accountLogout,
-  deleteAccount,
-  createNewAccount
 };
