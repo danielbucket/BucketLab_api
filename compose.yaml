@@ -1,0 +1,23 @@
+services:
+  node:
+    image: node:latest
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - 3000:3000
+    command: npm run start:dev
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 4020:4020
+    volumes:
+      - ./data:/data/db
+volumes:
+  data:
+    driver: local
