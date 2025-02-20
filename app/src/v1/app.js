@@ -3,17 +3,15 @@ const express = require('express');
 const app = express();
 const optimization = require('../optimization/index.js');
 const cors = require('cors');
-
 const routes = require('./routes/accountRoutes.js');
-const corsOptions = {
-  origin: [
-    'http://localhost:8080',
-    'http://localhost:5173'
-  ]
-};
 
-if (process.env.NODE_ENV === 'development') {
+const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
+const corsOptions = { origin: PROD_URL };
+
+if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
+  corsOptions.origin = DEV_URL;
+  console.log(`Development mode: CORS enabled for ${DEV_URL}`);
 };
 
 app.use(cors(corsOptions));
