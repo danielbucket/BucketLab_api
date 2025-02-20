@@ -1,6 +1,0 @@
-.main-container {
-  display: grid;
-  grid-template-columns:
-    [endpointName] 25rem
-    [endpointData] 1fr;
-}

@@ -1,0 +1,25 @@
+services:
+  app:
+    image: node:latest
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - 4020:4020
+    environment:
+      - MONGO_URI=mongodb://admin:password@mongoDB:27017
+    command: npm run start:dev
+    depends_on:
+      - mongoDB
+  mongoDB:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/db
+volumes:
+  data:
+    driver: local
