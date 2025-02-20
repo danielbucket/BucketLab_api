@@ -20,6 +20,7 @@ exports.getAllAccounts = async (req, res) => {
   });
 
   const found = await Account.find({});
+  
   if (!found) {
     return res.status(404).json({
       status: 'fail',
@@ -111,10 +112,8 @@ exports.updateAccount = async (req, res) => {
 };
 
 exports.accountLogin = (req,res) => {
-  const { body } = req;
-
   for (let requiredParameter of ['email', 'password']) {
-    if (!body[requiredParameter]) {
+    if (!req.body[requiredParameter]) {
       return res.status(422).send({
         message: `Missing required parameter: ${requiredParameter}.`
       });
@@ -157,15 +156,14 @@ exports.deleteAccount = async (req, res) => {
       status: 'fail',
       message: 'No account found with that ID.'
     });
-  } else if (doc.password !== req.body.password) {
-    return res.status(403).json({
-      status: 'fail',
-      message: 'Incorrect password.'
-    });
-  } else if (doc.password === req.body.password) {
-    await doc.deleteOne();
-    res.status(204)
   };
+  
+  await doc.deleteOne();
+
+  res.status(204).json({
+    status: 'success',
+    data: null
+  });
 };
 
 exports.createAccount = async (req, res) => {
@@ -176,7 +174,7 @@ exports.createAccount = async (req, res) => {
       return res.status(422).send({
         status: 'error',
         data: {
-          message: `Missing required parameter: ${requiredParameter}`
+          message: `Missing required parameter: ${requiredParameter}.`
         }
       });
     };
@@ -192,11 +190,18 @@ exports.createAccount = async (req, res) => {
     });
   });
 
-  const doc = new Account({
-    ...body,
-    created_at: Date.now(),
-    updated_at: Date.now()
-  });
+  const dock = await mongoose.model('Account').findOne({ email: body.email });
+
+  if (dock) {
+    return res.status(409).json({
+      status: 'fail',
+      data: {
+        message: 'An account with this email address already exists.'
+      }
+    });
+  };
+  
+  const doc = new Account({ ...body });
 
   await doc.save();
 
