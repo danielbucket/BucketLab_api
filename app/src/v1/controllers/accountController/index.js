@@ -26,15 +26,17 @@ exports.checkID = (req, res, next, id) => {
   next();
 };
 
-exports.getAllAccounts = (req, res) => {
-  
+exports.getAllAccounts = async (req, res) => {
+  mongoose.connect(MONGO_URI);
+  mongoose.connection.once('open', () => console.log('Connected to the database.'));
+  const found = await Account.find({});
+
   res.status(200).json({
     status: 'success',
-    // results: found.users.length,
-    // requestedAt: req.requestTime,
-    // data: {
-    //   accounts: found.users
-    // }
+    results: found.length,
+    data: {
+      found
+    }
   });
 };
 
@@ -148,7 +150,6 @@ exports.createAccount = async (req, res) => {
     };
   };
   
-  console.log('Connection string...', MONGO_URI);
   mongoose.connect(MONGO_URI);
   mongoose.connection.once('open', () => console.log('Connected to the database.'));
 
