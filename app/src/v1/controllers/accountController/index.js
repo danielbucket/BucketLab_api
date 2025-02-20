@@ -3,6 +3,12 @@ const path = require('path');
 const database = fs.readFileSync(path.resolve(__dirname, '../../stubs/db.json'));
 const db = JSON.parse(database);
 
+const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
+const Account = require('../../models/account.model');
+
+const MONGO_URI = process.env.MONGO_URI;
+
 exports.checkID = (req, res, next, id) => {
   const ID =  id.slice(1) * 1;
   const account = db.users.find(user => user.id === ID);
@@ -21,13 +27,14 @@ exports.checkID = (req, res, next, id) => {
 };
 
 exports.getAllAccounts = (req, res) => {
+  
   res.status(200).json({
     status: 'success',
-    results: db.users.length,
-    requestedAt: req.requestTime,
-    data: {
-      accounts: db.users
-    }
+    // results: found.users.length,
+    // requestedAt: req.requestTime,
+    // data: {
+    //   accounts: found.users
+    // }
   });
 };
 
@@ -52,7 +59,12 @@ exports.getAccountByID = (req, res) => {
 };
 
 exports.updateAccount = (req, res) => {
-
+  res.status(200).json({
+    status: 'success',
+    data: {
+      account: 'Account updated'
+    }
+  });
 };
 
 exports.accountLogin = (req,res) => {
@@ -112,48 +124,17 @@ exports.deleteAccount = (req, res) => {
         }
       });
     };
-
-    const account = db.users.find(user => user.id === id);
-
-    if (!account) {
-      return res.status(404).send({
-        status: 'error',
-        data: {
-          message: 'Account not found.'
-        }
-      });
-    };
-
-    if (account.email === body.email && account.password !== body.password) {
-      return res.status(401).send({
-        status: 'error',
-        data: {
-          message: 'Incorrect password'
-        }
-      });
-    };
-
-    db.users = db.users.filter(user => user.id !== id);
-    fs.writeFile(path.resolve(__dirname, '../../stubs/db.json'), JSON.stringify(db), (err) => {
-      if (err) {
-        return res.status(500).send({
-          status: 'error',
-          data: {
-            message: 'An error occurred while attempting to delete your account.',
-            err
-          }
-        });
-      };
-      
-      return res.status(200).send({
-        status: 'success',
-        data: null
-      });
-    });
   };
+
+  res.status(200).send({
+    status: 'success',
+    data: {
+      message: `Account with ID ${id} has been deleted.`
+    }
+  });
 };
 
-exports.createAccount = (req, res) => {
+exports.createAccount = async (req, res) => {
   const { body } = req;
   
   for (let requiredParameter of ['first_name', 'last_name', 'email', 'password']) {
@@ -167,27 +148,33 @@ exports.createAccount = (req, res) => {
     };
   };
   
-  const newId = db.users[db.users.length-1].id + 1;
-  const newAccount = Object.assign({id: newId}, body);
-  db.users.push(newAccount);
+  console.log('Connection string...', MONGO_URI);
+  mongoose.connect(MONGO_URI);
+  mongoose.connection.once('open', () => console.log('Connected to the database.'));
 
-  fs.writeFile(path.resolve(__dirname, '../../stubs/db.json'), JSON.stringify(db), (err) => {
-    if (err) {
-      return res.status(500).send({
-        status: 'error',
-        data: {
-          message: 'An error occurred while attempting to create your account.',
-          err
-        }
-      });
-    };
+  const account = new Account({
+    first_name: body.first_name,
+    last_name: body.last_name,
+    email: body.email,
+    password: body.password,
+    website: body.website,
+    company: body.company,
+    phone: body.phone,
+    created_at: Date.now(),
+    updated_at: Date.now()
+  });
 
-    res.status(201).send({
-      status: 'success',
-      data: {
-        message: `You've created a new account with ${body.email}`,
-        account: newAccount
-      }
-    });
+  account.save()
+    .then(result => console.log('Result: ', result))
+    .catch(err => console.log('Error: ', err));
+
+  const accounts = await Account.find({});
+  console.log('All accounts: ', accounts);
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      account
+    }
   });
 };
