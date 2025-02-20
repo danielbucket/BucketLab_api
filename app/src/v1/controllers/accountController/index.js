@@ -1,58 +1,64 @@
-const fs = require('fs');
-const path = require('path');
-const database = fs.readFileSync(path.resolve(__dirname, '../../stubs/db.json'));
-const db = JSON.parse(database);
-
-
 const mongoose = require('mongoose');
 const Account = require('../../models/account.model');
 
 const MONGO_URI = process.env.MONGO_URI;
 
 exports.checkID = (req, res, next, id) => {
-  console.log(`Checking for ID: ${id}`);
+  console.log(`Checking for ID: ${id}...`);
   next();
 };
 
 exports.getAllAccounts = async (req, res) => {
   mongoose.connect(MONGO_URI);
-  mongoose.connection.once('open', () => console.log('Connected to the database.'));
-  const found = await Account.find({});
-
-  res.status(200).json({
-    status: 'success',
-    results: found.length,
-    data: {
-      found
-    }
+  mongoose.connection.on('error', () => {
+    return res.status(500).json({
+      status: 'error',
+      data: {
+        message: 'Database connection error.'
+      }
+    });
   });
+
+  const found = await Account.find({});
+  if (!found) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No accounts found.'
+    });
+  } else {
+    return res.status(200).json({
+      status: 'success',
+      results: found.length,
+      data: { found }
+    });
+  };
 };
 
-exports.getAccountByID = (req, res) => {
+exports.getAccountByID = async (req, res) => {
   const id = req.params.id.slice(1);
 
   mongoose.connect(MONGO_URI);
+  mongoose.connection.on('error', () => {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Database connection error.'
+    });
+  });
 
   const account = mongoose.model('Account');
-
-  account.findById(id).then((found) => {
-    if (!found) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'No account found with that ID'
-      });
-    } else {
-      res.status(200).json({
-        status: 'success',
-        data: {
-          found
-        }
-      });
-    };
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  const doc = await account.findById({ _id: id })
+  
+  if (!doc) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No account found with that ID.'
+    });
+  } else {
+    return res.status(200).json({
+      status: 'success',
+      data: { doc }
+    });
+  };
 };
 
 exports.updateAccount = async (req, res) => {
@@ -63,17 +69,21 @@ exports.updateAccount = async (req, res) => {
   mongoose.connection.on('error', () => {
     return res.status(500).json({
       status: 'error',
-      message: 'Database connection error'
+      data: {
+        message: 'Database connection error.'
+      }
     });
   });
   
   const account = mongoose.model('Account');
-  const doc = await account.findById(id);
+  const doc = await account.findById({ _id: id });
 
   if (!doc) {
     return res.status(404).json({
       status: 'fail',
-      message: 'No account found with that ID'
+      data: {
+        message: 'No account found with that ID.'
+      }
     });
   };
 
@@ -83,19 +93,20 @@ exports.updateAccount = async (req, res) => {
     } else {
       return res.status(404).json({
         status: 'fail',
-        message: `The key: '${key}' cannot be updated.`
+        data: {
+          message: `The key: '${key}' cannot be updated.`
+        }
       });
-    }
+    };
   });
 
   doc.updated_at = Date.now();
 
   await doc.save();
+
   res.status(200).json({
     status: 'success',
-    data: {
-      doc
-    }
+    data: { doc }
   });
 };
 
@@ -105,65 +116,56 @@ exports.accountLogin = (req,res) => {
   for (let requiredParameter of ['email', 'password']) {
     if (!body[requiredParameter]) {
       return res.status(422).send({
-        message: `Missing required parameter: ${requiredParameter}`
+        message: `Missing required parameter: ${requiredParameter}.`
       });
     };
   };
 
-  const account = db.users.find(user => user.email === body.email);
-
-  if (account.email === body.email && account.password !== body.password) {
-    return res.status(401).send({
-      status: 'error',
-      data: {
-        loggedIn: false,
-        message: 'Incorrect password'
-      }
-    });
-  };
-
-  if (account.email === body.email && account.password === body.password) {
-    return res.status(200).send({
-      status: 'success',
-      data: {
-        loggedIn: true,
-        account
-      }
-    });
-  };
+  res.status(200).json({
+    status: 'success',
+    data: {
+      message: 'This endpoint has not been developed yet.'
+    }
+  });
 };
 
 exports.accountLogout = (req, res) => {
   res.status(200).send({
     status: 'success',
     data: {
-      loggedIn: false,
-      message: 'You have been logged out.'
+      message: 'This endpoint has not been developed yet.'
     }
   });
 };
 
-exports.deleteAccount = (req, res) => {
-  const id = req.params.id.slice(1) * 1;
-  const { body } = req;
+exports.deleteAccount = async (req, res) => {
+  const id = req.params.id.slice(1);
 
-  for (let requiredParameter of ['email', 'password']) {
-    if (!body[requiredParameter]) {
-      return res.status(422).send({
-        status: 'error',
-        data: {
-          message: `The parameter '${requiredParameter}' is required to complete this action.`
-        }
-      });
-    };
-  };
-
-  res.status(200).send({
-    status: 'success',
-    data: {
-      message: `Account with ID ${id} has been deleted.`
-    }
+  mongoose.connect(MONGO_URI);
+  mongoose.connection.on('error', () => {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Database connection error.'
+    });
   });
+
+  const account = mongoose.model('Account');
+  const doc = await account.findById({ _id: id });
+
+  if (!doc) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No account found with that ID.'
+    });
+  } else if (doc.password !== req.body.password) {
+    return res.status(403).json({
+      status: 'fail',
+      message: 'Incorrect password.'
+    });
+  } else if (doc.password === req.body.password) {
+    await doc.deleteOne();
+    res.status(204)
+  };
 };
 
 exports.createAccount = async (req, res) => {
@@ -181,28 +183,25 @@ exports.createAccount = async (req, res) => {
   };
   
   mongoose.connect(MONGO_URI);
-  mongoose.connection.once('open', () => console.log('Connected to the database.'));
+  mongoose.connection.on('error', () => {
+    return res.status(500).json({
+      status: 'error',
+      data: {
+        message: 'Database connection error.'
+      }
+    });
+  });
 
-  const account = new Account({
-    first_name: body.first_name,
-    last_name: body.last_name,
-    email: body.email,
-    password: body.password,
-    website: body.website,
-    company: body.company,
-    phone: body.phone,
+  const doc = new Account({
+    ...body,
     created_at: Date.now(),
     updated_at: Date.now()
   });
 
-  account.save()
-
-  const accounts = await Account.find({});
+  await doc.save();
 
   res.status(201).json({
     status: 'success',
-    data: {
-      accounts
-    }
+    data: { doc }
   });
 };
