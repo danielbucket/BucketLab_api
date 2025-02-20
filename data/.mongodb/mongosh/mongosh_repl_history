@@ -1,3 +1,0 @@
-exit
-db.getMongo()
-mongo
