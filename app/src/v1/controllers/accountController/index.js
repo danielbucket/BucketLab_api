@@ -3,26 +3,14 @@ const path = require('path');
 const database = fs.readFileSync(path.resolve(__dirname, '../../stubs/db.json'));
 const db = JSON.parse(database);
 
-const { v4: uuidv4 } = require('uuid');
+
 const mongoose = require('mongoose');
 const Account = require('../../models/account.model');
 
 const MONGO_URI = process.env.MONGO_URI;
 
 exports.checkID = (req, res, next, id) => {
-  const ID =  id.slice(1) * 1;
-  const account = db.users.find(user => user.id === ID);
-
-  if (!account) {
-    return res.status(404).send({
-      status: 'error',
-      data: {
-        message: 'Invalid ID'
-      }
-    });
-  };
-
-  res.validID = true;
+  console.log(`Checking for ID: ${id}`);
   next();
 };
 
@@ -40,23 +28,38 @@ exports.getAllAccounts = async (req, res) => {
   });
 };
 
-exports.getAccountByID = (req, res) => {
-  if (!res.validID) {
-    return res.status(404).send({
-      status: 'error',
-      data: {
-        message: 'Invalid ID'
-      }
-    });
-  };
 
-  const id = req.params.id.slice(1) * 1;
-  const account = db.users.find(user => user.id === id);
-  res.status(200).json({
-    status: 'success',
-    data: {
-      account
-    }
+
+
+
+
+
+
+
+exports.getAccountByID = (req, res) => {
+  const id = req.params.id.slice(1);
+
+  mongoose.connect(MONGO_URI);
+
+  const account = mongoose.model('Account');
+
+  account.findById(id).then((found) => {
+    if (!found) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No account found with that ID'
+      });
+    } else {
+      res.status(200).json({
+        status: 'success',
+        data: {
+          found
+        }
+      });
+    };
+  })
+  .catch((err) => {
+    console.log(err);
   });
 };
 
@@ -166,16 +169,13 @@ exports.createAccount = async (req, res) => {
   });
 
   account.save()
-    .then(result => console.log('Result: ', result))
-    .catch(err => console.log('Error: ', err));
 
   const accounts = await Account.find({});
-  console.log('All accounts: ', accounts);
 
   res.status(201).json({
     status: 'success',
     data: {
-      account
+      accounts
     }
   });
 };

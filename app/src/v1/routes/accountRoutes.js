@@ -18,7 +18,7 @@ const postConfig = { methods: ['POST'] };
 const patchConfig = { methods: ['PATCH'] };
 const deleteConfig = { methods: ['DELETE'] };
 
-router.param('id', checkID);
+// router.param('id', checkID);
 
 router.route('/')
   .get(getAllAccounts)
