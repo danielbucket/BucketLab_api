@@ -1,23 +1,14 @@
 const { Schema, model } = require('mongoose');
 
 const messageSchema = new Schema({
-  message: {
-    type: String,
-    required: [true, 'Please provide a message']
-  },
-  sender: {
+  message: { type: String },
+  title: { type: String },
+  receiver_id: {
     type: Schema.Types.ObjectId,
     ref: 'Account',
-    required: [true, 'Please provide a sender']
   },
-  receiver: {
-    type: String,
-    required: [true, 'Please provide a receiver']
-  },
-  created_at: {
-    type: Date,
-    default: Date.now
-  }
+  created_at: { type: Date },
+  updated_at: { type: Date },
 });
 
 module.exports = model('Message', messageSchema);

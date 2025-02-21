@@ -16,12 +16,10 @@ const accountSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  // messages: [
-  //   {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Message'
-  //   }
-  // ]
+  messages: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Message',
+  }],
 });
 
 module.exports = model('Account', accountSchema);

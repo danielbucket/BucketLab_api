@@ -1,6 +1,7 @@
 const key = 'I-be-tokin';
+const { ObjectId } = require('mongoose').Types;
 
-const validateToken = (req, res, next) => {
+exports.validateToken = (req, res, next) => {
   const { token } = req.headers;
 
   if (!token) {
@@ -24,6 +25,16 @@ const validateToken = (req, res, next) => {
   if (token === key) next();
 };
 
-module.exports = {
-  validateToken
+exports.checkID = (req, res, next, id) => {
+  const ID = id.slice(1);
+
+  if (!ObjectId.isValid(ID)) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid ID.',
+      id
+    });
+  };
+
+  next();
 };
