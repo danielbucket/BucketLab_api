@@ -3,21 +3,31 @@ const { Schema, model } = require('mongoose');
 const messageSchema = new Schema({
   message: {
     type: String,
-    required: [true, 'Please provide a message']
+    maxlength: 1000
   },
-  sender: {
+  title: {
+    type: String,
+    maxlength: 50
+  },
+  receiver_id: {
     type: Schema.Types.ObjectId,
     ref: 'Account',
-    required: [true, 'Please provide a sender']
+    required: true
   },
-  receiver: {
-    type: String,
-    required: [true, 'Please provide a receiver']
+  sender_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'Account',
+    required: true
   },
   created_at: {
     type: Date,
-    default: Date.now
-  }
+    immutable: true,
+    default: () => Date.now()
+  },
+  updated_at: {
+    type: Date,
+    default: () => Date.now()
+  },
 });
 
 module.exports = model('Message', messageSchema);

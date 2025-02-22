@@ -3,7 +3,8 @@ const express = require('express');
 const app = express();
 const optimization = require('../optimization/index.js');
 const cors = require('cors');
-const routes = require('./routes/accountRoutes.js');
+const accounts = require('./routes/accountRoutes.js');
+const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
 const corsOptions = { origin: PROD_URL };
@@ -31,6 +32,13 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/v1/accounts', routes);
+app.use('/api/v1/accounts', accounts);
+app.use('/api/v1/messages', messages);
+app.all('*', (req, res) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can't find ${req.originalUrl} on this server!`
+  });
+});
 
 module.exports = app;

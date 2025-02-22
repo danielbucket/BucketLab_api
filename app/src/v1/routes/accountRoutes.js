@@ -9,19 +9,19 @@ const {
   getAllAccounts,
   getAccountByID,
   updateAccount,
-  checkID,
 } = require('../controllers/accountController');
-const { validateToken } = require('../middleware/authMiddleware');
+const { validateToken, checkID } = require('../middleware/authMiddleware');
 
 const router = express.Router();
+const getConfig = { methods: ['GET'] };
 const postConfig = { methods: ['POST'] };
 const patchConfig = { methods: ['PATCH'] };
 const deleteConfig = { methods: ['DELETE'] };
 
-// router.param('id', checkID);
+router.param('id', checkID);
 
 router.route('/')
-  .get(getAllAccounts)
+  .get(cors(getConfig), getAllAccounts)
   .post(cors(postConfig), createAccount);
 
 router.route('/:id')
