@@ -20,9 +20,9 @@ router.route('/')
   .get(cors(getConfig), getAllMessages)
   .post(cors(postConfig), createMessage);
 
-  router.route('/:id')
-    .get(cors(getConfig), getMessageByID)
-    .patch(cors(patchConfig), updateMessage)
-    .delete(cors(deleteConfig), deleteMessage);
+router.route('/:id')
+  .get(cors(getConfig), getMessageByID)
+  .patch(cors(patchConfig), updateMessage)
+  .delete(cors(deleteConfig), deleteMessage);
 
   module.exports = router;

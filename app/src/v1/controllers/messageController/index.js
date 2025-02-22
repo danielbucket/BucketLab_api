@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const ObjectId = require('mongoose').Types.ObjectId;
 const Message = require('../../models/message.model');
+const Account = require('../../models/account.model');
 
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -58,7 +59,7 @@ exports.getMessageByID = async (req, res) => {
 };
 
 exports.createMessage = async (req, res) => {
-  for(let requiredParameter of ['message', 'title', 'receiver_id']) {  
+  for(let requiredParameter of ['message', 'title', 'receiver_id', 'sender_id']) {  
     if (!req.body[requiredParameter]) {
       return res.status(422).json({
         status: 'fail',
@@ -76,30 +77,35 @@ exports.createMessage = async (req, res) => {
     });
   });
 
-  const validID = await ObjectId.isValid(req.body.receiver_id, req.body.sender_id);
-  
-  if (!validID) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Invalid receiver ID'
-    });
-  };
-
-  const doc = new Message({
-    ...req.body,
-    created_at: Date.now()
-  });
+  const doc = new Message({...req.body }, { isNew: true });
   const saved = await doc.save();
 
-  if (!saved) {
-    return res.status(500).json({
-      status: 'error',
-      message: 'Error saving message.'
-    });
-  } else {
+  try {
+    const sender = await Account.findById({ _id: req.body.sender_id });
+    const receiver = await Account.findById({ _id: req.body.receiver_id });
+    if (!sender || !receiver) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No account found with that sender ID or receiver ID.'
+      });
+    };
+    console.log('sender: ', sender);
+    console.log('receiver: ', receiver);
+    sender.messages.push(saved._id);
+    receiver.messages.push(saved._id);
+
+    await sender.save();
+    await receiver.save();
+
     return res.status(201).json({
       status: 'success',
-      data: saved
+      data: { saved }
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error saving message.',
+      data: { err }
     });
   };
 };

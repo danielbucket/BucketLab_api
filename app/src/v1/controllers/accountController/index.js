@@ -75,7 +75,7 @@ exports.createAccount = async (req, res) => {
     });
   });
 
-  const found = await Account.findOne({ email: body.email });
+  const found = await Account.exists({ email: body.email });
 
   if (found) {
     return res.status(409).json({
@@ -83,19 +83,18 @@ exports.createAccount = async (req, res) => {
       message: 'An account with this email address already exists.'
     });
   };
-  
-  const doc = new Account({ ...body });
-  const saved = await doc.save();
 
-  if (!saved) {
-    return res.status(500).json({
-      status: 'error',
-      message: 'Account creation failed.'
-    });
-  } else {
+  try {
+    const saved = await Account.create({ ...body });
     return res.status(201).json({
       status: 'success',
-      data: { saved }
+      data: saved
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Account creation failed.',
+      err
     });
   };
 };
