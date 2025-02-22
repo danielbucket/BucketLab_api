@@ -7,6 +7,8 @@ const {
   getMessageByID,
   deleteMessage,
   updateMessage,
+  getMessagesBySenderID,
+  getMessagesByReceiverID
 } = require('../controllers/messageController');
 const { validateToken } = require('../middleware/authMiddleware');
 
@@ -19,6 +21,12 @@ const deleteConfig = { methods: ['DELETE'] };
 router.route('/')
   .get(cors(getConfig), getAllMessages)
   .post(cors(postConfig), createMessage);
+
+router.route('/:id/sender')
+  .get(cors(getConfig), getMessagesBySenderID)
+
+router.route('/:id/receiver')
+  .get(cors(getConfig), getMessagesByReceiverID)
 
 router.route('/:id')
   .get(cors(getConfig), getMessageByID)

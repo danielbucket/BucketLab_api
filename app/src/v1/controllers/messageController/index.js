@@ -77,7 +77,7 @@ exports.createMessage = async (req, res) => {
     });
   });
 
-  const doc = new Message({...req.body }, { isNew: true });
+  const doc = new Message({...req.body });
   const saved = await doc.save();
 
   try {
@@ -89,8 +89,7 @@ exports.createMessage = async (req, res) => {
         message: 'No account found with that sender ID or receiver ID.'
       });
     };
-    console.log('sender: ', sender);
-    console.log('receiver: ', receiver);
+
     sender.messages.push(saved._id);
     receiver.messages.push(saved._id);
 
@@ -132,6 +131,7 @@ exports.updateMessage = async (req, res) => {
     });
   };
 
+  // I'm thinking this isn't necessary when using mongoose schemas...
   Object.keys(body).forEach((key) => {
     if (doc[key]) {
       doc[key] = body[key];
@@ -144,7 +144,6 @@ exports.updateMessage = async (req, res) => {
   });
 
   doc.updated_at = Date.now();
-
   const saved = await doc.save();
 
   if (!saved) {
@@ -208,9 +207,9 @@ exports.getMessagesBySenderID = async (req, res) => {
     });
   });
 
-  const docs = await Message.find({ sender_id: id });
+  const messages = await Message.find({ sender_id: id });
 
-  if (!docs) {
+  if (!messages) {
     return res.status(404).json({
       status: 'fail',
       message: 'No messages found with that sender ID.'
@@ -218,7 +217,7 @@ exports.getMessagesBySenderID = async (req, res) => {
   } else {
     return res.status(200).json({
       status: 'success',
-      data: { docs }
+      data: messages
     });
   };
 };
@@ -235,9 +234,9 @@ exports.getMessagesByReceiverID = async (req, res) => {
     });
   });
 
-  const docs = await Message.find({ receiver_id: id });
+  const messages = await Message.find({ receiver_id: id });
 
-  if (!docs) {
+  if (!messages) {
     return res.status(404).json({
       status: 'fail',
       message: 'No messages found with that receiver ID.'
@@ -245,41 +244,7 @@ exports.getMessagesByReceiverID = async (req, res) => {
   } else {
     return res.status(200).json({
       status: 'success',
-      data: { docs }
-    });
-  };
-};
-
-exports.getMessagesBySenderIDAndReceiverID = async (req, res) => {
-  const { sender_id, receiver_id } = req.body;
-
-  if (!ObjectId.isValid(sender_id) || !ObjectId.isValid(receiver_id)) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Invalid ID.'
-    });
-  };
-
-  mongoose.connect(MONGO_URI);
-  mongoose.connection.on('error', (err) => {
-    return res.status(500).json({
-      status: 'error',
-      message: 'Database connection error.',
-      data: { err }
-    });
-  });
-
-  const doc = await Message.find({ sender_id, receiver_id });
-
-  if (!doc) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No messages found with that sender ID and receiver ID.'
-    });
-  } else {
-    return res.status(200).json({
-      status: 'success',
-      data: { doc }
+      data: messages
     });
   };
 };

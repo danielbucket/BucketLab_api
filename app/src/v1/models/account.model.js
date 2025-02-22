@@ -15,7 +15,7 @@ const accountSchema = new Schema({
     type: String,
     required: true,
     minLength: 6,
-    maxLength: 16,
+    maxLength: 24,
     validate: {
       validator: (v) => {
         // return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/.test(v);
