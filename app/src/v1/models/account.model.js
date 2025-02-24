@@ -31,15 +31,36 @@ const accountSchema = new Schema({
   website: String,
   company: String,
   phone: String || Number,
+  messages: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Message'
+  }],
+  permissions: {
+    type: String,
+    enum: ['user', 'admin', 'superadmin'],
+    default: 'user'
+  },
+  logged_in: {
+    type: Boolean,
+    default: false
+  },
+  logged_in_at: {
+    type: Date,
+    default: null
+  },
+  login_count: {
+    type: Number,
+    default: 0
+  },
   created_at: {
     type: Date,
     immutable: true,
     default: () => Date.now()
   },
-  messages: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Message'
-  }],
+  updated_at: {
+    type: Date,
+    default: () => Date.now()
+  }
 });
 
 module.exports = model('Account', accountSchema);

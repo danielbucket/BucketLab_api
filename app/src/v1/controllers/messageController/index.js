@@ -73,7 +73,7 @@ exports.createMessage = async (req, res) => {
     return res.status(500).json({
       status: 'error',
       message: 'Database connection error.',
-      data: { err }
+      data: err
     });
   });
 
@@ -98,13 +98,13 @@ exports.createMessage = async (req, res) => {
 
     return res.status(201).json({
       status: 'success',
-      data: { saved }
+      data: saved
     });
   } catch (err) {
     return res.status(500).json({
       status: 'error',
       message: 'Error saving message.',
-      data: { err }
+      data: err
     });
   };
 };
@@ -118,7 +118,7 @@ exports.updateMessage = async (req, res) => {
     return res.status(500).json({
       status: 'error',
       message: 'Database connection error.',
-      data: { err }
+      data: err
     });
   });
 
@@ -154,7 +154,7 @@ exports.updateMessage = async (req, res) => {
   } else {
     return res.status(200).json({
       status: 'success',
-      data: { saved }
+      data: saved
     });
   };
 };
@@ -167,7 +167,7 @@ exports.deleteMessage = async (req, res) => {
     return res.status(500).json({
       status: 'error',
       message: 'Database connection error.',
-      data: { err }
+      data: err
     });
   });
 
@@ -203,7 +203,7 @@ exports.getMessagesBySenderID = async (req, res) => {
     return res.status(500).json({
       status: 'error',
       message: 'Database connection error.',
-      data: { err }
+      data: err
     });
   });
 
@@ -230,7 +230,7 @@ exports.getMessagesByReceiverID = async (req, res) => {
     return res.status(500).json({
       status: 'error',
       message: 'Database connection error.',
-      data: { err }
+      data: err
     });
   });
 

@@ -132,7 +132,6 @@ exports.updateAccount = async (req, res) => {
   });
 
   doc.updated_at = Date.now();
-
   const saved = await doc.save();
   
   if (!saved) {
@@ -184,7 +183,7 @@ exports.deleteAccount = async (req, res) => {
   };
 };
 
-exports.accountLogin = (req,res) => {
+exports.accountLogin = async (req, res) => {
   for (let requiredParameter of ['email', 'password']) {
     if (!req.body[requiredParameter]) {
       return res.status(422).json({
@@ -194,15 +193,93 @@ exports.accountLogin = (req,res) => {
     };
   };
 
-  res.status(200).json({
-    status: 'success',
-    message: 'This endpoint has not been developed yet.'
+  mongoose.connect(MONGO_URI);
+  mongoose.connection.on('error', () => {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Database connection error.'
+    });
   });
+
+  const found = await Account.exists({ email: req.body.email });
+
+  if (!found) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No account found with that email.'
+    });
+  };
+
+  const doc = await Account.findById({ ...found })
+    .where('password').equals(req.body.password);
+
+  if (!doc) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Incorrect password.'
+    });
+  };
+
+  doc.logged_in = true;
+  doc.logged_in_at = Date.now();
+  doc.login_count += 1;
+
+  const saved = await doc.save();
+
+  if (!saved) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Document failed to save to the database.'
+    });
+  } else {
+    return res.status(200).json({
+      status: 'success',
+      data: saved
+    });
+  };
 };
 
-exports.accountLogout = (req, res) => {
-  res.status(200).send({
-    status: 'success',
-    message: 'This endpoint has not been developed yet.'
+exports.accountLogout = async (req, res) => {
+  for (let requiredParameter of ['email', '_id']) {
+    if (!req.body[requiredParameter]) {
+      return res.status(422).json({
+        status: 'error',
+        message: `Missing required parameter: ${requiredParameter}.`
+      });
+    };
+  }
+
+  mongoose.connect(MONGO_URI);
+  mongoose.connection.on('error', () => {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Database connection error.'
+    });
   });
+
+  const doc = await Account.findById({ _id: req.body._id })
+    .where('email').equals(req.body.email);
+
+  if (!doc) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No account found with that email or ID.'
+    })
+  };
+
+  doc.logged_in = false;
+  doc.logged_in_at = null;
+
+  const saved = await doc.save();
+
+  if (!saved) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Document failed to save to the database.'
+    });
+  } else {
+    return res.status(200).json({
+      status: 'success'
+    });
+  };
 };

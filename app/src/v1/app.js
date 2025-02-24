@@ -26,13 +26,12 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
-    data: {
-      message: 'BucketLab API'
-    }
+    message: 'BucketLab API Root'
   });
 });
 
 app.use('/api/v1/accounts', accounts);
+
 app.use('/api/v1/messages', messages);
 app.all('*', (req, res) => {
   res.status(404).json({
