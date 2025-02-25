@@ -1,13 +1,4 @@
 services:
-  tunnel:
-    image: cloudflare/cloudflared:latest
-    command: tunnel run bucketlab_api
-    environment:
-      - TUNNEL_URL=http://api.bucketlab.io
-    ports:
-      - 4200:4200
-    depends_on:
-      - app
   app:
     image: node:latest
     working_dir: /app
