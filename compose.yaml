@@ -5,7 +5,7 @@ services:
     environment:
       - TUNNEL_URL=http://api.bucketlab.io
     ports:
-      - 4020:4020
+      - 4200:4200
     depends_on:
       - app
   app:
