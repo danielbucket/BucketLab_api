@@ -20,6 +20,20 @@ services:
       - 27017:27017
     volumes:
       - ./data:/data/db
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: docker run --no-autoupdate
+    environment:
+      - TUNNEL_TOKEN: eyJhIjoiMDM3ZmQ5YzczMzQyMmQxMmEwMTk0NWQwZTQ4ZjQ0NjQiLCJ0IjoiYTMyODA1NWEtY2ViNS00YThiLTlkYTUtMjNhYmNkNzc5YTNjIiwicyI6Ill6TTVZelV5Wm1VdE56ZG1ZaTAwTW1VNUxXSTVPVEV0TnpRMFltWTJZMkl6WXpRNCJ9
+    ports:
+      - 4020:4020
+    networks:
+      - default
+    restart: unless-stopped
+    depends_on:
+      - app
+    volumes:
+      - ./cloudflared:/etc/cloudflared
 volumes:
   data:
     driver: local
