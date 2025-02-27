@@ -7,11 +7,10 @@ const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
-const corsOptions = { origin: PROD_URL };
+const corsOptions = { origin: [ PROD_URL, DEV_URL ] };
 
 if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
-  corsOptions.origin = DEV_URL;
   console.log(`Development mode: CORS enabled for ${DEV_URL}`);
 };
 
