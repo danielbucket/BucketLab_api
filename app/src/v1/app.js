@@ -7,20 +7,12 @@ const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
-
-const whitelist = [ DEV_URL, PROD_URL ];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    };
-  }
-};
+const corsOptions = { origin: PROD_URL };
 
 if (NODE_ENV === 'development') {
+  corsOptions.origin = DEV_URL;
   app.use(morgan('dev'));
+  console.log('Development mode: Morgan logging enabled');
   console.log(`Development mode: CORS enabled for ${DEV_URL}`);
 };
 
@@ -39,9 +31,9 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/v1/accounts', accounts);
+app.use('/v1/accounts', accounts);
 
-app.use('/api/v1/messages', messages);
+app.use('/v1/messages', messages);
 app.all('*', (req, res) => {
   res.status(404).json({
     status: 'fail',
