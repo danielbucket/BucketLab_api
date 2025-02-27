@@ -7,7 +7,17 @@ const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
-const corsOptions = { origin: [ PROD_URL, DEV_URL ] };
+
+const whitelist = [ DEV_URL, PROD_URL ];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    };
+  }
+};
 
 if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
