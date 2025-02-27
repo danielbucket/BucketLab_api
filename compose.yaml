@@ -1,5 +1,6 @@
 services:
   app:
+    container_name: server
     image: node:latest
     working_dir: /app
     volumes:
@@ -12,6 +13,7 @@ services:
     depends_on:
       - mongoDB
   mongoDB:
+    container_name: database
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin

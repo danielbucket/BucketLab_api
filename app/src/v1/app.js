@@ -9,11 +9,26 @@ const messages = require('./routes/messageRoutes.js');
 const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
 const corsOptions = { origin: PROD_URL };
 
+const whitelist = ['https://localhost:5173', 'https://api.bucketlab.io'];
+const corsOptionsDelegate = (req, callback) => {
+  let corsOps;
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    corsOps = { origin: true };
+  } else {
+    corsOpts = { origin: false };
+  }
+  callback(null, corsOpts)
+};
+
 if (NODE_ENV === 'development') {
   corsOptions.origin = DEV_URL;
   app.use(morgan('dev'));
   console.log('Development mode: Morgan logging enabled');
   console.log(`Development mode: CORS enabled for ${DEV_URL}`);
+};
+
+if (NODE_ENV === 'production') {
+  console.log(`CORS enabled for ${corsOptions.origin}`);
 };
 
 app.use(cors(corsOptions));
