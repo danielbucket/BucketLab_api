@@ -240,14 +240,7 @@ exports.accountLogin = async (req, res) => {
 };
 
 exports.accountLogout = async (req, res) => {
-  for (let requiredParameter of ['email', '_id']) {
-    if (!req.body[requiredParameter]) {
-      return res.status(422).json({
-        status: 'error',
-        message: `Missing required parameter: ${requiredParameter}.`
-      });
-    };
-  }
+  const id = req.params.id.slice(1);
 
   mongoose.connect(MONGO_URI);
   mongoose.connection.on('error', () => {
@@ -257,14 +250,14 @@ exports.accountLogout = async (req, res) => {
     });
   });
 
-  const doc = await Account.findById({ _id: req.body._id })
-    .where('email').equals(req.body.email);
+  const doc = await Account.findById({ _id: id });
 
   if (!doc) {
     return res.status(404).json({
+      id,
       status: 'fail',
-      message: 'No account found with that email or ID.'
-    })
+      message: 'No account found with that ID.'
+    });
   };
 
   doc.logged_in = false;
