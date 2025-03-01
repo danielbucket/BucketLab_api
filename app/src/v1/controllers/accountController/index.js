@@ -80,7 +80,9 @@ exports.createAccount = async (req, res) => {
   if (found) {
     return res.status(409).json({
       status: 'fail',
-      message: 'An account with this email address already exists.'
+      fail_type: 'duplicate',
+      message: 'An account with that email already exists.',
+      data: { email: body.email }
     });
   };
 
@@ -206,6 +208,7 @@ exports.accountLogin = async (req, res) => {
   if (!found) {
     return res.status(404).json({
       status: 'fail',
+      fail_type: 'not_found',
       message: 'No account found with that email.'
     });
   };
@@ -216,6 +219,7 @@ exports.accountLogin = async (req, res) => {
   if (!doc) {
     return res.status(404).json({
       status: 'fail',
+      fail_type: 'incorrect_password',
       message: 'Incorrect password.'
     });
   };
