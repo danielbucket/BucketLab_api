@@ -25,10 +25,10 @@ router.route('/')
   .post(cors(postConfig), createAccount);
 
 router.route('/login')
-    .patch(cors(patchConfig), accountLogin);
+    .post(cors(postConfig), accountLogin);
     
 router.route('/logout/:id')
-  .patch(cors(patchConfig), accountLogout);
+  .post(cors(postConfig), accountLogout);
 
 router.route('/:id')
   .get(cors(postConfig), getAccountByID)
