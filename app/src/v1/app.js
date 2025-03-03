@@ -7,18 +7,22 @@ const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
-const corsOptions = { origin: PROD_URL };
 
-const whitelist = ['https://localhost:5173', 'https://api.bucketlab.io'];
-const corsOptionsDelegate = (req, callback) => {
-  let corsOps;
-  if (whitelist.indexOf(req.header('Origin')) !== -1) {
-    corsOps = { origin: true };
-  } else {
-    corsOpts = { origin: false };
-  }
-  callback(null, corsOpts)
+const whitelist = ['https://localhost', 'https://api.bucketlab.io'];
+const corsOptions = { 
+  origin: whitelist,
+  enablePreflight: true,
+  optionsSuccessStatus: 200
 };
+// const corsOptionsDelegate = (req, callback) => {
+//   let corsOps;
+//   if (whitelist.indexOf(req.header('Origin')) !== -1) {
+//     corsOps = { origin: true };
+//   } else {
+//     corsOpts = { origin: false };
+//   }
+//   callback(null, corsOpts)
+// };
 
 if (NODE_ENV === 'development') {
   corsOptions.origin = DEV_URL;
