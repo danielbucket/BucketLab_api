@@ -8,18 +8,18 @@ const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
 
-const whitelist = ['https://bucketlab.io', 'https://api.bucketlab.io', 'https://www.bucketlab.io'];
-const corsOptions = { origin: whitelist };
+const whitelist = ['localhost:4020', 'https://bucketlab.io', 'https://api.bucketlab.io', 'https://www.bucketlab.io'];
+// const corsOptions = { origin: whitelist };
 
-// const corsOptionsDelegate = (req, callback) => {
-//   let corsOps;
-//   if (whitelist.indexOf(req.header('Origin')) !== -1) {
-//     corsOps = { origin: true };
-//   } else {
-//     corsOpts = { origin: false };
-//   };
-//   callback(null, corsOpts);
-// };
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 if (NODE_ENV === 'development') {
   corsOptions.origin = DEV_URL;
