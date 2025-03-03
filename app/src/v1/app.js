@@ -8,12 +8,14 @@ const messages = require('./routes/messageRoutes.js');
 
 // const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
 
-// const whitelist = ['https://localhost:4020', 'https://api.bucketlab.io', 'https://www.api.bucketlab.io'];
-// const corsOptions = { 
-//   origin: whitelist,
-//   enablePreflight: true,
-//   optionsSuccessStatus: 200
-// };
+const whitelist = ['https://localhost:4020', 'https://api.bucketlab.io', 'https://www.api.bucketlab.io'];
+const corsOptions = { 
+  origin: whitelist,
+  enablePreflight: true,
+  optionsSuccessStatus: 200,
+  methods: 'GET, POST, PUT, DELETE, PATCH',
+  allowedHeaders: 'Content-Type, Authorization',
+};
 
 // const corsOptionsDelegate = (req, callback) => {
 //   let corsOps;
@@ -21,23 +23,22 @@ const messages = require('./routes/messageRoutes.js');
 //     corsOps = { origin: true };
 //   } else {
 //     corsOpts = { origin: false };
-//   }
-//   callback(null, corsOpts)
+//   };
+//   callback(null, corsOpts);
 // };
 
-// if (NODE_ENV === 'development') {
-//   corsOptions.origin = DEV_URL;
-//   app.use(morgan('dev'));
-//   console.log('Development mode: Morgan logging enabled');
-//   console.log(`Development mode: CORS enabled for ${DEV_URL}`);
-// };
+if (NODE_ENV === 'development') {
+  corsOptions.origin = DEV_URL;
+  app.use(morgan('dev'));
+  console.log('Development mode: Morgan logging enabled');
+  console.log(`Development mode: CORS enabled for ${DEV_URL}`);
+};
 
 // if (NODE_ENV === 'production') {
 //   console.log(`CORS enabled for ${corsOptions.origin}`);
 // };
 
-// app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(optimization.apiLimiter);
 app.use((req, res, next) => {
