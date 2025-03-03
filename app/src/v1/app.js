@@ -6,7 +6,7 @@ const cors = require('cors');
 const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 
-// const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
+const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
 
 const whitelist = ['https://localhost:4020', 'https://api.bucketlab.io', 'https://www.api.bucketlab.io'];
 const corsOptions = { 
