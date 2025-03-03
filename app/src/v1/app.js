@@ -8,10 +8,9 @@ const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
 
-const whitelist = ['https://localhost:4020', 'https://api.bucketlab.io', 'https://www.api.bucketlab.io'];
+const whitelist = ['https://localhost:4020', 'https://bucketlab.io', 'https://www.api.bucketlab.io'];
 const corsOptions = { 
   origin: whitelist,
-  enablePreflight: true,
   optionsSuccessStatus: 200,
   methods: 'GET, POST, PUT, DELETE, PATCH',
   allowedHeaders: 'Content-Type, Authorization',
