@@ -18,11 +18,9 @@ const corsOptions = {
       cb(new Error('That domain is not whitelisted for CORS'));
     };
   },
-  credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  optionsSuccessStatus: 204,
-  preflightContinue: false
+  optionsSuccessStatus: 200
 };
 
 if (NODE_ENV === 'development') {
