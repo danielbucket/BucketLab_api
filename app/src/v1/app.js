@@ -8,23 +8,21 @@ const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, NODE_ENV } = process.env;
 
-const whitelist = ['https://bucketlab.io', 'https://api.bucketlab.io', 'https://www.bucketlab.io'];
+const whitelist = ['http://localhost:5173', 'https://bucketlab.io', 'https://api.bucketlab.io', 'https://www.bucketlab.io'];
 
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin: (origin, cb) => {
+    console.log('CORS error: ', origin);
     if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
+      cb(null, true);
     } else {
-      callback(new Error('That domain is not whitelisted for CORS'))
-    }
-  },
-  optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  preflight: true,
-}
+      cb(new Error('That domain is not whitelisted for CORS'));
+    };
+  }
+};
 
 if (NODE_ENV === 'development') {
-  corsOptions.origin = DEV_URL;
+  // corsOptions.origin = DEV_URL;
   app.use(morgan('dev'));
   console.log('Development mode: Morgan logging enabled');
   console.log(`Development mode: CORS enabled for ${corsOptions.origin}`);
