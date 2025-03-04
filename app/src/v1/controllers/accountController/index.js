@@ -219,8 +219,8 @@ exports.accountLogin = async (req, res) => {
   if (!doc) {
     return res.status(404).json({
       status: 'fail',
-      fail_type: 'incorrect_password',
-      message: 'Incorrect password.'
+      fail_type: 'invalid_password',
+      message: 'Invalid password.'
     });
   };
 

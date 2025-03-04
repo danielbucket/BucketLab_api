@@ -6,16 +6,16 @@ const cors = require('cors');
 const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 
-const { DEV_URL, PROD_URL, NODE_ENV } = process.env;
+const { DEV_URL, NODE_ENV } = process.env;
 
-const whitelist = ['localhost:4020', 'https://bucketlab.io', 'https://api.bucketlab.io', 'https://www.bucketlab.io'];
+const whitelist = ['https://bucketlab.io', 'https://api.bucketlab.io', 'https://www.bucketlab.io'];
 
-var corsOptions = {
+const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error('That domain is not whitelisted for CORS'))
     }
   },
   optionsSuccessStatus: 200,
@@ -27,14 +27,12 @@ if (NODE_ENV === 'development') {
   corsOptions.origin = DEV_URL;
   app.use(morgan('dev'));
   console.log('Development mode: Morgan logging enabled');
-  console.log(`Development mode: CORS enabled for ${DEV_URL}`);
+  console.log(`Development mode: CORS enabled for ${corsOptions.origin}`);
 };
 
-// if (NODE_ENV === 'production') {
-//   console.log(`CORS enabled for ${corsOptions.origin}`);
-// };
-
-console.log('corsOptions:', corsOptions);
+if (NODE_ENV === 'production') {
+  console.log(`CORS enabled for ${corsOptions.origin}`);
+};
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -51,12 +49,12 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/v1/accounts', accounts);
-
-app.use('/v1/messages', messages);
+app.use('/api/v1/accounts', accounts);
+app.use('/api/v1/messages', messages);
 app.all('*', (req, res) => {
   res.status(404).json({
     status: 'fail',
+    fail_type: 'server_error',
     message: `Can't find ${req.originalUrl} on this server!`
   });
 });
