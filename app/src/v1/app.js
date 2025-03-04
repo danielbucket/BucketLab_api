@@ -12,13 +12,17 @@ const whitelist = ['http://localhost:5173', 'https://bucketlab.io', 'https://api
 
 const corsOptions = {
   origin: (origin, cb) => {
-    console.log('CORS error: ', origin);
     if (whitelist.indexOf(origin) !== -1) {
       cb(null, true);
     } else {
       cb(new Error('That domain is not whitelisted for CORS'));
     };
-  }
+  },
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  optionsSuccessStatus: 204,
+  preflightContinue: false
 };
 
 if (NODE_ENV === 'development') {
