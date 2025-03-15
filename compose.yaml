@@ -1,4 +1,14 @@
 services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    command: tunnel --no-autoupdate run
+    restart: unless-stopped
+    ports: # Expose the port to the host machine
+      - 4200:4200
+    environment:
+      - TZ=US/Denver  # Set the timezone
+      - "TUNNEL_TOKEN=${TUNNEL_TOKEN}"
   app:
     container_name: server
     image: node:latest
