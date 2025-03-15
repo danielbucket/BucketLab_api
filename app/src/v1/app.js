@@ -19,7 +19,7 @@ const corsOptions = {
     };
   },
   allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   optionsSuccessStatus: 200
 };
 

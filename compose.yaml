@@ -1,5 +1,9 @@
 services:
   app:
+    # Load environment variables from .env file.
+    # This to applies to the app service, which makes sense.
+    # But it also seems to applu to the mongoDB service as well, though I'm not sure why/how...
+    env_file: ".env"
     container_name: server
     image: node:latest
     working_dir: /app
@@ -8,7 +12,7 @@ services:
     ports:
       - 4020:4020
     environment:
-      - MONGO_URI=mongodb://admin:password@mongoDB:27017
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     command: npm run start:dev
     depends_on:
       - mongoDB
@@ -16,8 +20,8 @@ services:
     container_name: database
     image: mongo:latest
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_DB_USERNAME}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_DB_PASSWORD}"
     ports:
       - 27017:27017
     volumes:
