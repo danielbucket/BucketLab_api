@@ -7,7 +7,7 @@ services:
     ports: # Expose the port to the host machine
       - 4200:4200
     environment:
-      - TZ=US/Denver  # Set the timezone
+      - TZ=America/Denver  # Set the timezone
       - "TUNNEL_TOKEN=${TUNNEL_TOKEN}"
   app:
     # Load environment variables from .env file.
@@ -23,7 +23,7 @@ services:
       - 4020:4020
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
-    command: npm run start:dev
+    command: npm run start:prod
     depends_on:
       - mongoDB
   mongoDB:
