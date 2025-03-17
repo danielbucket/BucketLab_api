@@ -13,6 +13,7 @@ const whitelist = ['http://localhost:5173', 'https://bucketlab.io', 'https://api
 const corsOptions = {
   origin: (origin, cb) => {
     if (whitelist.indexOf(origin) !== -1) {
+      console.log(`CORS enabled for ${origin}`);
       cb(null, true);
     } else {
       cb(new Error(`That domain is not CORS whitelisted. Origin: ${origin}`));
@@ -24,14 +25,10 @@ const corsOptions = {
 };
 
 if (NODE_ENV === 'development') {
-  // corsOptions.origin = DEV_URL;
+  corsOptions.origin = DEV_URL;
   app.use(morgan('dev'));
   console.log('Development mode: Morgan logging enabled');
   console.log(`Development mode: CORS enabled for ${corsOptions.origin}`);
-};
-
-if (NODE_ENV === 'production') {
-  console.log(`CORS enabled for ${corsOptions.origin}`);
 };
 
 app.use(cors(corsOptions));
