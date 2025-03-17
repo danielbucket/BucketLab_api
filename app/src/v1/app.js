@@ -15,7 +15,7 @@ const corsOptions = {
     if (whitelist.indexOf(origin) !== -1) {
       cb(null, true);
     } else {
-      cb(new Error('That domain is not whitelisted for CORS'));
+      cb(new Error(`That domain is not CORS whitelisted. Origin: ${origin}`));
     };
   },
   allowedHeaders: ['Content-Type', 'Authorization'],
