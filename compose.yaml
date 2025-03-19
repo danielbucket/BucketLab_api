@@ -9,6 +9,8 @@ services:
     environment:
       - TZ=America/Denver  # Set the timezone
       - "TUNNEL_TOKEN=${TUNNEL_TOKEN}"
+    networks:
+      - tunnel
   app:
     # Load environment variables from .env file.
     # This to applies to the app service, which makes sense.
@@ -39,3 +41,15 @@ services:
 volumes:
   data:
     driver: local
+networks:
+  tunnel:
+    external: true
+# This docker-compose file sets up a simple web application with a MongoDB database and a Cloudflare tunnel.
+# The app service runs a Node.js application, the mongoDB service runs a MongoDB database,
+# and the cloudflared service creates a secure tunnel to the Cloudflare network.
+# The app service depends on the mongoDB service, and the cloudflared service is connected to an external network.
+# The environment variables are loaded from a .env file, and the MongoDB credentials are passed to the app service.
+# The data for the MongoDB database is stored in a local volume.
+# The cloudflared service exposes port 4200, the app service exposes port 4020, and the mongoDB service exposes port 27017.
+# Make sure to set the TUNNEL_TOKEN, MONGO_DB_USERNAME, and MONGO_DB_PASSWORD in your .env file.
+# Note: Ensure that the .env file is in the same directory as this docker-compose file.
