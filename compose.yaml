@@ -1,16 +1,4 @@
 services:
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: cloudflared
-    command: tunnel --no-autoupdate run
-    restart: unless-stopped
-    ports: # Expose the port to the host machine
-      - 4200:4200
-    environment:
-      - TZ=America/Denver  # Set the timezone
-      - "TUNNEL_TOKEN=${TUNNEL_TOKEN}"
-    networks:
-      - tunnel
   app:
     # Load environment variables from .env file.
     # This to applies to the app service, which makes sense.
@@ -28,6 +16,8 @@ services:
     command: npm run start:prod
     depends_on:
       - mongoDB
+    networks:
+      - tunnel
   mongoDB:
     container_name: database
     image: mongo:latest
@@ -38,12 +28,14 @@ services:
       - 27017:27017
     volumes:
       - ./data:/data/db
+    networks:
+      - tunnel
 volumes:
   data:
     driver: local
 networks:
   tunnel:
-    external: true
+    driver: bridge
 # This docker-compose file sets up a simple web application with a MongoDB database and a Cloudflare tunnel.
 # The app service runs a Node.js application, the mongoDB service runs a MongoDB database,
 # and the cloudflared service creates a secure tunnel to the Cloudflare network.
