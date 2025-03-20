@@ -13,7 +13,6 @@ const whitelist = ['http://localhost:5173', 'https://bucketlab.io', 'https://www
 const corsOptions = {
   origin: (origin, cb) => {
     if (whitelist.indexOf(origin) !== -1) {
-      console.log(`CORS enabled for ${origin}`);
       cb(null, true);
     } else {
       cb(new Error(`That domain is not CORS whitelisted. Origin: ${origin}`));
