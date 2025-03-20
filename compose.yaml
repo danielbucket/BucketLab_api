@@ -17,7 +17,7 @@ services:
     depends_on:
       - mongoDB
     networks:
-      - tunnel
+      - internal
   mongoDB:
     container_name: database
     image: mongo:latest
@@ -29,12 +29,12 @@ services:
     volumes:
       - ./data:/data/db
     networks:
-      - tunnel
+      - internal
 volumes:
   data:
     driver: local
 networks:
-  tunnel:
+  internal:
     driver: bridge
 # This docker-compose file sets up a simple web application with a MongoDB database and a Cloudflare tunnel.
 # The app service runs a Node.js application, the mongoDB service runs a MongoDB database,

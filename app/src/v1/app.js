@@ -30,7 +30,8 @@ if (NODE_ENV === 'development') {
   console.log(`Development mode: CORS enabled for ${corsOptions.origin}`);
 };
 
-app.options('*', cors(corsOptions));
+app.options('*', cors());
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(optimization.apiLimiter);
