@@ -11,14 +11,14 @@ const { DEV_URL, NODE_ENV } = process.env;
 const whitelist = ['http://localhost:5173', 'https://bucketlab.io', 'https://www.bucketlab.io'];
 
 const corsOptions = {
-  // origin: (origin, cb) => {
-  //   if (whitelist.indexOf(origin) !== -1) {
-  //     console.log(`CORS enabled for ${origin}`);
-  //     cb(null, true);
-  //   } else {
-  //     cb(new Error(`That domain is not CORS whitelisted. Origin: ${origin}`));
-  //   };
-  // },
+  origin: (origin, cb) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      console.log(`CORS enabled for ${origin}`);
+      cb(null, true);
+    } else {
+      cb(new Error(`That domain is not CORS whitelisted. Origin: ${origin}`));
+    };
+  },
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   optionsSuccessStatus: 200
@@ -46,8 +46,8 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/v1/accounts', accounts);
-app.use('/api/v1/messages', messages);
+app.use('/v1/accounts', accounts);
+app.use('/v1/messages', messages);
 app.all('*', (req, res) => {
   res.status(404).json({
     status: 'fail',
