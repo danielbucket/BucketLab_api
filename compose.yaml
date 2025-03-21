@@ -4,11 +4,10 @@ services:
     image: cloudflare/cloudflared:latest
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+      - "TUNNEL_HOSTNAME=bucketlab.io" # Replace with your actual domain
     ports:
       - 4200:4200
     command: tunnel --no-autoupdate run
-    # Note: The cloudflared service is connected to an external network.
-    # This is because it needs to communicate with the Cloudflare network.
   app:
     # Load environment variables from .env file.
     # This to applies to the app service, which makes sense.
@@ -20,7 +19,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - 4020:4200
+      - 4020:4020
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     command: npm run start:prod

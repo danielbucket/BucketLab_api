@@ -24,6 +24,7 @@ if (NODE_ENV === 'development') {
 };
 
 app.options('*', cors());
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(optimization.apiLimiter);
