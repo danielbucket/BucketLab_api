@@ -11,13 +11,8 @@ const { DEV_URL, NODE_ENV } = process.env;
 const whitelist = ['http://localhost:5173', 'https://bucketlab.io', 'https://www.bucketlab.io'];
 
 const corsOptions = {
-  origin: (origin, cb) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      cb(null, true);
-    } else {
-      cb(new Error(`That domain is not CORS whitelisted. Origin: ${origin}`));
-    };
-  },
+  origin: whitelist,
+  credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   optionsSuccessStatus: 200
