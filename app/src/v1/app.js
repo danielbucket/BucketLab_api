@@ -8,10 +8,8 @@ const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, NODE_ENV } = process.env;
 
-const whitelist = ['http://localhost:5173', 'https://bucketlab.io', 'https://www.bucketlab.io'];
-
 const corsOptions = {
-  origin: whitelist,
+  origin: ['https://bucketlab.io', 'http://localhost:5173'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
@@ -26,7 +24,6 @@ if (NODE_ENV === 'development') {
 };
 
 app.options('*', cors());
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(optimization.apiLimiter);
