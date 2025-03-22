@@ -4,14 +4,14 @@ services:
     image: cloudflare/cloudflared:latest
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-      - "TUNNEL_HOSTNAME=bucketlab.io" # Replace with your actual domain
+      - "TUNNEL_HOSTNAME=api.bucketlab.io" # Replace with your actual domain // do I need this line?
     ports:
       - 4200:4200
     command: tunnel --no-autoupdate run
   app:
     # Load environment variables from .env file.
     # This to applies to the app service, which makes sense.
-    # But it also seems to applu to the mongoDB service as well, though I'm not sure why/how...
+    # But it also seems to apply to the mongoDB service as well, though I'm not sure why/how...
     env_file: ".env"
     container_name: server
     image: node:latest
@@ -21,6 +21,7 @@ services:
     ports:
       - 4020:4020
     environment:
+      - "CLOUDFLARED_URL=http://cloudflared:4200"
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     command: npm run start:prod
     depends_on:
