@@ -12,7 +12,7 @@ const corsOptions = {
   origin: ['https://bucketlab.io', 'http://localhost:5173'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   optionsSuccessStatus: 200
 };
 
@@ -22,8 +22,6 @@ if (NODE_ENV === 'development') {
   console.log('Development mode: Morgan logging enabled');
   console.log(`Development mode: CORS enabled for ${corsOptions.origin}`);
 };
-
-app.options('*', cors());
 
 app.use(cors(corsOptions));
 app.use(express.json());
