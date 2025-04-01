@@ -18,6 +18,7 @@ const postConfig = { methods: ['POST'] };
 const patchConfig = { methods: ['PATCH'] };
 const deleteConfig = { methods: ['DELETE'] };
 
+// checkID will only be called if the parameter 'id' is present in the URL
 router.param('id', checkID);
 
 router.route('/')

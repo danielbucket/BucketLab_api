@@ -3,13 +3,15 @@ const express = require('express');
 const app = express();
 const optimization = require('../optimization/index.js');
 const cors = require('cors');
+
+const authRoutes = require('./routes/authRoutes.js');
 const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 
 const { DEV_URL, NODE_ENV } = process.env;
 
 const corsOptions = {
-  origin: ['https://bucketlab.io', 'http://localhost:5173'],
+  origin: ['https://bucketlab.io', 'http://localhost:5173', 'http://localhost:4173'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -23,9 +25,17 @@ if (NODE_ENV === 'development') {
   console.log(`Development mode: CORS enabled for ${corsOptions.origin}`);
 };
 
+// app.options('*', cors(corsOptions)); // Pre-flight request for all routes
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', corsOptions.origin);
+//   res.header('Access-Control-Allow-Headers', corsOptions.allowedHeaders.join(','));
+//   res.header('Access-Control-Allow-Methods', corsOptions.methods.join(','));
+//   next();
+// });
+
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(optimization.apiLimiter);
+// app.use(optimization.apiLimiter);
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
@@ -38,6 +48,12 @@ app.get('/', (req, res) => {
   });
 });
 
+app.use('/v1', (req, res, next) => {
+  console.log('Request received at:', req.requestTime);
+  next();
+});
+
+app.use(authRoutes);
 app.use('/v1/accounts', accounts);
 app.use('/v1/messages', messages);
 app.all('*', (req, res) => {
