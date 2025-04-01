@@ -264,8 +264,10 @@ exports.accountLogout = async (req, res) => {
     });
   };
 
+  // this mutates the doc object. Is that ok?
   doc.logged_in = false;
   doc.logged_in_at = null;
+  doc.last_logout_at = Date.now();
 
   const saved = await doc.save();
 

@@ -1,4 +1,6 @@
 const { Schema, model } = require('mongoose');
+const { isEmail } = require('validator');
+const { default: isURL } = require('validator/lib/isURL');
 
 const accountSchema = new Schema({
   first_name: {
@@ -14,21 +16,20 @@ const accountSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minLength: 6,
-    maxLength: 24,
-    validate: {
-      validator: (v) => {
-        // return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/.test(v);
-      },
-      message: props => `${props.value} is not a valid password.`
-    }
+    minlength: 6,
+    maxlength: 24,
   },
   email: {
     type: String,
     required: true,
+    unique: true,
     lowercase: true,
+    validate: [isEmail, 'Please enter a valid email address'],
   },
-  website: String,
+  website: {
+    type: String,
+    validate: [isURL, 'Please enter a valid URL'],
+  },
   company: String,
   phone: String || Number,
   messages: [{
@@ -45,6 +46,10 @@ const accountSchema = new Schema({
     default: false
   },
   logged_in_at: {
+    type: Date,
+    default: null
+  },
+  last_logout_at: {
     type: Date,
     default: null
   },
