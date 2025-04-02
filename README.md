@@ -54,7 +54,7 @@ docker compose up --build --remove-orphans -d
 
 ### 5. Access the API
 Once the app is running, you can access the API at `http://localhost:4020`.
-Or by navigating to the domain that the Cloudflare Tunnel is connect to.
+Or by navigating to the domain that the Cloudflare Tunnel is connected to.
 Example: `https://api.yourdomain.com/`
 
 ## Running Tests
