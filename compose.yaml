@@ -1,7 +1,7 @@
 services:
   cloudflared:
     container_name: cloudflared
-    hostname: cloudflared-tunnel
+    hostname: bucketlab-API-tunnel_dev
     image: cloudflare/cloudflared:latest
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
@@ -12,7 +12,6 @@ services:
       options:
         max-size: "100m"
         max-file: "10"
-    # Volume configuration for time synchronization and hosts file persistence
     volumes:
       - /etc/localtime:/etc/localtime:ro   # Synchronize time with the host
   app:

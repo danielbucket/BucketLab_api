@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 const key = 'I-be-tokin';
 const { ObjectId } = require('mongoose').Types;
 
@@ -12,6 +14,20 @@ exports.validateToken = (req, res, next) => {
       }
     });
   };
+
+  jwt.verify(token, key, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'Invalid token',
+        data: {
+          message: err.message
+        }
+      });
+    };
+
+    
+  })
 
   if (token !== key) {
     return res.status(401).json({
