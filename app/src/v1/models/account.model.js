@@ -13,18 +13,18 @@ const accountSchema = new Schema({
     type: String,
     required: true
   },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-    maxlength: 24,
-  },
   email: {
     type: String,
     required: true,
     unique: true,
     lowercase: true,
     validate: [isEmail, 'Please enter a valid email address'],
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6,
+    maxlength: 24,
   },
   website: {
     type: String,

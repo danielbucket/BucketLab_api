@@ -1,6 +1,8 @@
 # BucketLab API
 
-BucketLab API is a backend service designed to manage and process data for the BucketLab application. It provides a set of RESTful endpoints to handle various operations such as user management, data processing, and analytics.
+BucketLab API is a backend service designed to manage and process data for the BucketLab application. It provides a set of RESTful endpoints to handle various operations such as user management and storage, inter-user communications.
+This api can be deployed on virtually any arm64 computer with an installed Docker deamon.
+It was built on a RaspberryPi 5, where it is also currently deployed.
 
 ## Features
 - User authentication and authorization
@@ -13,7 +15,7 @@ BucketLab API is a backend service designed to manage and process data for the B
 Ensure you have the following installed on your system:
 - [Node.js](https://nodejs.org/) (v14 or higher)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- [MongoDB](https://www.mongodb.com/) (if applicable)
+- [Docker](https://www.docker.com/)
 
 ## Getting Started
 
@@ -46,32 +48,20 @@ JWT_SECRET=your_secret_key
 ```
 
 ### 4. Start the Application
-To start the app in development mode without the Cloudflared Tunnel service:
-```bash
-npm run start:dev
-```
-Or in production mode:
-```bash
-npm run start:prod
-```
-To start the app with the Cloudflared Tunnel service:
-The .env file should contain a TUNNEL_TOKEN variable with token value.
 ```bash
 docker compose up --build --remove-orphans -d
 ```
 
-
 ### 5. Access the API
 Once the app is running, you can access the API at `http://localhost:4020`.
+Or by navigating to the domain that the Cloudflare Tunnel is connected to.
+Example: `https://api.yourdomain.com/`
 
 ## Running Tests
 To run the test suite:
 ```bash
 npm test
 ```
-
-## Notes
-This is my first real app, 
 
 ## Contributing
 Contributions are welcome! Please submit a pull request or open an issue for any suggestions or improvements. 
