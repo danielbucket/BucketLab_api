@@ -25,7 +25,7 @@ router.route('/')
   .post(cors(postConfig), createAccount);
 
 router.route('/login')
-    .post(cors(postConfig), accountLogin);
+  .post(cors(postConfig), accountLogin);
     
 router.route('/logout/:id')
   .patch(cors(patchConfig), accountLogout);

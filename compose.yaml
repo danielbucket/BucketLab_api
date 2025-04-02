@@ -14,8 +14,7 @@ services:
         max-file: "10"
     # Volume configuration for time synchronization and hosts file persistence
     volumes:
-      - /etc/localtime:/etc/localtime:ro              # Synchronize time with the host
-      # - ./config/hosts:/etc/hosts                     # Mount hosts file from host to container
+      - /etc/localtime:/etc/localtime:ro   # Synchronize time with the host
   app:
     # Load environment variables from .env file.
     # This to applies to the app service, which makes sense.
@@ -30,7 +29,7 @@ services:
       - 4020:4020
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
-    command: npm run start:prod
+    command: "${APP_START_CMD}"
     depends_on:
       - mongoDB
     networks:
