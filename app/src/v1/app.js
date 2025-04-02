@@ -25,6 +25,10 @@ if (NODE_ENV === 'development') {
   console.log(`Development mode: CORS enabled for ${corsOptions.origin}`);
 };
 
+// This is a workaround for Cloudflare's proxy IP address and rate limiting
+// https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
+app.set('trust proxy', 1);
+
 // app.options('*', cors(corsOptions)); // Pre-flight request for all routes
 // app.use((req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', corsOptions.origin);
