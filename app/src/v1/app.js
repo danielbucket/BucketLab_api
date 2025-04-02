@@ -8,7 +8,7 @@ const authRoutes = require('./routes/authRoutes.js');
 const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 
-const { DEV_URL, NODE_ENV } = process.env;
+const { NODE_ENV } = process.env;
 
 const corsOptions = {
   origin: ['https://bucketlab.io', 'http://localhost:5173', 'http://localhost:4173'],
@@ -19,7 +19,7 @@ const corsOptions = {
 };
 
 if (NODE_ENV === 'development') {
-  corsOptions.origin = DEV_URL;
+  corsOptions.origin = 'http://localhost:4020';
   app.use(morgan('dev'));
   console.log('Development mode: Morgan logging enabled');
   console.log(`Development mode: CORS enabled for ${corsOptions.origin}`);
@@ -39,7 +39,7 @@ app.set('trust proxy', 1);
 
 app.use(cors(corsOptions));
 app.use(express.json());
-// app.use(optimization.apiLimiter);
+app.use(optimization.apiLimiter);
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
