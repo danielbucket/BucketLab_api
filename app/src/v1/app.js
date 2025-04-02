@@ -11,7 +11,7 @@ const messages = require('./routes/messageRoutes.js');
 const { NODE_ENV } = process.env;
 
 const corsOptions = {
-  origin: ['https://bucketlab.io', 'http://localhost:5173', 'http://localhost:4173'],
+  origin: ['https://bucketlab.io', 'http://localhost:5173', 'http://localhost:41373'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
