@@ -70,9 +70,6 @@ To run the test suite:
 npm test
 ```
 
-## Notes
-This is my first real app, 
-
 ## Contributing
 Contributions are welcome! Please submit a pull request or open an issue for any suggestions or improvements. 
 
