@@ -39,7 +39,11 @@ exports.createAccount = async (req, res) => {
     const saved = await Account.create({ ...body });
     return res.status(201).json({
       status: 'success',
-      data: saved
+      message: 'Account created successfully.',
+      data: {
+        email: saved.email,
+        first_name: saved.first_name
+      }
     });
   } catch (err) {
     return res.status(500).json({
@@ -95,6 +99,21 @@ exports.accountLogin = async (req, res) => {
 
   const saved = await doc.save();
 
+  // A JWT token should be generated here and sent to the client
+  // for authentication on subsequent requests.
+  // This is a placeholder for the JWT token generation and sending process.
+  // const token = jwt.sign({ id: doc._id }, JWT_SECRET, { expiresIn: '1h' });
+  // res.status(200).json({
+  //   status: 'success',
+  //   message: 'Login successful.',
+  //   token,
+  //   data: saved
+  // });
+  // For now, we'll just return the saved document.
+  // In a real application, you would want to return a JWT token instead
+  // of the entire document for security reasons.
+  // The token should be sent in the response headers or as a cookie.
+
   if (!saved) {
     return res.status(500).json({
       status: 'error',
@@ -103,7 +122,14 @@ exports.accountLogin = async (req, res) => {
   } else {
     return res.status(200).json({
       status: 'success',
-      data: saved
+      message: 'Login successful.',
+      token: saved._id,
+      data: {
+        first_name: saved.first_name,
+        logged_in: saved.logged_in,
+        login_count: saved.login_count,
+        logged_in_at: saved.logged_in_at
+      }
     });
   };
 };
