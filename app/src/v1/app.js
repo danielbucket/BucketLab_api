@@ -10,8 +10,15 @@ const messages = require('./routes/messageRoutes.js');
 
 const { NODE_ENV } = process.env;
 
+let whitelist = ['https://bucketlab.io'];
 const corsOptions = {
-  origin: ['https://bucketlab.io', 'http://localhost:5173', 'http://localhost:41373'],
+  origin: (origin, callback) => {
+    if (NODE_ENV === 'development' || whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, origin);
+    } else {
+      callback(new Error('Though shall not pass! - CORS'));
+    }
+  },
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -19,23 +26,15 @@ const corsOptions = {
 };
 
 if (NODE_ENV === 'development') {
-  corsOptions.origin = 'http://localhost:4020';
   app.use(morgan('dev'));
   console.log('Development mode: Morgan logging enabled');
-  console.log(`Development mode: CORS enabled for ${corsOptions.origin}`);
 };
 
 // This is a workaround for Cloudflare's proxy IP address and rate limiting
 // https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
 app.set('trust proxy', 1);
 
-// app.options('*', cors(corsOptions)); // Pre-flight request for all routes
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', corsOptions.origin);
-//   res.header('Access-Control-Allow-Headers', corsOptions.allowedHeaders.join(','));
-//   res.header('Access-Control-Allow-Methods', corsOptions.methods.join(','));
-//   next();
-// });
+app.options('*', cors(corsOptions)); // Pre-flight request for all routes
 
 app.use(cors(corsOptions));
 app.use(express.json());
