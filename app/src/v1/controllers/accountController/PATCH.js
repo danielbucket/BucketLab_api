@@ -63,6 +63,13 @@ exports.accountLogout = async (req, res) => {
     });
   });
 
+  if (!ObjectId.isValid(id)) {
+    return res.status(422).json({
+      status: 'error',
+      message: 'Invalid ID format.'
+    });
+  };
+
   const doc = await Account.findById({ _id: id });
 
   if (!doc) {

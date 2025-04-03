@@ -9,14 +9,16 @@ const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 
 const { NODE_ENV } = process.env;
+console.log('NODE_ENV: ', NODE_ENV);
 
 let whitelist = ['https://bucketlab.io'];
+
 const corsOptions = {
   origin: (origin, callback) => {
     if (NODE_ENV === 'development' || whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, origin);
     } else {
-      callback(new Error('Though shall not pass! - CORS'));
+      callback(new Error(`Though shall not pass! Because: ${origin} is not allowed`));
     }
   },
   credentials: true,

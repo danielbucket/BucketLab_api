@@ -114,6 +114,7 @@ exports.accountLogin = async (req, res) => {
   // of the entire document for security reasons.
   // The token should be sent in the response headers or as a cookie.
 
+
   if (!saved) {
     return res.status(500).json({
       status: 'error',
@@ -123,13 +124,14 @@ exports.accountLogin = async (req, res) => {
     return res.status(200).json({
       status: 'success',
       message: 'Login successful.',
-      token: saved._id,
-      data: {
+      data: Object.assign({}, {
         first_name: saved.first_name,
+        permissions: saved.permissions,
         logged_in: saved.logged_in,
         login_count: saved.login_count,
-        logged_in_at: saved.logged_in_at
-      }
+        _id: saved._id,
+        token: saved._id,
+      })
     });
   };
 };
