@@ -7,11 +7,9 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes.js');
 const accounts = require('./routes/accountRoutes.js');
 const messages = require('./routes/messageRoutes.js');
+const { NODE_ENV, CORS_WHITELIST } = process.env;
 
-const { NODE_ENV } = process.env;
-console.log('NODE_ENV: ', NODE_ENV);
-
-let whitelist = ['https://bucketlab.io'];
+let whitelist = CORS_WHITELIST ? CORS_WHITELIST : [];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -29,7 +27,9 @@ const corsOptions = {
 
 if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
-  console.log('Development mode: Morgan logging enabled');
+  console.log('Running in development mode');
+  console.log('Morgan logging enabled');
+  console.log('Cors Whitelist: ', whitelist);
 };
 
 // This is a workaround for Cloudflare's proxy IP address and rate limiting

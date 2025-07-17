@@ -5,6 +5,7 @@ const Account = require('../../models/account.model');
 const MONGO_URI = process.env.MONGO_URI;
 
 exports.getAllAccounts = async (req, res) => {
+  console.log('MONGO_URI: ', MONGO_URI);
   mongoose.connect(MONGO_URI);
   mongoose.connection.on('error', () => {
     return res.status(500).json({
