@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const ObjectId = require('mongoose').Types.ObjectId;
 const Message = require('../../models/message.model');
-const Account = require('../../models/account.model');
+const Traveler = require('../../models/traveler.model');
 
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -81,8 +81,8 @@ exports.createMessage = async (req, res) => {
   const saved = await doc.save();
 
   try {
-    const sender = await Account.findById({ _id: req.body.sender_id });
-    const receiver = await Account.findById({ _id: req.body.receiver_id });
+    const sender = await Traveler.findById({ _id: req.body.sender_id });
+    const receiver = await Traveler.findById({ _id: req.body.receiver_id });
     if (!sender || !receiver) {
       return res.status(404).json({
         status: 'fail',

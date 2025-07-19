@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongoose').Types;
-const Account = require('../../models/account.model');
+const Traveler = require('../../models/traveler.model');
 
 const MONGO_URI = process.env.MONGO_URI;
 
-exports.createAccount = async (req, res) => {
+exports.createTraveler = async (req, res) => {
   const { body } = req;
   
   for (let requiredParameter of ['first_name', 'last_name', 'email', 'password']) {
@@ -24,7 +24,7 @@ exports.createAccount = async (req, res) => {
     });
   });
 
-  const found = await Account.exists({ email: body.email });
+  const found = await Traveler.exists({ email: body.email });
 
   if (found) {
     return res.status(409).json({
@@ -36,10 +36,10 @@ exports.createAccount = async (req, res) => {
   };
 
   try {
-    const saved = await Account.create({ ...body });
+    const saved = await Traveler.create({ ...body });
     return res.status(201).json({
       status: 'success',
-      message: 'Account created successfully.',
+      message: 'Traveler created successfully.',
       data: {
         email: saved.email,
         first_name: saved.first_name
@@ -48,13 +48,13 @@ exports.createAccount = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       status: 'error',
-      message: 'Account creation failed.',
+      message: 'Traveler creation failed.',
       err
     });
   };
 };
 
-exports.accountLogin = async (req, res) => {
+exports.travelerLogin = async (req, res) => {
   for (let requiredParameter of ['email', 'password']) {
     if (!req.body[requiredParameter]) {
       return res.status(422).json({
@@ -72,17 +72,17 @@ exports.accountLogin = async (req, res) => {
     });
   });
 
-  const found = await Account.exists({ email: req.body.email });
+  const found = await Traveler.exists({ email: req.body.email });
 
   if (!found) {
     return res.status(404).json({
       status: 'fail',
       fail_type: 'not_found',
-      message: 'No account found with that email.'
+      message: 'No traveler found with that email.'
     });
   };
 
-  const doc = await Account.findById({ ...found })
+  const doc = await Traveler.findById({ ...found })
     .where('password').equals(req.body.password);
 
   if (!doc) {
@@ -124,7 +124,7 @@ exports.accountLogin = async (req, res) => {
     return res.status(200).json({
       status: 'success',
       message: 'Login successful.',
-      data: Object.assign({}, {
+      traveler: Object.assign({}, {
         first_name: saved.first_name,
         permissions: saved.permissions,
         logged_in: saved.logged_in,

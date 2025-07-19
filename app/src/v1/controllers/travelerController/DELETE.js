@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongoose').Types;
-const Account = require('../../models/account.model');
+const Traveler = require('../../models/traveler.model');
 
 const MONGO_URI = process.env.MONGO_URI;
 
-exports.deleteAccount = async (req, res) => {
+exports.deleteTraveler = async (req, res) => {
   const id = req.params.id.slice(1);
 
   mongoose.connect(MONGO_URI);
@@ -16,12 +16,12 @@ exports.deleteAccount = async (req, res) => {
     });
   });
 
-  const doc = await Account.findById({ _id: id });
+  const doc = await Traveler.findById({ _id: id });
 
   if (!doc) {
     return res.status(404).json({
       status: 'fail',
-      message: 'No account found with that ID.'
+      message: 'No traveler found with that ID.'
     });
   };
   
