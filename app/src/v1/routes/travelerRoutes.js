@@ -2,14 +2,14 @@ const express = require('express');
 const cors = require('cors');
 
 const {
-  deleteAccount,
-  createAccount,
-  getAllAccounts,
-  getAccountByID,
-  updateAccount,
-  accountLogin,
-  accountLogout,
-} = require('../controllers/accountController');
+  deleteTraveler,
+  createTraveler,
+  getAllTravelers,
+  getTravelerByID,
+  updateTraveler,
+  travelerLogin,
+  travelerLogout,
+} = require('../controllers/travelerController');
 const { validateToken, checkID } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -22,18 +22,18 @@ const deleteConfig = { methods: ['DELETE'] };
 router.param('id', checkID);
 
 router.route('/')
-  .get(cors(getConfig), getAllAccounts)
-  .post(cors(postConfig), createAccount);
+  .get(cors(getConfig), getAllTravelers)
+  .post(cors(postConfig), createTraveler);
 
 router.route('/login')
-  .post(cors(postConfig), accountLogin);
-    
+  .post(cors(postConfig), travelerLogin);
+
 router.route('/logout/:id')
-  .patch(cors(patchConfig), accountLogout);
+  .patch(cors(patchConfig), travelerLogout);
 
 router.route('/:id')
-  .get(cors(postConfig), getAccountByID)
-  .patch(cors(patchConfig), updateAccount)
-  .delete(cors(deleteConfig), deleteAccount);
+  .get(cors(postConfig), getTravelerByID)
+  .patch(cors(patchConfig), updateTraveler)
+  .delete(cors(deleteConfig), deleteTraveler);
 
 module.exports = router;

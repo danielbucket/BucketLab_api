@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongoose').Types;
-const Account = require('../../models/account.model');
+const Traveler = require('../../models/traveler.model');
 
 const MONGO_URI = process.env.MONGO_URI;
 
-exports.updateAccount = async (req, res) => {
+exports.updateTraveler = async (req, res) => {
   const id = req.params.id.slice(1);
   const { body } = req;
   
@@ -15,13 +15,13 @@ exports.updateAccount = async (req, res) => {
       message: 'Database connection error.'
     });
   });
-  
-  const doc = await Account.findById({ _id: id });
+
+  const doc = await Traveler.findById({ _id: id });
 
   if (!doc) {
     return res.status(404).json({
       status: 'fail',
-      message: 'No account found with that ID.'
+      message: 'No traveler found with that ID.'
     });
   };
 
@@ -42,7 +42,7 @@ exports.updateAccount = async (req, res) => {
   if (!saved) {
     return res.status(500).json({
       status: 'error',
-      message: 'Account update failed.'
+      message: 'Traveler update failed.'
     });
   } else {
     return res.status(200).json({
@@ -52,7 +52,7 @@ exports.updateAccount = async (req, res) => {
   };
 };
 
-exports.accountLogout = async (req, res) => {
+exports.travelerLogout = async (req, res) => {
   const id = req.params.id.slice(1);
 
   mongoose.connect(MONGO_URI);
@@ -70,13 +70,13 @@ exports.accountLogout = async (req, res) => {
     });
   };
 
-  const doc = await Account.findById({ _id: id });
+  const doc = await Traveler.findById({ _id: id });
 
   if (!doc) {
     return res.status(404).json({
       id,
       status: 'fail',
-      message: 'No account found with that ID.'
+      message: 'No traveler found with that ID.'
     });
   };
 

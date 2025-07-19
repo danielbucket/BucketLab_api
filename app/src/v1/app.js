@@ -5,7 +5,7 @@ const optimization = require('../optimization/index.js');
 const cors = require('cors');
 
 const authRoutes = require('./routes/authRoutes.js');
-const accounts = require('./routes/accountRoutes.js');
+const travelers = require('./routes/travelerRoutes.js');
 const messages = require('./routes/messageRoutes.js');
 const { NODE_ENV, CORS_WHITELIST } = process.env;
 
@@ -59,7 +59,7 @@ app.use('/v1', (req, res, next) => {
 });
 
 app.use(authRoutes);
-app.use('/v1/accounts', accounts);
+app.use('/v1/travelers', travelers);
 app.use('/v1/messages', messages);
 app.all('*', (req, res) => {
   res.status(404).json({
