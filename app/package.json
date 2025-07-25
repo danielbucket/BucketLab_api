@@ -1,0 +1,27 @@
+{
+  "name": "bucketlab_app_server",
+  "version": "0.4.20",
+  "description": "Server running the BucketLab Empire public API",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest --watch --verbose",
+    "start:dev": "NODE_ENV=development nodemon /server.js",
+    "start:prod": "NODE_ENV=production node /server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.1",
+    "morgan": "^1.10.0",
+    "validator": "^13.15.0"
+  }
+}

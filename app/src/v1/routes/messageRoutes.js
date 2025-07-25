@@ -23,14 +23,15 @@ router.route('/')
   .post(cors(postConfig), createMessage);
 
 router.route('/:id/sender')
-  .get(cors(getConfig), getMessagesBySenderID)
+  .get(cors(getConfig), getMessagesBySenderID);
 
 router.route('/:id/receiver')
-  .get(cors(getConfig), getMessagesByReceiverID)
+  .get(cors(getConfig), getMessagesByReceiverID);
 
 router.route('/:id')
   .get(cors(getConfig), getMessageByID)
   .patch(cors(patchConfig), updateMessage)
   .delete(cors(deleteConfig), deleteMessage);
 
+  console.log('ROUTER @ APP: ', getAllMessages);
   module.exports = router;
