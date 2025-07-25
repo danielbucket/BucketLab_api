@@ -1,5 +1,6 @@
 services:
   cloudflared:
+    env_file: ".env"
     container_name: cloudflared
     hostname: bucketlab-API-tunnel_dev
     image: cloudflare/cloudflared:latest
@@ -7,24 +8,34 @@ services:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
     command: tunnel --no-autoupdate run
     network_mode: host
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "10"
     volumes:
       - /etc/localtime:/etc/localtime:ro   # Synchronize time with the host
   app:
-    env_file: ".env"
-    container_name: server
+    env_file: "./app/app.env"
+    container_name: app_server
     image: node:latest
     working_dir: /app
     volumes:
-      - .:/app
+      - ./app:/app
     ports:
       - 4020:4020
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
+    command: "npm run start:${APP_RUN_MODE}"
+    depends_on:
+      - mongoDB
+    networks:
+      - internal
+
+  laboratory:
+    env_file: "./laboratory/laboratory.env"
+    container_name: laboratory_server
+    image: node:latest
+    working_dir: /laboratory
+    volumes:
+      - ./laboratory:/laboratory
+    ports:
+      - 4420:4420
     command: "npm run start:${APP_RUN_MODE}"
     depends_on:
       - mongoDB

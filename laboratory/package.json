@@ -1,18 +1,18 @@
 {
   "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.4.20",
+  "description": "Server running the BucketLab Empire Laboratory API",
+  "main": "server.js",
   "scripts": {
     "test": "jest --watch --verbose",
-    "start:dev": "NODE_ENV=development nodemon app/server.js",
-    "start:prod": "NODE_ENV=production node app/server.js"
+    "start:dev": "NODE_ENV=development nodemon /server.js",
+    "start:prod": "NODE_ENV=production node /server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.10"
   },
   "dependencies": {
     "cors": "^2.8.5",
