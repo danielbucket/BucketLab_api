@@ -21,32 +21,28 @@ if (NODE_ENV === 'development') {
 app.set('trust proxy', 1);
 
 app.options('*', corsConfig()); // Pre-flight request for all routes
-app.use(corsConfig());
 
+app.use(corsConfig());
 app.use(express.json());
 app.use(rateLimiter());
-app.use((req, res, next) => {
+app.use('/*', (req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
 
-app.use('/laboratory', laboratoryProxy());
-
 app.get('/', (req, res) => {
+  console.log('Request received at:', req.requestTime);
   res.status(200).json({
     status: 'success',
     message: 'BucketLab API Root'
   });
 });
 
-app.use('/v1', (req, res, next) => {
-  console.log('Request received at:', req.requestTime);
-  next();
-});
+app.use('/laboratory', laboratoryProxy());
 
 app.use(authRoutes);
-app.use('/v1/travelers', travelers);
-app.use('/v1/messages', messages);
+app.use('/travelers', travelers);
+app.use('/messages', messages);
 app.all('*', (req, res) => {
   res.status(404).json({
     status: 'fail',
