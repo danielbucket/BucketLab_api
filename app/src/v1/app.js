@@ -3,12 +3,10 @@ const express = require('express');
 const app = express();
 const { NODE_ENV } = process.env;
 
-const { laboratoryProxy } = require('../optimization/laboratoryProxy.js');
+const { laboratoryProxy } = require('../proxies/laboratoryProxy.js');
+const { authProxy } = require('../proxies/authProxy.js');
 const { rateLimiter } = require('../optimization/rateLimiter.js');
 const { corsConfig } = require('../optimization/corsConfig.js');
-const authRoutes = require('./routes/authRoutes.js');
-const travelers = require('./routes/travelerRoutes.js');
-const messages = require('./routes/messageRoutes.js');
 
 if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -27,7 +25,7 @@ app.use(express.json());
 app.use(rateLimiter());
 app.use('/*', (req, res, next) => {
   req.requestTime = new Date().toISOString();
-  next();
+  next()
 });
 
 app.get('/', (req, res) => {
@@ -38,11 +36,10 @@ app.get('/', (req, res) => {
   });
 });
 
+// proxy to laboratory_server for all laboratory routes
 app.use('/laboratory', laboratoryProxy());
+app.use('/auth', authProxy());
 
-app.use(authRoutes);
-app.use('/travelers', travelers);
-app.use('/messages', messages);
 app.all('*', (req, res) => {
   res.status(404).json({
     status: 'fail',

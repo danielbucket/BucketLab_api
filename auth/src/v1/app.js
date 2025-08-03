@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const messages = require('./routes/messageRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
 
 const corsOptions = {
   origin: process.env.ORIGIN_URL,
@@ -11,16 +11,16 @@ const corsOptions = {
 
 app.set('trust proxy', true);
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
-    message: 'BucketLab Laboratory API root endpoint.',
+    message: 'BucketLab Authorization API root endpoint.',
   });
 });
 
-app.use('/messages', messages);
+app.use('/auth', authRoutes);
 
 module.exports = app;
