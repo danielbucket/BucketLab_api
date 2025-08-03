@@ -17,6 +17,6 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-exports.CORS = corsConfig => {
-  return cors({ ...corsOptions, ...corsConfig });
+exports.corsConfig = (opts = {}) => {
+  return cors({ ...corsOptions, ...opts });
 };

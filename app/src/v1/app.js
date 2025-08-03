@@ -5,7 +5,7 @@ const { NODE_ENV } = process.env;
 
 const { laboratoryProxy } = require('../optimization/laboratoryProxy.js');
 const { rateLimiter } = require('../optimization/rateLimiter.js');
-const { CORS } = require('../optimization/corsOptions.js');
+const { corsConfig } = require('../optimization/corsConfig.js');
 const authRoutes = require('./routes/authRoutes.js');
 const travelers = require('./routes/travelerRoutes.js');
 const messages = require('./routes/messageRoutes.js');
@@ -20,8 +20,8 @@ if (NODE_ENV === 'development') {
 // https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
 app.set('trust proxy', 1);
 
-app.options('*', CORS()); // Pre-flight request for all routes
-app.use(CORS());
+app.options('*', corsConfig()); // Pre-flight request for all routes
+app.use(corsConfig());
 
 app.use(express.json());
 app.use(rateLimiter());
