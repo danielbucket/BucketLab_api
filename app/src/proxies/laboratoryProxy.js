@@ -5,7 +5,6 @@ exports.laboratoryProxy = () => {
   return createProxyMiddleware({
     target: LABORATORY_ROUTE,
     changeOrigin: true,
-    logLevel: 'debug',
     on: {
       proxyReq: (proxyReq, req, res) => {
         // You can modify the request here if needed
