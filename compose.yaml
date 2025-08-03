@@ -24,9 +24,10 @@ services:
     command: "npm run start:${APP_RUN_MODE}"
     depends_on:
       - mongoDB
+    links:
+      - laboratory
     networks:
-      - internal
-
+      - bucketLab_internal
   laboratory:
     env_file: "./laboratory/laboratory.env"
     container_name: laboratory_server
@@ -40,7 +41,7 @@ services:
     depends_on:
       - mongoDB
     networks:
-      - internal
+      - bucketLab_internal
   mongoDB:
     container_name: database
     image: mongo:latest
@@ -52,11 +53,11 @@ services:
     volumes:
       - ./data:/data/db
     networks:
-      - internal
+      - bucketLab_internal
 volumes:
   data:
     driver: local
 networks:
-  internal:
-    name: internal
+  bucketLab_internal:
+    name: bucketLab_internal
     driver: bridge

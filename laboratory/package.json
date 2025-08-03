@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "bucketlab_laboratory_server",
   "version": "0.4.20",
   "description": "Server running the BucketLab Empire Laboratory API",
   "main": "server.js",

@@ -1,50 +1,36 @@
 const morgan = require('morgan');
 const express = require('express');
 const app = express();
-const optimization = require('../optimization/index.js');
-const cors = require('cors');
+const { NODE_ENV } = process.env;
 
+const { laboratoryProxy } = require('../optimization/laboratoryProxy.js');
+const { rateLimiter } = require('../optimization/rateLimiter.js');
+const { CORS } = require('../optimization/corsOptions.js');
 const authRoutes = require('./routes/authRoutes.js');
 const travelers = require('./routes/travelerRoutes.js');
 const messages = require('./routes/messageRoutes.js');
-const { NODE_ENV, CORS_WHITELIST } = process.env;
-
-let whitelist = CORS_WHITELIST ? CORS_WHITELIST : [];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (NODE_ENV === 'development' || whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, origin);
-    } else {
-      callback(new Error(`Though shall not pass! Because: ${origin} is not allowed`));
-    }
-  },
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  optionsSuccessStatus: 200
-};
 
 if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
   console.log('Running in development mode');
   console.log('Morgan logging enabled');
-  console.log('Cors Whitelist: ', whitelist);
 };
 
 // This is a workaround for Cloudflare's proxy IP address and rate limiting
 // https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
 app.set('trust proxy', 1);
 
-app.options('*', cors(corsOptions)); // Pre-flight request for all routes
+app.options('*', CORS()); // Pre-flight request for all routes
+app.use(CORS());
 
-app.use(cors(corsOptions));
 app.use(express.json());
-app.use(optimization.apiLimiter);
+app.use(rateLimiter());
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
+
+app.use('/laboratory', laboratoryProxy());
 
 app.get('/', (req, res) => {
   res.status(200).json({
