@@ -1,15 +1,21 @@
 const { Router } = require('express');
-const authController = require('../controllers/authController');
+const POST_Controller = require('../controllers/POST_controller');
+const GET_Controller = require('../controllers/GET_controller');
+const DELETE_Controller = require('../controllers/DELETE_controller');
+const PATCH_Controller = require('../controllers/PATCH_controller');
 
 const router = Router();
 
-router.get('/signup', authController.signup_get);
-router.post('/signup', authController.signup_post);
+router.post('/new', POST_Controller.new_account);
+router.post('/login', POST_Controller.login_account);
+router.post('/logout', POST_Controller.logout_account);
 
-router.get('/login', authController.login_get);
-router.post('/login', authController.login_post);
+router.get('/', GET_Controller.get_all_accounts);
+router.get('/:id', GET_Controller.get_account_by_account_id);
 
-router.get('/logout', authController.logout_get);
-router.post('/logout', authController.logout_post);
+router.delete('/:id', DELETE_Controller.delete_account_by_account_id);
+
+router.patch('/:id', PATCH_Controller.update_account_by_account_id);
+
 
 module.exports = router;

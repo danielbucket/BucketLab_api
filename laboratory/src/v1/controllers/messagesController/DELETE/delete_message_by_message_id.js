@@ -1,10 +1,9 @@
+const path = require('path');
 const mongoose = require('mongoose');
-const { ObjectId } = require('mongoose').Types;
-const Traveler = require('../../models/traveler.model');
-
+const Message = require('../../../../models/message.model');
 const MONGO_URI = process.env.MONGO_URI;
 
-exports.deleteTraveler = async (req, res) => {
+exports.delete_message_by_message_id = async (req, res) => {
   const id = req.params.id.slice(1);
 
   mongoose.connect(MONGO_URI);
@@ -12,25 +11,25 @@ exports.deleteTraveler = async (req, res) => {
     return res.status(500).json({
       status: 'error',
       message: 'Database connection error.',
-      err
+      data: err
     });
   });
 
-  const doc = await Traveler.findById({ _id: id });
+  const doc = await Message.findById({ _id: id });
 
   if (!doc) {
     return res.status(404).json({
       status: 'fail',
-      message: 'No traveler found with that ID.'
+      message: 'No message found with that ID.'
     });
   };
-  
+
   const deleted = await doc.deleteOne();
 
   if (!deleted) {
     return res.status(500).json({
       status: 'error',
-      message: 'Account deletion failed.'
+      message: 'Message deletion failed.'
     });
   } else {
     return res.status(204).json({

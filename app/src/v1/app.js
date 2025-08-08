@@ -1,5 +1,6 @@
 const morgan = require('morgan');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const { NODE_ENV } = process.env;
 
@@ -18,9 +19,9 @@ if (NODE_ENV === 'development') {
 // https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
 app.set('trust proxy', 1);
 
-app.options('*', corsConfig()); // Pre-flight request for all routes
+// app.options('*', corsConfig()); // Pre-flight request for all routes
 
-app.use(corsConfig());
+app.use(cors(corsConfig()));
 app.use(express.json());
 app.use(rateLimiter());
 app.use('/*', (req, res, next) => {
@@ -36,7 +37,12 @@ app.get('/', (req, res) => {
   });
 });
 
-// proxy to laboratory_server for all laboratory routes
+app.use('/', (req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  console.log(`Request received at App_Server: ${req.requestTime}`);
+  next();
+});
+
 app.use('/laboratory', laboratoryProxy());
 app.use('/auth', authProxy());
 

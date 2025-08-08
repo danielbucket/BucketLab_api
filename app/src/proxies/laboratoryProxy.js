@@ -8,7 +8,7 @@ exports.laboratoryProxy = () => {
     on: {
       proxyReq: (proxyReq, req, res) => {
         // You can modify the request here if needed
-        console.log(`Proxying request to Laboratory Server: ${req.headers.host}`);
+        console.log(`Proxying request to Laboratory_Server @ ${LABORATORY_ROUTE}`);
       }
     },
     onError: (err, req, res) => {

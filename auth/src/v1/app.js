@@ -2,23 +2,23 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes.js');
+const { corsConfig } = require('../optimization/corsConfig.js');
 
-const corsOptions = {
-  origin: process.env.ORIGIN_URL,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
+app.set('trust proxy', true); // Trust proxy for CORS handling
 
-app.set('trust proxy', true);
-
-app.use(cors(corsOptions));
+app.use(cors(corsConfig()));
 app.use(express.json());
 
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
-    message: 'BucketLab Authorization API root endpoint.',
+    message: 'BucketLab Auth API root endpoint.',
   });
+});
+
+app.use('/', (req, res, next) => {
+  console.log(`Request received at Auth_Server: ${req.requestTime} for ${req.originalUrl}`);
+  next();
 });
 
 app.use('/auth', authRoutes);

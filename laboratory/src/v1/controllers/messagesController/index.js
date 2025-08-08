@@ -1,33 +1,25 @@
-const tempDocs = [
-  {
-    id: 1,
-    content: 'Hello, this is a test message.',
-    sender_id: 'user123',
-    receiver_id: 'user456',
-    timestamp: new Date()
-  },
-  {
-    id: 2,
-    content: 'Another message for testing.',
-    sender_id: 'user789',
-    receiver_id: 'user123',
-    timestamp: new Date()
-  }
-];
+const { delete_message_by_message_id } = require('./DELETE/delete_message_by_message_id');
+const { get_all_messages } = require('./GET/get_all_messages');
+const { get_message_by_message_id } = require('./GET/get_message_by_message_id');
+const { get_messages_by_receiver_id } = require('./GET/get_messages_by_receiver_id');
+const { get_messages_by_sender_id } = require('./GET/get_messages_by_sender_id');
+const { new_message } = require('./POST/new_message');
+const { update_message_by_message_id } = require('./PATCH/update_message_by_message_id');
 
-exports.getAllMessages = async (req, res) => {
-  const docs = tempDocs;
-  
-  if (!docs) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No messages found.'
-    })
-  } else {
-    return res.status(200).json({
-      status: 'success',
-      results: docs.length,
-      data: docs
-    })
-  };
+module.exports = {
+  POST: {
+    new_message
+  },
+  PATCH: {
+    update_message_by_message_id
+  },
+  DELETE: {
+    delete_message_by_message_id
+  },
+  GET: {
+    get_all_messages,
+    get_message_by_message_id,
+    get_messages_by_receiver_id,
+    get_messages_by_sender_id
+  }
 };
