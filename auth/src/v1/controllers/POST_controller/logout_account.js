@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Account = require('../../../models/account.model');
+const Account = require('../../models/account.model');
 const MONGO_URI = process.env.MONGO_URI;
 
 exports.logout_account = async (req, res) => {

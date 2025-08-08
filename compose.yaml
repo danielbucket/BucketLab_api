@@ -12,6 +12,8 @@ services:
       - /etc/localtime:/etc/localtime:ro   # Synchronize time with the host
   app_server:
     env_file: "./app/app.env"
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     container_name: app_server
     image: node:latest
     working_dir: /app
@@ -19,8 +21,6 @@ services:
       - ./app:/app
     ports:
       - 4020:4020
-    environment:
-      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     command: "npm run start:${APP_RUN_MODE}"
     depends_on:
       - mongoDB
@@ -31,6 +31,8 @@ services:
       - bucketLab_internal
   laboratory_server:
     env_file: "./laboratory/laboratory.env"
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     container_name: laboratory_server
     image: node:latest
     working_dir: /laboratory
@@ -45,6 +47,8 @@ services:
       - bucketLab_internal
   auth_server:
     env_file: "./auth/auth.env"
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     container_name: auth_server
     image: node:latest
     working_dir: /auth

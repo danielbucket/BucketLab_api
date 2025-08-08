@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Message = require('../../../../models/message.model');
-const Account = require('../../../../models/account.model');
+const Message = require('../../../models/message.model');
+const Account = require('../../../models/account.model');
 
 const MONGO_URI = process.env.MONGO_URI;
 

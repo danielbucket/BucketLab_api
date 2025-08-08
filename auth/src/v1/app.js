@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes.js');
-const { corsConfig } = require('../optimization/corsConfig.js');
+const { corsConfig } = require('./optimization/corsConfig.js');
 
 app.set('trust proxy', true); // Trust proxy for CORS handling
 

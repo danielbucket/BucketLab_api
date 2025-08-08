@@ -4,10 +4,10 @@ const cors = require('cors');
 const app = express();
 const { NODE_ENV } = process.env;
 
-const { laboratoryProxy } = require('../proxies/laboratoryProxy.js');
-const { authProxy } = require('../proxies/authProxy.js');
-const { rateLimiter } = require('../optimization/rateLimiter.js');
-const { corsConfig } = require('../optimization/corsConfig.js');
+const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
+const { authProxy } = require('./proxies/authProxy.js');
+const { rateLimiter } = require('./optimization/rateLimiter.js');
+const { corsConfig } = require('./optimization/corsConfig.js');
 
 if (NODE_ENV === 'development') {
   app.use(morgan('dev'));

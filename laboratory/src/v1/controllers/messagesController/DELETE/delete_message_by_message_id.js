@@ -1,6 +1,6 @@
 const path = require('path');
 const mongoose = require('mongoose');
-const Message = require('../../../../models/message.model');
+const Message = require('../../../models/message.model');
 const MONGO_URI = process.env.MONGO_URI;
 
 exports.delete_message_by_message_id = async (req, res) => {
