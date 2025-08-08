@@ -3,6 +3,8 @@ const Account = require('../../models/account.model');
 const MONGO_URI = process.env.MONGO_URI;
 
 exports.get_all_accounts = async (req, res) => {
+  console.log('GET all accounts endpoint hit');
+  
   mongoose.connect(MONGO_URI);
   mongoose.connection.on('error', () => {
     return res.status(500).json({
@@ -25,4 +27,9 @@ exports.get_all_accounts = async (req, res) => {
       data: { found }
     });
   };
+
+  return res.status(501).json({
+    status: 'error',
+    message: 'This endpoint is not implemented yet.'
+  });
 };

@@ -17,10 +17,19 @@ app.get('/', (req, res) => {
 });
 
 app.use('/', (req, res, next) => {
-  console.log(`Request received at Auth_Server: ${req.requestTime} for ${req.originalUrl}`);
+  req.requestTime = new Date().toISOString();
+  console.log(`Request received at Auth_Server @ ${req.requestTime} for ${req.originalUrl}`);
   next();
 });
 
-app.use('/auth', authRoutes);
+app.use('/', authRoutes);
+
+app.all('/*', (req, res) => {
+  res.status(404).json({
+    status: 'fail',
+    fail_type: 'server_error',
+    message: `Can't find ${req.originalUrl} on this server!`
+  });
+});
 
 module.exports = app;

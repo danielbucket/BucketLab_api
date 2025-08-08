@@ -1,9 +1,8 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const { LABORATORY_ROUTE } = process.env;
 
 exports.laboratoryProxy = () => {
   return createProxyMiddleware({
-    target: LABORATORY_ROUTE,
+    target: 'http://laboratory_server:4420',
     changeOrigin: true,
     on: {
       proxyReq: (proxyReq, req, res) => {

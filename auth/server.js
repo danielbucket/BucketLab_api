@@ -1,8 +1,6 @@
-const dotenv = require('dotenv');
-dotenv.config({ path: './auth.env' });
-const app = require('./src/v1/app.js');
-const PORT = process.env.PORT || 4021;
+const BucketLabEmpireUltimateSupreme_AuthServer = require('./src/v1/app.js');
+const PORT = 4021;
 
-app.listen(PORT, () => {
-  console.log(`Auth service listening on port ${PORT}`);
+BucketLabEmpireUltimateSupreme_AuthServer.listen(PORT, () => {
+  console.log(`BucketLab Empire Ultimate Supreme Auth_Server listening on port ${PORT}`);
 });

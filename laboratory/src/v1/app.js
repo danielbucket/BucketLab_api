@@ -17,7 +17,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/', (req, res, next) => {
-  console.log(`Request received at Laboratory_Server @ ${new Date().toISOString()}`);
+  req.requestTime = new Date().toISOString();
+  console.log(`Request received at Laboratory_Server @ ${req.requestTime}`);
   next();
 });
 

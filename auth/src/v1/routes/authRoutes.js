@@ -1,21 +1,28 @@
 const { Router } = require('express');
+const router = Router();
+
 const POST_Controller = require('../controllers/POST_controller');
 const GET_Controller = require('../controllers/GET_controller');
 const DELETE_Controller = require('../controllers/DELETE_controller');
 const PATCH_Controller = require('../controllers/PATCH_controller');
 
-const router = Router();
+router.route('/accounts')
+  .get(GET_Controller.get_all_accounts)
+  .post(POST_Controller.new_account);
 
-router.post('/new', POST_Controller.new_account);
-router.post('/login', POST_Controller.login_account);
-router.post('/logout', POST_Controller.logout_account);
+router.route('/accounts/:id')
+  .get(GET_Controller.get_account_by_account_id)
+  .patch(PATCH_Controller.update_account_by_account_id)
+  .delete(DELETE_Controller.delete_account_by_account_id);
 
-router.get('/', GET_Controller.get_all_accounts);
-router.get('/:id', GET_Controller.get_account_by_account_id);
+router.route('/accounts/login')
+  .post(POST_Controller.login_account);
 
-router.delete('/:id', DELETE_Controller.delete_account_by_account_id);
+router.route('/accounts/logout')
+  .post(POST_Controller.logout_account);
 
-router.patch('/:id', PATCH_Controller.update_account_by_account_id);
-
+router.route('/accounts/:id')
+  .delete(DELETE_Controller.delete_account_by_account_id)
+  .patch(PATCH_Controller.update_account_by_account_id);
 
 module.exports = router;

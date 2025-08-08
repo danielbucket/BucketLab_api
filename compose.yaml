@@ -11,7 +11,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro   # Synchronize time with the host
   app_server:
-    env_file: "./app/app.env"
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     container_name: app_server
@@ -30,7 +29,6 @@ services:
     networks:
       - bucketLab_internal
   laboratory_server:
-    env_file: "./laboratory/laboratory.env"
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     container_name: laboratory_server
@@ -46,7 +44,6 @@ services:
     networks:
       - bucketLab_internal
   auth_server:
-    env_file: "./auth/auth.env"
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
     container_name: auth_server
