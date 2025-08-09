@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const messages = require('./routes/messageRoutes.js');
+const messagesRouter = require('./routes/messageRouter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
 app.set('trust proxy', true);
@@ -12,7 +12,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
-    message: 'BucketLab Laboratory API root endpoint.',
+    message: 'BucketLab Empire Laboratory API root endpoint.',
   });
 });
 
@@ -22,6 +22,14 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/messages', messages);
+app.use('/messages', messagesRouter);
+
+app.all('/*', (req, res) => {
+  res.status(404).json({
+    status: 'fail',
+    fail_type: 'server_error',
+    message: `Can't find ${req.originalUrl} on this server!`
+  });
+});
 
 module.exports = app;

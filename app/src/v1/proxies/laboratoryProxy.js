@@ -6,8 +6,7 @@ exports.laboratoryProxy = () => {
     changeOrigin: true,
     on: {
       proxyReq: (proxyReq, req, res) => {
-        // You can modify the request here if needed
-        console.log(`Proxying request to Laboratory_Server @ ${LABORATORY_ROUTE}`);
+        console.log(`Proxying request to Laboratory_Server from App_Server: ${req.method} ${req.originalUrl}`);
       }
     },
     onError: (err, req, res) => {

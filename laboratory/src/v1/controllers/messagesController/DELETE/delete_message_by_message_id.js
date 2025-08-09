@@ -1,4 +1,3 @@
-const path = require('path');
 const mongoose = require('mongoose');
 const Message = require('../../../models/message.model');
 const MONGO_URI = process.env.MONGO_URI;

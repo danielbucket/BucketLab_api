@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes.js');
+const authRouter = require('./routes/authRouter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
-app.set('trust proxy', true); // Trust proxy for CORS handling
+app.set('trust proxy', true);
 
 app.use(cors(corsConfig()));
 app.use(express.json());
@@ -12,7 +12,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
-    message: 'BucketLab Auth API root endpoint.',
+    message: 'BucketLab Empire Auth API root endpoint.',
   });
 });
 
@@ -22,7 +22,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/', authRoutes);
+app.use('/accounts', authRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({

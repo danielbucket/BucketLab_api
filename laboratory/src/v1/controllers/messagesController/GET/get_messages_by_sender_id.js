@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Message = require('../../../models/message.model');
-
 const MONGO_URI = process.env.MONGO_URI;
 
 exports.get_messages_by_sender_id = async (req, res) => {

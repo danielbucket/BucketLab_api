@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const Account = require('../../models/account.model');
+const Account = require('../../../models/account.model');
 const MONGO_URI = process.env.MONGO_URI;
 
-exports.get_all_accounts = async (req, res) => {
-  console.log('GET all accounts endpoint hit');
-  
+exports.get_account_by_account_id = async (req, res) => {
+  const id = req.params.id.slice(1);
   mongoose.connect(MONGO_URI);
   mongoose.connection.on('error', () => {
     return res.status(500).json({
@@ -13,23 +12,17 @@ exports.get_all_accounts = async (req, res) => {
     });
   });
 
-  const found = await Account.find({});
+  const doc = await Account.findById({ _id: id });
 
-  if (!found) {
+  if (!doc) {
     return res.status(404).json({
       status: 'fail',
-      message: 'No accounts found.'
+      message: 'No account found with that ID.'
     });
   } else {
     return res.status(200).json({
       status: 'success',
-      results: found.length,
-      data: { found }
+      data: { doc }
     });
   };
-
-  return res.status(501).json({
-    status: 'error',
-    message: 'This endpoint is not implemented yet.'
-  });
 };

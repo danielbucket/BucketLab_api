@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-
 const router = express.Router();
-const messagesController = require('../controllers/messagesController');
-const { POST, PATCH, DELETE, GET } = messagesController;
+
+const MessagesController = require('../controllers/MessagesController');
+const { POST, PATCH, DELETE, GET } = MessagesController;
 
 router.route('/')
   .get(cors(), GET.get_all_messages)
