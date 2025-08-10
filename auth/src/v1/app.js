@@ -22,7 +22,12 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/accounts', authRouter);
+app.use('/accounts',
+  (req, res, next) => {
+    console.log('Accounts route middleware triggered.');
+    next();
+  }
+, authRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({

@@ -1,23 +1,28 @@
-const express = require('express');
+const router = require('express').Router();
 const cors = require('cors');
-const router = express.Router();
 
 const AccountsController = require('../controllers/AccountsController');
-const { POST, PATCH, DELETE, GET } = AccountsController;
+const { POST_, PATCH_, DELETE_, GET_ } = AccountsController;
 
 router.route('/')
-  .get(cors(), GET.get_all_accounts)
-  .post(cors(), POST.new_account);
+  .get(cors(), GET_.get_all_accounts)
+  .post(cors(),
+  (req, res, next) => {
+    console.log('Accounts route middleware triggered.');
+    console.log('New Account: ', new_account)
+    next();
+  },
+  POST_.new_account);
 
 router.route('/account/:id')
-  .get(cors(), GET.get_account_by_account_id)
-  .patch(cors(), PATCH.update_account_by_account_id)
-  .delete(cors(), DELETE.delete_account_by_account_id);
+  .get(cors(), GET_.get_account_by_account_id)
+  .patch(cors(), PATCH_.update_account_by_account_id)
+  .delete(cors(), DELETE_.delete_account_by_account_id);
 
 router.route('/login')
-  .post(cors(), POST.login_account);
+  .post(cors(), POST_.login_account);
 
 router.route('/logout/:id')
-  .post(cors(), POST.logout_account_by_account_id);
+  .post(cors(), POST_.logout_account_by_account_id);
 
 module.exports = router;
