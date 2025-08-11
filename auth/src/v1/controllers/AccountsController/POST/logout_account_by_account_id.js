@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ObjectId } = require('mongodb');
 const Account = require('../../../models/account.model');
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -29,9 +30,16 @@ exports.logout_account_by_account_id = async (req, res) => {
       message: 'No account found with that ID.'
     });
   };
-
-  doc.logged_in = false;
-  doc.logged_in_at = null;
+  try {
+    doc.logged_in = false;
+    doc.logged_in_at = null;
+    doc.last_logout_at = new Date().toISOString();
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error updating account status.'
+    });
+  };
 
   const saved = await doc.save();
 

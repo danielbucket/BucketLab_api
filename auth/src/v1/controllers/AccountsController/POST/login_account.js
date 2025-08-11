@@ -30,7 +30,7 @@ exports.login_account = async (req, res) => {
     });
   };
 
-  const doc = await Traveler.findById({ ...found })
+  const doc = await Account.findById({ ...found })
     .where('password').equals(req.body.password);
 
   if (!doc) {
@@ -41,9 +41,17 @@ exports.login_account = async (req, res) => {
     });
   };
 
-  doc.logged_in = true;
-  doc.logged_in_at = Date.now();
-  doc.login_count += 1;
+  try {
+    doc.logged_in = true;
+    doc.logged_in_at = new Date().toISOString();
+    doc.login_count += 1;
+
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error updating account status.'
+    });
+  }
 
   const saved = await doc.save();
 
@@ -72,7 +80,7 @@ exports.login_account = async (req, res) => {
     return res.status(200).json({
       status: 'success',
       message: 'Login successful.',
-      traveler: Object.assign({}, {
+      account: Object.assign({}, {
         first_name: saved.first_name,
         permissions: saved.permissions,
         logged_in: saved.logged_in,

@@ -1,7 +1,7 @@
-const POST_methods = require('./POST/index.js');
-const PATCH_methods = require('./PATCH/index.js');
-const DELETE_methods = require('./DELETE/index.js');
-const GET_methods = require('./GET/index.js');
+const POST_methods = require('./POST');
+const PATCH_methods = require('./PATCH');
+const DELETE_methods = require('./DELETE');
+const GET_methods = require('./GET');
 
 module.exports = Object.freeze(
   Object.assign({},

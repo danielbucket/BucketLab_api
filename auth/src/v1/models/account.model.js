@@ -30,8 +30,14 @@ const accountSchema = new Schema({
     type: String,
     validate: [isURL, 'Please enter a valid URL'],
   },
-  company: String,
-  phone: String || Number,
+  company: {
+    type: String,
+    // default: ''
+  },
+  phone: {
+    type: Schema.Types.Mixed, // Allows for various phone formats, including numbers and strings
+    default: null
+  },
   messages: [{
     type: Schema.Types.ObjectId,
     ref: 'Message'

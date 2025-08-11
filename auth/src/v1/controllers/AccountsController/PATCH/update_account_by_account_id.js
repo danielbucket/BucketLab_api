@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Account = require('../../../models/account.model');
-
 const MONGO_URI = process.env.MONGO_URI;
 
 exports.update_account_by_account_id = async (req, res) => {
@@ -24,8 +23,8 @@ exports.update_account_by_account_id = async (req, res) => {
     });
   };
 
-  Object.keys(body).forEach((key) => {
-    if (doc[key]) {
+  Object.keys(body).forEach(key => {
+    if (body[key]) {
       doc[key] = body[key];
     } else {
       return res.status(404).json({

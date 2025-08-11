@@ -11,7 +11,7 @@ router.route('/')
     POST_.new_account
   );
 
-router.route('/account/:id')
+router.route('/:id')
   .get(cors(), GET_.get_account_by_account_id)
   .patch(cors(), PATCH_.update_account_by_account_id)
   .delete(cors(), DELETE_.delete_account_by_account_id);

@@ -5,6 +5,7 @@ const MONGO_URI = process.env.MONGO_URI;
 
 exports.delete_account_by_account_id = async (req, res) => {
   const id = req.params.id.slice(1);
+  const { password } = req.body;
 
   mongoose.connect(MONGO_URI);
   mongoose.connection.on('error', (err) => {
@@ -23,7 +24,14 @@ exports.delete_account_by_account_id = async (req, res) => {
       message: 'No account found with that ID.'
     });
   };
-  
+
+  if (doc.password !== password) {
+    return res.status(401).json({
+      status: 'fail',
+      message: 'Incorrect password.'
+    });
+  };
+
   const deleted = await doc.deleteOne();
 
   if (!deleted) {
