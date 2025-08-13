@@ -11,54 +11,50 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro   # Synchronize time with the host
   app_server:
+    container_name: app_server
+    image: node:22.14.0
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
-    container_name: app_server
-    image: node:latest
     working_dir: /app
     volumes:
       - ./app:/app
     ports:
       - 4020:4020
-    command: "npm run start:${APP_RUN_MODE}"
+    command: "npm install && npm run start:${APP_RUN_MODE}"
     depends_on:
-      - mongoDB
-    links:
-      - laboratory_server
-      - auth_server
-    networks:
-      - bucketLab_internal
-  laboratory_server:
-    environment:
-      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
-    container_name: laboratory_server
-    image: node:latest
-    working_dir: /laboratory
-    volumes:
-      - ./laboratory:/laboratory
-    ports:
-      - 4420:4420
-    command: "npm run start:${APP_RUN_MODE}"
-    depends_on:
-      - mongoDB
+      - app_server
     networks:
       - bucketLab_internal
   auth_server:
+    container_name: auth_server
+    image: node:22.14.0
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
-    container_name: auth_server
-    image: node:latest
     working_dir: /auth
     volumes:
       - ./auth:/auth
     ports:
       - 4021:4021
-    command: "npm run start:${APP_RUN_MODE}"
+    command: "npm install && npm run start:${APP_RUN_MODE}"
+    depends_on:
+      - app_server
+    networks:
+      - bucketLab_internal
+  laboratory_server:
+    container_name: laboratory_server
+    image: node:22.14.0
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017"
+    working_dir: /laboratory
+    volumes:
+      - ./laboratory:/laboratory
+    ports:
+      - 4420:4420
+    command: "npm install && npm run start:${APP_RUN_MODE}"
     depends_on:
       - mongoDB
     networks:
       - bucketLab_internal
-
   mongoDB:
     container_name: bucketlab_empire_database
     image: mongo:latest
