@@ -52,7 +52,7 @@ services:
       - 4420:4420
     command: "npm run start:${APP_RUN_MODE}"
     depends_on:
-      - mongoDB
+      - app_server
     networks:
       - bucketLab_internal
   mongoDB:
