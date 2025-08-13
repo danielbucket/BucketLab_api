@@ -20,9 +20,9 @@ services:
       - ./app:/app
     ports:
       - 4020:4020
-    command: "npm install && npm run start:${APP_RUN_MODE}"
+    command: "npm run start:${APP_RUN_MODE}"
     depends_on:
-      - app_server
+      - mongoDB
     networks:
       - bucketLab_internal
   auth_server:
@@ -35,7 +35,7 @@ services:
       - ./auth:/auth
     ports:
       - 4021:4021
-    command: "npm install && npm run start:${APP_RUN_MODE}"
+    command: "npm run start:${APP_RUN_MODE}"
     depends_on:
       - app_server
     networks:
@@ -50,7 +50,7 @@ services:
       - ./laboratory:/laboratory
     ports:
       - 4420:4420
-    command: "npm install && npm run start:${APP_RUN_MODE}"
+    command: "npm run start:${APP_RUN_MODE}"
     depends_on:
       - mongoDB
     networks:
