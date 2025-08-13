@@ -4,12 +4,7 @@ const { POST_, PATCH_, DELETE_, GET_ } = require('../controllers/AccountsControl
 
 router.route('/')
   .get(cors(), GET_.get_all_accounts)
-  .post(cors(), (req, res, next) => {
-      console.log('Accounts POST route middleware triggered.');
-      next();
-    },
-    POST_.new_account
-  );
+  .post(cors(), POST_.new_account);
 
 router.route('/:id')
   .get(cors(), GET_.get_account_by_account_id)
