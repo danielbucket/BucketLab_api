@@ -14,7 +14,7 @@ exports.authProxy = () => createProxyMiddleware({
     console.error('Proxy error:', err);
     res.status(500).json({
       status: 'fail',
-      message: 'Internal server error while proxying to Laboratory Server.'
+      message: 'Internal server error while proxying to Auth Server.'
     });
   },
   plugins: [loggerPlugin, errorResponsePlugin],
