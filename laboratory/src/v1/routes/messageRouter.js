@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const cors = require('cors');
-const MessagesController = require('../controllers/MessagesController');
+const MessagesController = require('../controllers/MessagesController/getAllMessages.js');
 
 router.route('/')
-  .get(cors(), MessagesController.getAllMessages)
+  .get(cors(), MessagesController.get_all_messages)
 //   .post(cors(), MessagesController.createMessage);
 
 // router.route('/sender/:id')
