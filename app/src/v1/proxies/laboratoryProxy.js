@@ -10,11 +10,11 @@ exports.laboratoryProxy = () => createProxyMiddleware({
     pathRewrite: {
       '^/laboratory': '', // Remove /laboratory prefix when forwarding to laboratory server
     },
-    onError: (err, req, res) => {
-      console.error('Proxy error:', err);
+    onErrorResponse: (err, req, res) => {
       res.status(500).json({
         status: 'fail',
-        message: 'Internal server error while proxying to Laboratory Server.'
+        message: 'Internal server error while proxying to Laboratory Server.',
+        error: err
       });
     },
   plugins: [loggerPlugin, errorResponsePlugin]
