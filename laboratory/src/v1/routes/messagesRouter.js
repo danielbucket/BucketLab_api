@@ -1,6 +1,6 @@
 const messagesRouter = require('express').Router();
 const cors = require('cors');
-const MessagesController = require('../controllers/MessagesController/');
+const MessagesController = require('../controllers/MessagesController');
 
 messagesRouter.route('/')
   .get(cors(), MessagesController.getAllMessages)
