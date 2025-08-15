@@ -1,7 +1,5 @@
 const {
   createProxyMiddleware,
-  loggerPlugin, // log proxy events to a logger (ie. console)
-  errorResponsePlugin, // return 5xx response on proxy error
 } = require('http-proxy-middleware');
 
 exports.authProxy = () => createProxyMiddleware({
@@ -16,6 +14,5 @@ exports.authProxy = () => createProxyMiddleware({
       status: 'fail',
       message: 'Internal server error while proxying to Auth Server.'
     });
-  },
-  plugins: [loggerPlugin, errorResponsePlugin],
+  }
 });

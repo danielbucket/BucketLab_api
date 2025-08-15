@@ -19,21 +19,19 @@ exports.corsConfig = () => {
     optionsSuccessStatus: 204,
     maxAge: 86400, // 24 hours in seconds
     exposedHeaders: ['Content-Length', 'X-Response-Time'],
-    origin: true,
     origin: (origin, callback) => {
       if (NODE_ENV === 'development') {
-        return callback(null, origin); // Allow all origins in development
+        return callback(null, true); // Allow all origins in development
       }
 
       if (whitelist.indexOf(origin) !== -1 || !origin) {
-        callback(null, origin);
+        callback(null, true);
       } else {
         callback(new Error(`Though shall not pass! Because: ${origin} is not allowed`));
       }
     },
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    optionsSuccessStatus: 200
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
   };
 };

@@ -19,7 +19,7 @@ if (NODE_ENV === 'development') {
 // https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
 app.set('trust proxy', 1);
 
-// app.options('/*', cors(corsConfig())); // Pre-flight request for all routes
+app.options('/*', cors(corsConfig())); // Pre-flight request for all routes
 
 app.use(cors(corsConfig()));
 app.use(rateLimiter());
@@ -31,8 +31,13 @@ app.use('/*', (req, res, next) => {
 app.get('/', (req, res) => {
   console.log('Request received at:', req.requestTime);
   res.status(200).json({
-    status: 'success',
-    message: 'BucketLab API Root'
+    message: 'Welcome to the Bucket Laboratory API Gateway',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    services: {
+      auth: '/auth',
+      laboratory: '/laboratory'
+    }
   });
 });
 
@@ -47,9 +52,7 @@ app.use('/auth', authProxy());
 
 app.all('*', (req, res) => {
   res.status(404).json({
-    status: 'fail',
-    fail_type: 'server_error',
-    message: `Can't find ${req.originalUrl} on this server!`
+    message: 'Route not found'
   });
 });
 

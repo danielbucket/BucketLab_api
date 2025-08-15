@@ -4,7 +4,9 @@
   "description": "Server running the BucketLab Empire Laboratory API",
   "main": "server.js",
   "scripts": {
-    "test": "jest --watch --verbose",
+    "test": "NODE_ENV=test jest --verbose --maxWorkers=1",
+    "test:watch": "NODE_ENV=test jest --watch --verbose",
+    "test:coverage": "NODE_ENV=test jest --coverage --maxWorkers=1",
     "start:dev": "NODE_ENV=development nodemon ./server.js",
     "start:prod": "NODE_ENV=production node ./server.js"
   },
@@ -12,7 +14,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "jest": "^30.0.5",
+    "mongodb-memory-server": "^10.0.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.0.0"
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -4,7 +4,9 @@
   "description": "Server running the BucketLab Empire public API",
   "main": "server.js",
   "scripts": {
-    "test": "jest --watch --verbose",
+    "test": "NODE_ENV=test jest --runInBand --verbose",
+    "test:watch": "NODE_ENV=test jest --watch --verbose",
+    "test:coverage": "NODE_ENV=test jest --runInBand --coverage",
     "start:dev": "NODE_ENV=development nodemon ./server.js",
     "start:prod": "NODE_ENV=production node ./server.js"
   },
@@ -12,7 +14,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "jest": "^30.0.5",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4"
   },
   "dependencies": {
     "cors": "^2.8.5",
