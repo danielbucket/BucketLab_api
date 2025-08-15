@@ -1,11 +1,11 @@
-// const cors = require('cors');
+const cors = require('cors');
 
-// const { DELETE_, GET_, PATCH_, POST_ } = require('../controllers/MessagesController'); 
+const { DELETE_, GET_, PATCH_, POST_ } = require('../controllers/MessagesController'); 
 
 const messagesRouter = require('express').Router();
 
-// messagesRouter.route('/')
-//   .get(cors(), GET_.get_all_messages)
+messagesRouter.route('/')
+  .get(cors(), GET_.get_all_messages)
 //   .post(cors(), POST_.new_message);
 
 // messagesRouter.route('/sender/:id')
