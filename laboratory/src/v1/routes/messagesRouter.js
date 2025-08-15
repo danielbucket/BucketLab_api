@@ -2,7 +2,7 @@
 
 // const { DELETE_, GET_, PATCH_, POST_ } = require('../controllers/MessagesController'); 
 
-// const messagesRouter = require('express').Router();
+const messagesRouter = require('express').Router();
 
 // messagesRouter.route('/')
 //   .get(cors(), GET_.get_all_messages)
@@ -23,4 +23,4 @@
 // messagesRouter.route('/update/:id')
 //   .patch(cors(), PATCH_.update_message_by_id);
 
-// module.exports = messagesRouter;
+module.exports = messagesRouter;
