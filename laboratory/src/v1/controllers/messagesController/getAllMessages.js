@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const Message = require('../../../models/message.model');
+const Message = require('../../models/message.model');
 const MONGO_URI = process.env.MONGO_URI;
 
-exports.get_all_messages = async (req, res) => {
+exports.getAllMessages = async (req, res) => {
   mongoose.connect(MONGO_URI);
   mongoose.connection.on('error', (err) => {
     return res.status(500).json({

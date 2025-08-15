@@ -1,13 +1,30 @@
-const POST_methods = require('./POST');
-const PATCH_methods = require('./PATCH');
-const DELETE_methods = require('./DELETE');
-const GET_methods = require('./GET');
+const mongoose = require('mongoose');
+const Message = require('../../models/message.model');
+const MONGO_URI = process.env.MONGO_URI;
 
-module.exports = Object.freeze(
-  Object.assign({},
-    { DELETE_: DELETE_methods },
-    { GET_: GET_methods },
-    { PATCH_: PATCH_methods },
-    { POST_: POST_methods }
-  )
-);
+exports.getAllMessages = async (req, res) => {
+  mongoose.connect(MONGO_URI);
+  mongoose.connection.on('error', (err) => {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Database connection error.',
+      data: { err }
+    });
+  });
+  
+  const docs = await Message.find({});
+
+  if (!docs) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No messages found.'
+    });
+  } else {
+    return res.status(200).json({
+      status: 'success',
+      results: docs.length,
+      data: docs
+    });
+  };
+};
+

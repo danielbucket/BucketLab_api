@@ -22,7 +22,8 @@ services:
       - 4020:4020
     command: "npm run start:${APP_RUN_MODE}"
     depends_on:
-      - mongoDB
+      mongoDB:
+        condition: service_healthy
     networks:
       - bucketLab_internal
   auth_server:
@@ -37,7 +38,8 @@ services:
       - 4021:4021
     command: "npm run start:${APP_RUN_MODE}"
     depends_on:
-      - app_server
+      mongoDB:
+        condition: service_healthy
     networks:
       - bucketLab_internal
   laboratory_server:
@@ -52,7 +54,8 @@ services:
       - 4420:4420
     command: "npm run start:${APP_RUN_MODE}"
     depends_on:
-      - app_server
+      mongoDB:
+        condition: service_healthy
     networks:
       - bucketLab_internal
   mongoDB:
@@ -67,6 +70,12 @@ services:
       - ./data:/data/db
     networks:
       - bucketLab_internal
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --port 27017 --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 volumes:
   data:
     driver: local
