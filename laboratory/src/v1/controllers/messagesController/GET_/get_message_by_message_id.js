@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Message = require('../../../models/message.model');
+const Message = require('../../../models/message.model.js');
 
 const MONGO_URI = process.env.MONGO_URI;
 

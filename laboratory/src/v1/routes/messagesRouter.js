@@ -1,24 +1,26 @@
-const messagesRouter = require('express').Router();
 const cors = require('cors');
-const MessagesController = require('../controllers/MessagesController');
+
+const { DELETE_, GET_, PATCH_, POST_ } = require('../controllers/MessagesController'); 
+
+const messagesRouter = require('express').Router();
 
 messagesRouter.route('/')
-  .get(cors(), MessagesController.getAllMessages)
-//   .post(cors(), MessagesController.createMessage);
+  .get(cors(), GET_.get_all_messages)
+  .post(cors(), POST_.new_message);
 
-// messagesRouter.route('/sender/:id')
-//   .get(cors(), MessagesController.getMessagesBySenderId);
+messagesRouter.route('/sender/:id')
+  .get(cors(), GET_.get_messages_by_sender_id);
 
-// messagesRouter.route('/receiver/:id')
-//   .get(cors(), MessagesController.getMessagesByReceiverId);
+messagesRouter.route('/receiver/:id')
+  .get(cors(), GET_.get_messages_by_receiver_id);
 
-// messagesRouter.route('/message/:id')
-//   .get(cors(), MessagesController.getMessageById);
+messagesRouter.route('/message/:id')
+//   .get(cors(), GET_.get_message_by_id);
 
 // messagesRouter.route('/delete/:id')
-//   .delete(cors(), MessagesController.deleteMessageById);
+//   .delete(cors(), DELETE_.delete_message_by_id);
 
 // messagesRouter.route('/update/:id')
-//   .patch(cors(), MessagesController.updateMessageById);
+//   .patch(cors(), PATCH_.update_message_by_id);
 
 module.exports = messagesRouter;

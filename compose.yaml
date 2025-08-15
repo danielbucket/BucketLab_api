@@ -26,6 +26,7 @@ services:
         condition: service_healthy
     networks:
       - bucketLab_internal
+    restart: unless-stopped
   auth_server:
     container_name: auth_server
     image: node:22.14.0
@@ -42,6 +43,7 @@ services:
         condition: service_healthy
     networks:
       - bucketLab_internal
+    restart: unless-stopped
   laboratory_server:
     container_name: laboratory_server
     image: node:22.14.0
@@ -58,6 +60,7 @@ services:
         condition: service_healthy
     networks:
       - bucketLab_internal
+    restart: unless-stopped
   mongoDB:
     container_name: bucketlab_empire_database
     image: mongo:latest
@@ -76,9 +79,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-volumes:
-  data:
-    driver: local
 networks:
   bucketLab_internal:
     name: bucketLab_internal

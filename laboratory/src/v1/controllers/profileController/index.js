@@ -1,7 +1,2 @@
-const { patch_profile } = require('./patch_profile');
-const { get_profile_by_id } = require('./get_profile_by_id');
+const { DELETE_, GET_, PATCH_, POST_ } = require('../controllers/ProfilesController'); 
 
-module.exports = {
-  patch_profile,
-  get_profile_by_id
-};
