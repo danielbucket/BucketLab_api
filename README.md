@@ -49,13 +49,13 @@ JWT_SECRET=your_secret_key
 
 ### 4. Start the Application
 ```bash
-docker compose up --build --remove-orphans -d
+docker compose -f compose.production.yaml up --build -d
 ```
 
 ### 5. Access the API
 Once the app is running, you can access the API at `http://localhost:4020`.
 Or by navigating to the domain that the Cloudflare Tunnel is connected to.
-Example: `https://api.yourdomain.com/`
+Example: `https://api.bucketlab.io/`
 
 ## Running Tests
 To run the test suite:
