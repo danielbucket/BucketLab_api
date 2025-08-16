@@ -3,6 +3,7 @@
 ## Issue: "Cannot find module '../controllers/MessagesController'"
 
 ### Root Cause Analysis
+
 This error occurs when deploying Docker containers from macOS to Ubuntu Server due to:
 
 1. **File System Case Sensitivity**: macOS uses a case-insensitive file system, while Ubuntu Linux uses case-sensitive
@@ -12,16 +13,19 @@ This error occurs when deploying Docker containers from macOS to Ubuntu Server d
 ### Solutions Provided
 
 #### 1. Production Compose File (`compose.production.yaml`)
+
 - Uses custom Dockerfiles that copy files instead of mounting volumes
 - Eliminates case sensitivity and permission issues
 - Optimized for production deployment
 
 #### 2. Individual Service Dockerfiles
+
 - `Dockerfile.app` - App Service (API Gateway)
-- `Dockerfile.auth` - Authentication Service  
+- `Dockerfile.auth` - Authentication Service
 - `Dockerfile.laboratory` - Laboratory Service (Messages)
 
 #### 3. Deployment Script (`deploy-ubuntu.sh`)
+
 - Automated deployment process for Ubuntu Server
 - Health checks and validation
 - Error handling and logging
@@ -29,6 +33,7 @@ This error occurs when deploying Docker containers from macOS to Ubuntu Server d
 ### Quick Fix Instructions
 
 1. **Use the production compose file:**
+
    ```bash
    docker-compose -f compose.production.yaml up --build -d
    ```
@@ -43,16 +48,19 @@ This error occurs when deploying Docker containers from macOS to Ubuntu Server d
 If you still encounter issues, verify these items:
 
 1. **Check file structure in container:**
+
    ```bash
    docker exec -it laboratory_server find /laboratory/src/v1/controllers -name "*.js"
    ```
 
 2. **Verify MessagesController index.js:**
+
    ```bash
    docker exec -it laboratory_server cat /laboratory/src/v1/controllers/MessagesController/index.js
    ```
 
 3. **Test module loading:**
+
    ```bash
    docker exec -it laboratory_server node -e "console.log(require('/laboratory/src/v1/controllers/MessagesController'))"
    ```
@@ -82,6 +90,7 @@ laboratory_server:
 ### File Structure Verification
 
 The correct structure should be:
+
 ```
 laboratory/src/v1/controllers/
 ├── MessagesController/
@@ -107,13 +116,15 @@ laboratory/src/v1/controllers/
 ### Debugging Commands
 
 1. **Container file permissions:**
+
    ```bash
    docker exec -it laboratory_server ls -la /laboratory/src/v1/controllers/
    ```
 
 2. **Node.js module resolution:**
+
    ```bash
-   docker exec -it laboratory_server node -e "console.log(require.resolve('../controllers/MessagesController'))" 
+   docker exec -it laboratory_server node -e "console.log(require.resolve('../controllers/MessagesController'))"
    ```
 
 3. **Full container inspection:**
@@ -124,7 +135,9 @@ laboratory/src/v1/controllers/
    ```
 
 ### Contact
+
 If issues persist after following this guide, check:
+
 - Container logs: `docker logs laboratory_server`
 - Host file permissions: `ls -la laboratory/src/v1/controllers/`
 - Docker daemon logs: `journalctl -u docker.service`

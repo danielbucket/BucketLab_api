@@ -9,14 +9,14 @@ WORKDIR /laboratory
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S bucketlab -u 1001
+  adduser -S bucketlab -u 1001
 
 # Copy package files first for better caching
 COPY laboratory/package*.json ./
 
 # Install dependencies
 RUN npm ci --only=production --no-audit --no-fund && \
-    npm cache clean --force
+  npm cache clean --force
 
 # Copy application code
 COPY laboratory/ ./
@@ -29,7 +29,7 @@ USER bucketlab
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:4420/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:4420/ || exit 1
 
 # Expose port
 EXPOSE 4420
