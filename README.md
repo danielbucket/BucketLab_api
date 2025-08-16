@@ -48,8 +48,15 @@ JWT_SECRET=your_secret_key
 ```
 
 ### 4. Start the Application
+
+## Production:
 ```bash
 docker compose -f compose.production.yaml up --build -d
+```
+
+## Development:
+```bash
+docker compose -f compose.yaml up --build -d
 ```
 
 ### 5. Access the API
