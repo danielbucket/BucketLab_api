@@ -41,6 +41,14 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
 app.use('/', (req, res, next) => {
   req.requestTime = new Date().toISOString();
   console.log(`Request received at App_Server: ${req.requestTime}`);
