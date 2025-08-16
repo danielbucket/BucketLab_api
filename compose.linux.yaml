@@ -1,0 +1,184 @@
+# Linux-Optimized Docker Compose Configuration for BucketLab API
+# Addresses file system and permission issues for Ubuntu Server deployment
+
+services:
+  # Cloudflare Tunnel Service
+  cloudflared:
+    env_file: ".env"
+    container_name: cloudflared
+    hostname: bucketlab-API-tunnel_dev
+    image: cloudflare/cloudflared:latest
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate run
+    networks:
+      - bucketLab_internal
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.1'
+        reservations:
+          memory: 64M
+
+  # App Server (API Gateway)
+  app_server:
+    container_name: app_server
+    image: node:22.14.0-alpine
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
+      - NODE_ENV=${APP_RUN_MODE:-prod}
+      - PORT=4020
+    working_dir: /app
+    volumes:
+      # FIXED: Use bind mounts with consistent ownership
+      - type: bind
+        source: ./app
+        target: /app
+        consistency: cached
+    ports:
+      - "4020:4020"
+    command: sh -c "chown -R node:node /app && npm ci --only=production && npm run start:${APP_RUN_MODE:-prod}"
+    depends_on:
+      mongoDB:
+        condition: service_healthy
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+    user: "1000:1000"  # Use host user ID to avoid permission issues
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4020/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
+
+  # Auth Server (Internal Service)
+  auth_server:
+    container_name: auth_server
+    image: node:22.14.0-alpine
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
+      - NODE_ENV=${APP_RUN_MODE:-prod}
+      - PORT=4021
+    working_dir: /auth
+    volumes:
+      # FIXED: Use bind mounts with consistent ownership
+      - type: bind
+        source: ./auth
+        target: /auth
+        consistency: cached
+    expose:
+      - "4021"
+    command: sh -c "chown -R node:node /auth && npm ci --only=production && npm run start:${APP_RUN_MODE:-prod}"
+    depends_on:
+      mongoDB:
+        condition: service_healthy
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+    user: "1000:1000"  # Use host user ID to avoid permission issues
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4021/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
+
+  # Laboratory Server (Internal Service)
+  laboratory_server:
+    container_name: laboratory_server
+    image: node:22.14.0-alpine
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
+      - NODE_ENV=${APP_RUN_MODE:-prod}
+      - PORT=4420
+    working_dir: /laboratory
+    volumes:
+      # FIXED: Use bind mounts with consistent ownership and read-only where possible
+      - type: bind
+        source: ./laboratory
+        target: /laboratory
+        consistency: cached
+    expose:
+      - "4420"
+    command: sh -c "chown -R node:node /laboratory && npm ci --only=production && npm run start:${APP_RUN_MODE:-prod}"
+    depends_on:
+      mongoDB:
+        condition: service_healthy
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+    user: "1000:1000"  # Use host user ID to avoid permission issues
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4420/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
+
+  # MongoDB Database
+  mongoDB:
+    container_name: bucketlab_empire_database
+    image: mongo:7.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_DB_USERNAME}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_DB_PASSWORD}"
+      MONGO_INITDB_DATABASE: "bucketlab"
+    expose:
+      - "27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongodb/mongod.conf:/etc/mongod.conf:ro
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--port", "27017", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  bucketLab_internal:
+    name: bucketLab_internal
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
