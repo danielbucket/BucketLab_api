@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Message = require('../../../models/message.model');
 const Account = require('../../../models/account.model');
 
-exports.new_message = async (req, res) => {
+exports.newMessage = async (req, res) => {
   for(let requiredParameter of ['message', 'title', 'receiver_id', 'sender_id']) {  
     if (req.body[requiredParameter] === undefined || req.body[requiredParameter] === null) {
       return res.status(422).json({

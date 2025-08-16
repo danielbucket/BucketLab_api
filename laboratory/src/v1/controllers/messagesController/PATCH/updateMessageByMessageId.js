@@ -1,7 +1,7 @@
 const Message = require('../../../models/message.model');
 const mongoose = require('mongoose');
 
-exports.update_message_by_message_id = async (req, res) => {
+exports.updateMessageByMessageId = async (req, res) => {
   const id = req.params.id;
   const { body } = req;
 

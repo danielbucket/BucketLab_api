@@ -1,6 +1,6 @@
 const Message = require('../../../models/message.model');
 
-exports.get_all_messages = async (req, res) => {
+exports.getAllMessages = async (req, res) => {
   try {
     const docs = await Message.find({});
 

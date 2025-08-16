@@ -1,6 +1,6 @@
 const Message = require('../../../models/message.model.js');
 
-exports.get_messages_by_receiver_id = async (req, res) => {
+exports.getMessagesByReceiverId = async (req, res) => {
   const id = req.params.id;
 
   try {

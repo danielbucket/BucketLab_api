@@ -1,13 +1,13 @@
-const { get_all_messages } = require('./get_all_messages');
-const { get_message_by_message_id } = require('./get_message_by_message_id');
-const { get_messages_by_receiver_id } = require('./get_messages_by_receiver_id');
-const { get_messages_by_sender_id } = require('./get_messages_by_sender_id');
+const { getAllMessages } = require('./getAllMessages');
+const { getMessageByMessageId } = require('./getMessageByMessageId');
+const { getMessagesByReceiverId } = require('./getMessagesByReceiverId');
+const { getMessagesBySenderId } = require('./getMessagesBySenderId');
 
 module.exports = Object.freeze(
   Object.assign({},
-    { get_all_messages },
-    { get_message_by_message_id },
-    { get_messages_by_receiver_id },
-    { get_messages_by_sender_id }
+    { getAllMessages },
+    { getMessageByMessageId },
+    { getMessagesByReceiverId },
+    { getMessagesBySenderId }
   )
 );

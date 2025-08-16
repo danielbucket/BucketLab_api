@@ -1,7 +1,7 @@
-const { delete_message_by_message_id } = require('./delete_message_by_message_id.js');
+const { deleteMessageByMessageId } = require('./deleteMessageByMessageId');
 
 module.exports = Object.freeze(
   Object.assign({},
-    { delete_message_by_message_id }
+    { deleteMessageByMessageId }
   )
 );

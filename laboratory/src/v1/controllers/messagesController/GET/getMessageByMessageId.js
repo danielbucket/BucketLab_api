@@ -1,6 +1,6 @@
 const Message = require('../../../models/message.model.js');
 
-exports.delete_message_by_message_id = async (req, res) => {
+exports.getMessageByMessageId = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -11,22 +11,16 @@ exports.delete_message_by_message_id = async (req, res) => {
         status: 'fail',
         message: 'No message found with that ID.'
       });
-    }
-
-    const deleted = await doc.deleteOne();
-
-    if (!deleted) {
-      return res.status(500).json({
-        status: 'error',
-        message: 'Message deletion failed.'
-      });
     } else {
-      return res.status(204).end();
+      return res.status(200).json({
+        status: 'success',
+        data: { doc }
+      });
     }
   } catch (error) {
     return res.status(500).json({
       status: 'error',
-      message: 'Error deleting message.',
+      message: 'Error retrieving message.',
       data: error.message
     });
   }

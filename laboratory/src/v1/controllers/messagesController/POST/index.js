@@ -1,7 +1,7 @@
-const { new_message } = require('./new_message.js');
+const { newMessage } = require('./newMessage');
 
 module.exports = Object.freeze(
   Object.assign({},
-    { new_message }
+    { newMessage }
   )
 );
