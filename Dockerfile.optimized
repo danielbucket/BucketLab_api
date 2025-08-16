@@ -1,0 +1,43 @@
+# Multi-stage Dockerfile for BucketLab API Services
+# Optimized for production performance and security
+
+# Stage 1: Dependencies
+FROM node:22.14.0-alpine AS dependencies
+WORKDIR /app
+
+# Install security updates and necessary tools
+RUN apk --no-cache add curl wget
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies with optimizations
+RUN npm ci --only=production --no-audit --no-fund && \
+  npm cache clean --force
+
+# Stage 2: Production
+FROM node:22.14.0-alpine AS production
+WORKDIR /app
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+  adduser -S bucketlab -u 1001
+
+# Install runtime security updates
+RUN apk --no-cache add curl wget
+
+# Copy dependencies from previous stage
+COPY --from=dependencies --chown=bucketlab:nodejs /app/node_modules ./node_modules
+
+# Copy application code
+COPY --chown=bucketlab:nodejs . .
+
+# Switch to non-root user
+USER bucketlab
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:${PORT}/health || exit 1
+
+# Start application
+CMD ["npm", "run", "start:prod"]
