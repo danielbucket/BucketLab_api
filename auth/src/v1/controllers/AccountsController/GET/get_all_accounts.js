@@ -1,28 +1,26 @@
-const mongoose = require('mongoose');
 const Account = require('../../../models/account.model');
-const MONGO_URI = process.env.MONGO_URI;
 
 exports.get_all_accounts = async (req, res) => {
-  mongoose.connect(MONGO_URI);
-  mongoose.connection.on('error', () => {
+  try {
+    const found = await Account.find({});
+
+    if (!found || found.length === 0) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No accounts found.'
+      });
+    } else {
+      return res.status(200).json({
+        status: 'success',
+        results: found.length,
+        data: { found }
+      });
+    }
+  } catch (error) {
     return res.status(500).json({
       status: 'error',
-      message: 'Database connection error.'
+      message: 'Database operation failed.',
+      error: error.message
     });
-  });
-
-  const found = await Account.find({});
-
-  if (!found) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No accounts found.'
-    });
-  } else {
-    return res.status(200).json({
-      status: 'success',
-      results: found.length,
-      data: { found }
-    });
-  };
+  }
 };

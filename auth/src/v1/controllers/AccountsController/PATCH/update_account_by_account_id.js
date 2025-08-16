@@ -1,51 +1,61 @@
-const mongoose = require('mongoose');
 const Account = require('../../../models/account.model');
-const MONGO_URI = process.env.MONGO_URI;
 
 exports.update_account_by_account_id = async (req, res) => {
-  const id = req.params.id.slice(1);
+  const id = req.params.id;
   const { body } = req;
   
-  mongoose.connect(MONGO_URI);
-  mongoose.connection.on('error', () => {
-    return res.status(500).json({
-      status: 'error',
-      message: 'Database connection error.'
-    });
-  });
+  try {
+    const doc = await Account.findById(id);
 
-  const doc = await Account.findById({ _id: id });
-
-  if (!doc) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No account found with that ID.'
-    });
-  };
-
-  Object.keys(body).forEach(key => {
-    if (body[key]) {
-      doc[key] = body[key];
-    } else {
+    if (!doc) {
       return res.status(404).json({
         status: 'fail',
-        message: `The key: '${key}' cannot be updated.`
+        message: 'No account found with that ID.'
       });
-    };
-  });
+    }
 
-  doc.updated_at = Date.now();
-  const saved = await doc.save();
-  
-  if (!saved) {
-    return res.status(500).json({
-      status: 'error',
-      message: 'Account update failed.'
-    });
-  } else {
+    // Check for empty/null values before updating
+    for (const key of Object.keys(body)) {
+      if (body[key] === '' || body[key] === null || body[key] === undefined) {
+        return res.status(404).json({
+          status: 'fail',
+          message: `The key: '${key}' cannot be updated.`
+        });
+      }
+      doc[key] = body[key];
+    }
+
+    doc.updated_at = Date.now();
+    
+    const saved = await doc.save();
+    
     return res.status(200).json({
       status: 'success',
       data: { saved }
     });
-  };
+  } catch (error) {
+    // Handle Mongoose validation errors
+    if (error.name === 'ValidationError') {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Account update failed.',
+        error: error.message
+      });
+    }
+    
+    // Handle MongoDB duplicate key errors
+    if (error.code === 11000) {
+      return res.status(500).json({
+        status: 'error',
+        message: 'Account update failed.',
+        error: 'Duplicate email address'
+      });
+    }
+    
+    return res.status(500).json({
+      status: 'error',
+      message: 'Account update failed.',
+      error: error.message
+    });
+  }
 };

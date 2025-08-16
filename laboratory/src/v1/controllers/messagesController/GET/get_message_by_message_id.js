@@ -1,0 +1,27 @@
+const Message = require('../../../models/message.model.js');
+
+exports.get_message_by_message_id = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const doc = await Message.findById(id);
+
+    if (!doc) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No message found with that ID.'
+      });
+    } else {
+      return res.status(200).json({
+        status: 'success',
+        data: { doc }
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error retrieving message.',
+      data: error.message
+    });
+  }
+};
