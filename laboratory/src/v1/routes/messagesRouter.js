@@ -1,6 +1,6 @@
 const cors = require('cors');
 
-const { DELETE, GET, PATCH, POST } = require('../controllers/MessagesController'); 
+const { DELETE, GET, PATCH, POST } = require('../controllers/messagesController'); 
 
 const messagesRouter = require('express').Router();
 
