@@ -1,6 +1,6 @@
 const Account = require('../../../models/account.model');
 
-exports.new_account = async (req, res) => {
+exports.newAccount = async (req, res) => {
   const { body } = req;
   
   for (let requiredParameter of ['first_name', 'last_name', 'email', 'password']) {

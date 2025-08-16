@@ -1,6 +1,6 @@
 const Account = require('../../../models/account.model');
 
-exports.delete_account_by_account_id = async (req, res) => {
+exports.deleteAccountByAccountId = async (req, res) => {
   const id = req.params.id;
   const { password } = req.body;
 

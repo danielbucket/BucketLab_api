@@ -1,6 +1,6 @@
 const Account = require('../../../models/account.model');
 
-exports.get_all_accounts = async (req, res) => {
+exports.getAllAccounts = async (req, res) => {
   try {
     const found = await Account.find({});
 

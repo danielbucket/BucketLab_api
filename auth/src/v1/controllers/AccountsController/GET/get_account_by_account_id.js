@@ -1,6 +1,6 @@
 const Account = require('../../../models/account.model');
 
-exports.get_account_by_account_id = async (req, res) => {
+exports.getAccountByAccountId = async (req, res) => {
   const id = req.params.id;
   
   try {

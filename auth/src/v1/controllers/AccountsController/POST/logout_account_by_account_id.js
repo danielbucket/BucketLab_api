@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 const Account = require('../../../models/account.model');
 
-exports.logout_account_by_account_id = async (req, res) => {
+exports.logoutAccountByAccountId = async (req, res) => {
   const id = req.params.id;
 
   if (!ObjectId.isValid(id)) {

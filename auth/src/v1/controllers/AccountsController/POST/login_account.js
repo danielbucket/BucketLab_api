@@ -1,6 +1,6 @@
 const Account = require('../../../models/account.model');
 
-exports.login_account = async (req, res) => {
+exports.loginAccount = async (req, res) => {
   for (let requiredParameter of ['email', 'password']) {
     if (!req.body[requiredParameter]) {
       return res.status(422).json({

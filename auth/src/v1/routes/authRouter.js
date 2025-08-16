@@ -1,20 +1,20 @@
 const router = require('express').Router();
 const cors = require('cors');
-const { POST_, PATCH_, DELETE_, GET_ } = require('../controllers/AccountsController');
+const { POST, PATCH, DELETE, GET } = require('../controllers/AccountsController');
 
 router.route('/')
-  .get(cors(), GET_.get_all_accounts)
-  .post(cors(), POST_.new_account);
+  .get(cors(), GET.getAllAccounts)
+  .post(cors(), POST.newAccount);
 
 router.route('/:id')
-  .get(cors(), GET_.get_account_by_account_id)
-  .patch(cors(), PATCH_.update_account_by_account_id)
-  .delete(cors(), DELETE_.delete_account_by_account_id);
+  .get(cors(), GET.getAccountByAccountId)
+  .patch(cors(), PATCH.updateAccountByAccountId)
+  .delete(cors(), DELETE.deleteAccountByAccountId);
 
 router.route('/login')
-  .post(cors(), POST_.login_account);
+  .post(cors(), POST.loginAccount);
 
 router.route('/logout/:id')
-  .post(cors(), POST_.logout_account_by_account_id);
+  .post(cors(), POST.logoutAccountByAccountId);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const Account = require('../../../models/account.model');
 
-exports.update_account_by_account_id = async (req, res) => {
+exports.updateAccountByAccountId = async (req, res) => {
   const id = req.params.id;
   const { body } = req;
   
