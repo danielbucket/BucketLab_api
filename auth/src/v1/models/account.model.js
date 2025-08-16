@@ -4,8 +4,6 @@ const { default: isURL } = require('validator/lib/isURL');
 
 const accountSchema = new Schema({
   first_name: {
-    // When a string is passed, no error is thrown.
-    // When a number is passed, no error is thrown. Why?
     type: String,
     required: true
   },

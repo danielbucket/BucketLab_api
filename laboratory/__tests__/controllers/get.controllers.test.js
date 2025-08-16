@@ -181,9 +181,10 @@ describe('GET Messages Controllers', () => {
       it('should handle invalid ID format gracefully', async () => {
         const response = await request(app)
           .get('/messages/message/invalid-id')
-          .expect(500);
+          .expect(400);
 
         expect(response.body.status).toBe('error');
+        expect(response.body.message).toBe('Invalid message ID format');
       });
     });
   });

@@ -1,9 +1,18 @@
 const Message = require('../../../models/message.model.js');
+const mongoose = require('mongoose');
 
 exports.getMessagesBySenderId = async (req, res) => {
   const id = req.params.id;
 
   try {
+    // Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid sender ID format'
+      });
+    }
+
     const docs = await Message.find({ sender_id: id });
 
     if (!docs || docs.length === 0) {

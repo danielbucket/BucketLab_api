@@ -4,8 +4,6 @@ const { default: isURL } = require('validator/lib/isURL');
 
 const accountSchema = new Schema({
   first_name: {
-    // When a string is passed, no error is thrown.
-    // When a number is passed, no error is thrown. Why?
     type: String,
     required: true
   },
@@ -32,7 +30,7 @@ const accountSchema = new Schema({
   },
   company: {
     type: String,
-    // default: ''
+    default: ''
   },
   phone: {
     type: Schema.Types.Mixed, // Allows for various phone formats, including numbers and strings
