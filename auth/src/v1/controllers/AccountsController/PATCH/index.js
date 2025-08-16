@@ -1,4 +1,4 @@
-const { updateAccountByAccountId } = require('./update_account_by_account_id');
+const { updateAccountByAccountId } = require('./updateAccountByAccountId');
 
 module.exports = Object.freeze(
   Object.assign({},

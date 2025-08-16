@@ -1,6 +1,6 @@
-const loginAccount = require('./login_account');
-const logoutAccountByAccountId = require('./logout_account_by_account_id.js');
-const newAccount = require('./new_account.js');
+const loginAccount = require('./loginAccount');
+const logoutAccountByAccountId = require('./logoutAccountByAccountId.js');
+const newAccount = require('./newAccount.js');
 
 module.exports = Object.freeze(
   Object.assign({},

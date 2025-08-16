@@ -1,4 +1,4 @@
-const { deleteAccountByAccountId } = require('./delete_account_by_account_id');
+const { deleteAccountByAccountId } = require('./deleteAccountByAccountId');
 
 module.exports = Object.freeze(
   Object.assign({},

@@ -1,5 +1,5 @@
-const { getAllAccounts } = require('./get_all_accounts');
-const { getAccountByAccountId } = require('./get_account_by_account_id');
+const { getAllAccounts } = require('./getAllAccounts');
+const { getAccountByAccountId } = require('./getAccountByAccountId');
 
 module.exports = Object.freeze(
   Object.assign({},
