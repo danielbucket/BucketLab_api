@@ -1,4 +1,5 @@
 const Account = require('../../../models/account.model');
+const jwt = require('jsonwebtoken');
 
 exports.loginAccount = async (req, res) => {
   for (let requiredParameter of ['email', 'password']) {
@@ -38,40 +39,36 @@ exports.loginAccount = async (req, res) => {
 
     const saved = await doc.save();
 
-    // A JWT token should be generated here and sent to the client
-    // for authentication on subsequent requests.
-    // This is a placeholder for the JWT token generation and sending process.
-    // const token = jwt.sign({ id: doc._id }, JWT_SECRET, { expiresIn: '1h' });
-    // res.status(200).json({
-    //   status: 'success',
-    //   message: 'Login successful.',
-    //   token,
-    //   data: saved
-    // });
-    // For now, we'll just return the saved document.
-    // In a real application, you would want to return a JWT token instead
-    // of the entire document for security reasons.
-    // The token should be sent in the response headers or as a cookie.
-
     if (!saved) {
       return res.status(500).json({
         status: 'error',
         message: 'Document failed to save to the database.'
       });
-    } else {
-      return res.status(200).json({
-        status: 'success',
-        message: 'Login successful.',
-        account: Object.assign({}, {
-          first_name: saved.first_name,
-          permissions: saved.permissions,
-          logged_in: saved.logged_in,
-          login_count: saved.login_count,
-          _id: saved._id,
-          token: saved._id,
-        })
-      });
     }
+
+    // Generate JWT token
+    const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key-change-in-production';
+    const token = jwt.sign(
+      { 
+        id: saved._id,
+        email: saved.email,
+      }, 
+      JWT_SECRET, 
+      { expiresIn: '24h' }
+    );
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Login successful.',
+      account: {
+        first_name: saved.first_name,
+        permissions: saved.permissions,
+        logged_in: saved.logged_in,
+        login_count: saved.login_count,
+        _id: saved._id,
+        token: token,
+      }
+    });
   } catch (error) {
     return res.status(500).json({
       status: 'error',
