@@ -43,7 +43,6 @@ Create a `.env` file in the root directory and add the required environment vari
 MONGO_DB_PASSWORD=your_password for mongoDB
 MONGO_DB_USERNAME=your_username for mongoDB
 TUNNEL_TOKEN=cloudflared tunnel token
-APP_RUN_MODE='dev' or 'prod'
 JWT_SECRET=your_secret_key
 ```
 
