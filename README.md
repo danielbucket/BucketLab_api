@@ -56,7 +56,7 @@ docker compose -f compose.production.yaml up --build -d
 
 ## Development:
 ```bash
-docker compose -f compose.yaml up --build -d
+docker compose -f compose.dev.yaml up --build -d
 ```
 
 ### 5. Access the API

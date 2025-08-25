@@ -1,5 +1,5 @@
 # Development Docker Compose Configuration
-# Live reload, open ports, and relaxed resource limits for local development
+# Live reload, open ports, and relaxed resource limits for local developmentgit ad
 
 services:
   cloudflared:
