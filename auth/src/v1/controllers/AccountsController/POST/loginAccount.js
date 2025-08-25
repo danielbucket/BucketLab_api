@@ -52,9 +52,10 @@ exports.loginAccount = async (req, res) => {
       { 
         id: saved._id,
         email: saved.email,
+        permissions: saved.permissions
       }, 
       JWT_SECRET, 
-      { expiresIn: '24h' }
+      { expiresIn: '1h' }
     );
 
     return res.status(200).json({

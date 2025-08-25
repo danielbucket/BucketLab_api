@@ -53,6 +53,10 @@ JWT_SECRET=your_secret_key
 ```bash
 docker compose -f compose.production.yaml up --build -d
 ```
+### ...and to stop:
+```bash
+docker compose -f compose.dev.yaml down
+```
 
 ## Development:
 ```bash
