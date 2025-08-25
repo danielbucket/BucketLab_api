@@ -1,0 +1,104 @@
+# Development Docker Compose Configuration
+# Live reload, open ports, and relaxed resource limits for local development
+
+services:
+  cloudflared:
+    env_file: .env
+    container_name: cloudflared_dev
+    hostname: bucketlab-API-tunnel_dev
+    image: cloudflare/cloudflared:latest
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate run
+    networks:
+      - bucketLab_internal
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    depends_on:
+      app_server:
+        condition: service_started
+
+  app_server:
+    container_name: app_server_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    environment:
+      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
+      - NODE_ENV=development
+      - PORT=4020
+    ports:
+      - "4020:4020"
+    volumes:
+      - ./app:/usr/src/app
+    depends_on:
+      mongoDB:
+        condition: service_started
+    networks:
+      - bucketLab_internal
+    restart: always
+
+  auth_server:
+    container_name: auth_server_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.auth
+    environment:
+      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
+      - NODE_ENV=development
+      - PORT=4021
+    ports:
+      - "4021:4021"
+    volumes:
+      - ./auth:/usr/src/auth
+    depends_on:
+      mongoDB:
+        condition: service_started
+    networks:
+      - bucketLab_internal
+    restart: always
+
+  laboratory_server:
+    container_name: laboratory_server_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.laboratory
+    environment:
+      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
+      - NODE_ENV=development
+      - PORT=4420
+    ports:
+      - "4420:4420"
+    volumes:
+      - ./laboratory:/usr/src/laboratory
+    depends_on:
+      mongoDB:
+        condition: service_started
+    networks:
+      - bucketLab_internal
+    restart: always
+
+  mongoDB:
+    container_name: bucketlab_empire_database_dev
+    image: mongo:7.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+      MONGO_INITDB_DATABASE: bucketlab
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_dev:/data/db
+    networks:
+      - bucketLab_internal
+    restart: always
+
+volumes:
+  mongodb_data_dev:
+    driver: local
+
+networks:
+  bucketLab_internal:
+    driver: bridge
+    name: bucketLab_internal
