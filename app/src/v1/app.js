@@ -22,7 +22,7 @@ app.set('trust proxy', 1);
 app.options('/*', cors(corsConfig())); // Pre-flight request for all routes
 
 app.use(cors(corsConfig()));
-app.use(rateLimiter());
+// app.use(rateLimiter());
 app.use('/*', (req, res, next) => {
   req.requestTime = new Date().toISOString();
   next()

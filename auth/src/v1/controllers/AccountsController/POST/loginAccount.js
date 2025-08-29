@@ -9,7 +9,7 @@ exports.loginAccount = async (req, res) => {
         message: `Missing required parameter: ${requiredParameter}.`
       });
     }
-  }
+  };
 
   try {
     const found = await Account.exists({ email: req.body.email });
@@ -55,18 +55,17 @@ exports.loginAccount = async (req, res) => {
         permissions: saved.permissions
       }, 
       JWT_SECRET, 
-      { expiresIn: '1h' }
+      { expiresIn: '30m' }
     );
 
     return res.status(200).json({
       status: 'success',
       message: 'Login successful.',
-      account: {
+      accountData: {
         first_name: saved.first_name,
-        permissions: saved.permissions,
-        logged_in: saved.logged_in,
-        login_count: saved.login_count,
-        _id: saved._id,
+        last_name: saved.last_name,
+        messages: saved.messages,
+        id: saved._id,
         token: token,
       }
     });
@@ -76,5 +75,5 @@ exports.loginAccount = async (req, res) => {
       message: 'Database operation failed.',
       error: error.message
     });
-  }
+  };
 };

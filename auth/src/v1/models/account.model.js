@@ -41,9 +41,9 @@ const accountSchema = new Schema({
     ref: 'Message'
   }],
   permissions: {
-    type: String,
+    type: [String],
     enum: ['user', 'admin', 'superadmin'],
-    default: 'user'
+    default: ['guest']
   },
   logged_in: {
     type: Boolean,
