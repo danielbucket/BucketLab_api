@@ -42,7 +42,7 @@ const accountSchema = new Schema({
   }],
   permissions: {
     type: [String],
-    enum: ['user', 'admin', 'superadmin'],
+    enum: ['user', 'admin', 'superadmin', 'guest'],
     default: ['guest']
   },
   logged_in: {

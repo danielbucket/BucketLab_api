@@ -1,4 +1,5 @@
 const Account = require('../../../models/account.model');
+const jwt = require('jsonwebtoken');
 
 exports.newAccount = async (req, res) => {
   const { body } = req;
@@ -10,27 +11,37 @@ exports.newAccount = async (req, res) => {
         message: `Missing required parameter: ${requiredParameter}.`
       });
     }
-  }
+  };
   
   try {
     const found = await Account.exists({ email: body.email });
-
     if (found) {
       return res.status(409).json({
         status: 'fail',
-        fail_type: 'duplicate',
-        message: 'An account with that email already exists.',
-        data: { email: body.email }
+        message: 'Account with that email already exists.'
       });
-    }
+    };
 
     const saved = await Account.create({ ...body });
+    const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key-change-in-production';
+    const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '30m';
+    const token = jwt.sign({
+        id: saved._id,
+        email: saved.email
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
     return res.status(201).json({
       status: 'success',
       message: 'Account created successfully.',
-      data: {
+      accountData: {
+        first_name: saved.first_name,
+        last_name: saved.last_name,
         email: saved.email,
-        first_name: saved.first_name
+        id: saved._id,
+        token: token
       }
     });
   } catch (err) {
@@ -39,5 +50,5 @@ exports.newAccount = async (req, res) => {
       message: 'Account creation failed.',
       error: err.message
     });
-  }
+  };
 };

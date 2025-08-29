@@ -18,7 +18,7 @@ exports.loginAccount = async (req, res) => {
       return res.status(404).json({
         status: 'fail',
         fail_type: 'not_found',
-        message: 'No Account found with that email.'
+        message: 'No account found with that email.'
       });
     }
 
@@ -44,18 +44,17 @@ exports.loginAccount = async (req, res) => {
         status: 'error',
         message: 'Document failed to save to the database.'
       });
-    }
+    };x``
 
     // Generate JWT token
-    const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key-change-in-production';
-    const token = jwt.sign(
-      { 
+    const JWT_SECRET = process.env.JWT_SECRET;
+    const token = jwt.sign({ 
         id: saved._id,
         email: saved.email,
         permissions: saved.permissions
       }, 
       JWT_SECRET, 
-      { expiresIn: '30m' }
+      { expiresIn: process.env.JWT_EXPIRES_IN || '30m' }
     );
 
     return res.status(200).json({
