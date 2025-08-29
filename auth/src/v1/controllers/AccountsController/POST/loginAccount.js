@@ -1,5 +1,7 @@
+
 const Account = require('../../../models/account.model');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 exports.loginAccount = async (req, res) => {
   for (let requiredParameter of ['email', 'password']) {
@@ -12,9 +14,8 @@ exports.loginAccount = async (req, res) => {
   };
 
   try {
-    const found = await Account.exists({ email: req.body.email });
-
-    if (!found) {
+    const account = await Account.findOne({ email: req.body.email });
+    if (!account) {
       return res.status(404).json({
         status: 'fail',
         fail_type: 'not_found',
@@ -22,10 +23,9 @@ exports.loginAccount = async (req, res) => {
       });
     }
 
-    const doc = await Account.findById({ ...found })
-      .where('password').equals(req.body.password);
-
-    if (!doc) {
+    // Compare password using bcrypt
+    const passwordMatch = await bcrypt.compare(req.body.password, account.password);
+    if (!passwordMatch) {
       return res.status(404).json({
         status: 'fail',
         fail_type: 'invalid_password',
@@ -33,27 +33,26 @@ exports.loginAccount = async (req, res) => {
       });
     }
 
-    doc.logged_in = true;
-    doc.logged_in_at = new Date().toISOString();
-    doc.login_count += 1;
+    account.logged_in = true;
+    account.logged_in_at = new Date().toISOString();
+    account.login_count = (account.login_count || 0) + 1;
 
-    const saved = await doc.save();
-
+    const saved = await account.save();
     if (!saved) {
       return res.status(500).json({
         status: 'error',
         message: 'Document failed to save to the database.'
       });
-    };x``
+    }
 
     // Generate JWT token
-    const JWT_SECRET = process.env.JWT_SECRET;
-    const token = jwt.sign({ 
+    const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key-change-in-production';
+    const token = jwt.sign({
         id: saved._id,
         email: saved.email,
         permissions: saved.permissions
-      }, 
-      JWT_SECRET, 
+      },
+      JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '30m' }
     );
 
@@ -63,7 +62,6 @@ exports.loginAccount = async (req, res) => {
       accountData: {
         first_name: saved.first_name,
         last_name: saved.last_name,
-        messages: saved.messages,
         id: saved._id,
         token: token,
       }
@@ -74,5 +72,5 @@ exports.loginAccount = async (req, res) => {
       message: 'Database operation failed.',
       error: error.message
     });
-  };
+  }
 };
