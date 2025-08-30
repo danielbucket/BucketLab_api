@@ -1,5 +1,6 @@
 const Account = require('../../../models/account.model');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 exports.newAccount = async (req, res) => {
   const { body } = req;
@@ -20,14 +21,16 @@ exports.newAccount = async (req, res) => {
         status: 'fail',
         message: 'Account with that email already exists.'
       });
-    };
+    }
 
-    const saved = await Account.create({ ...body });
+  // Password hashing is handled by the Account model's pre-save hook
+  const createdAccount = await Account.create(body);
+
     const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key-change-in-production';
     const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '30m';
     const token = jwt.sign({
-        id: saved._id,
-        email: saved.email
+        id: createdAccount._id,
+        email: createdAccount.email
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
@@ -37,10 +40,10 @@ exports.newAccount = async (req, res) => {
       status: 'success',
       message: 'Account created successfully.',
       accountData: {
-        first_name: saved.first_name,
-        last_name: saved.last_name,
-        email: saved.email,
-        id: saved._id,
+        first_name: createdAccount.first_name,
+        last_name: createdAccount.last_name,
+        email: createdAccount.email,
+        id: createdAccount._id,
         token: token
       }
     });
@@ -50,5 +53,5 @@ exports.newAccount = async (req, res) => {
       message: 'Account creation failed.',
       error: err.message
     });
-  };
+  }
 };

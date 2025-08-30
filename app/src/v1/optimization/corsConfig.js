@@ -27,7 +27,7 @@ exports.corsConfig = () => {
       if (whitelist.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {
-        callback(new Error(`Though shall not pass! Because: ${origin} is not allowed`));
+        callback(new Error(`You shall not pass, maf'k! Because: ${origin} is not allowed`));
       }
     },
     credentials: true,

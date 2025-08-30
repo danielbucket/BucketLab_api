@@ -21,8 +21,7 @@ const accountSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: 6,
-    maxlength: 24,
+    minlength: 6
   },
   website: {
     type: String,
@@ -70,6 +69,18 @@ const accountSchema = new Schema({
     type: Date,
     default: () => Date.now()
   }
+});
+
+
+const bcrypt = require('bcrypt');
+
+// Pre-save hook to hash password if modified
+accountSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+  next();
 });
 
 module.exports = model('Account', accountSchema);

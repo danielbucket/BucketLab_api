@@ -16,7 +16,12 @@ router.route('/:id')
   .delete(cors(), DELETE.deleteAccountByAccountId);
 
 router.route('/login')
-  .post(cors(), POST.loginAccount);
+  .post(cors(),
+    (req,res,next) => {
+      console.log('Login attempt:', req.body.email);
+      next();
+    },
+   POST.loginAccount);
 
 router.route('/logout/:id')
   .post(cors(), POST.logoutAccountByAccountId);
