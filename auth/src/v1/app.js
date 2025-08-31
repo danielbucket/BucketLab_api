@@ -24,6 +24,7 @@ app.use('/', (req, res, next) => {
 
 app.use('/accounts', authRouter);
 
+// ...existing code...
 app.all('/*', (req, res) => {
   res.status(404).json({
     status: 'fail',
