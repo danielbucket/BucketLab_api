@@ -34,14 +34,7 @@ exports.updateAccountByAccountId = async (req, res) => {
           message: `The key: '${key}' cannot be updated.`
         });
       }
-      
-      if (body[key] === '' || body[key] === null || body[key] === undefined) {
-        console.log('Invalid value for key:', key, 'value:', body[key]);
-        return res.status(400).json({
-          status: 'fail',
-          message: `The key: '${key}' cannot be empty or null.`
-        });
-      }
+
       doc[key] = body[key];
     }
 
