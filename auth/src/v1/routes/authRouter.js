@@ -1,27 +1,22 @@
 const router = require('express').Router();
 const cors = require('cors');
 const { POST, PATCH, DELETE, GET } = require('../controllers/AccountsController');
-const { authenticateToken } = require('../middleware/jwtAuth.js');
+const { authorize } = require('../middleware/authorize.js');
 
 router.route('/')
   .get(cors(), GET.getAllAccounts)
   .post(cors(), POST.newAccount);
   
 router.route('/me')
-  .get(cors(), authenticateToken, GET.getAccountByToken);
+  .get(cors(), authorize, GET.getAccountByToken);
 
 router.route('/:id')
-  .get(cors(), GET.getAccountByAccountId)
-  .patch(cors(), PATCH.updateAccountByAccountId)
-  .delete(cors(), DELETE.deleteAccountByAccountId);
+  .get(cors(), authorize, GET.getAccountByAccountId)
+  .patch(cors(), authorize, PATCH.updateAccountByAccountId)
+  .delete(cors(), authorize, DELETE.deleteAccountByAccountId);
 
 router.route('/login')
-  .post(cors(),
-    (req,res,next) => {
-      console.log('Login attempt:', req.body.email);
-      next();
-    },
-   POST.loginAccount);
+  .post(cors(), POST.loginAccount);
 
 router.route('/logout/:id')
   .post(cors(), POST.logoutAccountByAccountId);
