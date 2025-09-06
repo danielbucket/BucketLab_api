@@ -28,36 +28,38 @@ exports.updateAccountByAccountId = async (req, res) => {
 
     for (const key of Object.keys(body)) {
       if (!allowedFields.includes(key)) {
-        console.log('Attempting to update disallowed field:', key);
         return res.status(400).json({
           status: 'fail',
           message: `The key: '${key}' cannot be updated.`
         });
       }
 
-      doc[key] = body[key];
+      // Special handling for website: set to undefined if empty or null to avoid isURL validation
+      if (key === 'website' && (body[key] === '' || body[key] === null)) {
+        doc[key] = undefined;
+      } else {
+        doc[key] = body[key];
+      }
     }
 
     doc.updated_at = Date.now();
     const saved = await doc.save();
 
-    // Return only non-sensitive updated fields
-    const {
-      first_name, last_name, email, website, company, phone, messages, updated_at
-    } = saved;
+    const updatedFields = Object.keys(body).filter(key => allowedFields.includes(key));
 
     return res.status(200).json({
       status: 'success',
       data: {
-        first_name, last_name, email, website, company, phone, messages, updated_at
+        updatedFields
       }
     });
   } catch (error) {
+
     if (error.name === 'ValidationError') {
       return res.status(400).json({
         status: 'error',
         message: 'Account update failed.',
-        error: error.message
+        error: error
       });
     }
     if (error.code === 11000) {
