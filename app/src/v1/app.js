@@ -22,7 +22,7 @@ app.set('trust proxy', 1);
 app.options('/*', cors(corsConfig())); // Pre-flight request for all routes
 
 app.use(cors(corsConfig()));
-// app.use(rateLimiter());
+app.use(rateLimiter());
 app.use('/*', (req, res, next) => {
   req.requestTime = new Date().toISOString();
   next()
@@ -31,7 +31,7 @@ app.use('/*', (req, res, next) => {
 app.get('/', (req, res) => {
   console.log('Request received at:', req.requestTime);
   res.status(200).json({
-    message: 'Welcome to the Bucket Laboratory API Gateway',
+    message: 'This is the BucketLab.io API Gateway',
     version: '1.0.0',
     timestamp: new Date().toISOString(),
     services: {

@@ -14,6 +14,7 @@ exports.deleteAccountByAccountId = async (req, res) => {
       });
     }
 
+    // Find account by ID
     const doc = await Account.findById(id);
     if (!doc) {
       return res.status(404).json({
@@ -21,7 +22,7 @@ exports.deleteAccountByAccountId = async (req, res) => {
         message: 'No account found with that ID.'
       });
     }
-
+    
     // Use bcrypt to compare hashed password
     const passwordMatch = await bcrypt.compare(password, doc.password);
     if (!passwordMatch) {
@@ -30,8 +31,12 @@ exports.deleteAccountByAccountId = async (req, res) => {
         message: 'Incorrect password.'
       });
     }
+    console.log('Password verified. Deleting account...');
 
+    // Delete the account
     await doc.deleteOne();
+
+    console.log('Account deleted successfully.');
     return res.status(204).end(); // 204 should have empty body
   } catch (error) {
     return res.status(500).json({

@@ -1,7 +1,7 @@
 {
-  "name": "bucketlab_app_server",
+  "name": "bucketlab_api_server",
   "version": "0.4.20",
-  "description": "Server running the BucketLab Empire public API",
+  "description": "Server running the BucketLab Empire API",
   "main": "server.js",
   "scripts": {
     "test": "NODE_ENV=test jest --runInBand --verbose",
