@@ -5,24 +5,24 @@ FROM node:22.14.0-alpine
 RUN apk --no-cache add wget curl
 
 # Create app directory
-WORKDIR /auth
+WORKDIR /accounts
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
   adduser -S bucketlab -u 1001
 
 # Copy package files first for better caching
-COPY auth/package*.json ./
+COPY accounts/package*.json ./
 
 # Install dependencies
 RUN npm ci --only=production --no-audit --no-fund && \
   npm cache clean --force
 
 # Copy application code
-COPY auth/ ./
+COPY accounts/ ./
 
 # Fix ownership
-RUN chown -R bucketlab:nodejs /auth
+RUN chown -R bucketlab:nodejs /accounts
 
 # Switch to non-root user
 USER bucketlab
