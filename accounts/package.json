@@ -1,7 +1,7 @@
 {
-  "name": "bucketlab_auth_server",
+  "name": "bucketlab_accounts_server",
   "version": "0.4.20",
-  "description": "Server running the BucketLab Empire Auth API",
+  "description": "Server running the BucketLab Empire Accounts API",
   "main": "server.js",
   "scripts": {
     "test": "NODE_ENV=test jest --verbose --runInBand",
