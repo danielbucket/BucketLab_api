@@ -56,7 +56,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/laboratory', laboratoryProxy());
-app.use('/accounts', accountsProxy());
+app.use('/accnt', accountsProxy());
 
 app.all('*', (req, res) => {
   res.status(404).json({
