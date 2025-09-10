@@ -44,12 +44,12 @@ services:
       start_period: 40s
       retries: 3
 
-  # Auth Server (Internal Service)
-  auth_server:
-    container_name: auth_server
+  # Accounts Server (Internal Service)
+  accounts_server:
+    container_name: accounts_server
     build:
       context: .
-      dockerfile: Dockerfile.auth
+      dockerfile: Dockerfile.accounts
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
       - NODE_ENV=${APP_RUN_MODE:-prod}

@@ -1,12 +1,12 @@
-const BucketLabEmpireUltimateSupreme_AuthServer = require('./src/v1/app.js');
+const BucketLabEmpireUltimateSupreme_AccountsServer = require('./src/v1/app.js');
 const database = require('./src/v1/database');
 const PORT = 4021;
 
 // Initialize database connection
 database.connect()
   .then(() => {
-    BucketLabEmpireUltimateSupreme_AuthServer.listen(PORT, () => {
-      console.log(`BucketLab Empire Ultimate Supreme Auth_Server listening on port ${PORT}`);
+    BucketLabEmpireUltimateSupreme_AccountsServer.listen(PORT, () => {
+      console.log(`BucketLab Empire Ultimate Supreme Accounts_Server listening on port ${PORT}`);
     });
   })
   .catch((error) => {

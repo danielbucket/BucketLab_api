@@ -5,7 +5,7 @@ const app = express();
 const { NODE_ENV } = process.env;
 
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
-const { authProxy } = require('./proxies/authProxy.js');
+const { accountsProxy } = require('./proxies/accountsProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     timestamp: new Date().toISOString(),
     services: {
-      auth: '/auth',
+      accounts: '/accounts',
       laboratory: '/laboratory'
     }
   });
@@ -56,7 +56,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/laboratory', laboratoryProxy());
-app.use('/auth', authProxy());
+app.use('/accounts', accountsProxy());
 
 app.all('*', (req, res) => {
   res.status(404).json({
