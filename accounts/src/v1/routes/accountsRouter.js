@@ -3,8 +3,13 @@ const cors = require('cors');
 const { POST, PATCH, DELETE, GET } = require('../controllers/AccountsController/index.js');
 const { authorize } = require('../middleware/authorize.js');
 
+const buttfinger = (req,res,next) => {
+  console.log("Buttfinger was here");
+  next();
+};
+
 router.route('/')
-  .get(cors(), GET.getAllAccounts)
+  .get(cors(), buttfinger, GET.getAllAccounts)
   .post(cors(), POST.newAccount);
 
 // router.route('/avatar/:id')
