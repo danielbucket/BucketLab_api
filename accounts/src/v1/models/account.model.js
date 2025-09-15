@@ -3,6 +3,18 @@ const { isEmail } = require('validator');
 const { default: isURL } = require('validator/lib/isURL');
 
 const accountSchema = new Schema({
+  profile_avatar: {
+    type: String,
+    validate: [isURL, 'Please enter a valid URL'],
+  },
+  avatar_data: {
+    type: Buffer,
+    default: null
+  },
+  avatar_content_type: {
+    type: String,
+    default: null
+  },
   first_name: {
     type: String,
     required: true

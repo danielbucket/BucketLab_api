@@ -18,9 +18,11 @@ exports.getAccountByAccountId = async (req, res) => {
         status: 'fail',
         message: 'No account found with that ID.'
       });
-    }
+    };
+    
     // Only return non-sensitive fields
     const {
+      profile_avatar,
       first_name,
       last_name,
       email,
@@ -34,6 +36,7 @@ exports.getAccountByAccountId = async (req, res) => {
     return res.status(200).json({
       status: 'success',
       data: {
+        profile_avatar,
         first_name,
         last_name,
         email,
@@ -50,5 +53,5 @@ exports.getAccountByAccountId = async (req, res) => {
       message: 'Server error retrieving account.',
       error: err.message
     });
-  }
+  };
 };

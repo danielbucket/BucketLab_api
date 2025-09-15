@@ -56,6 +56,8 @@ services:
       - PORT=4021
     expose:
       - "4021"
+    volumes:
+      - avatars_data:/app/uploads/avatars
     depends_on:
       mongoDB:
         condition: service_healthy
@@ -104,8 +106,11 @@ services:
       retries: 5
       start_period: 60s
 
+
 volumes:
   mongodb_data:
+    driver: local
+  avatars_data:
     driver: local
 
 networks:

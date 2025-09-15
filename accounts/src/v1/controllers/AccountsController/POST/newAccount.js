@@ -2,6 +2,7 @@ const Account = require('../../../models/account.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+
 exports.newAccount = async (req, res) => {
   const { body } = req;
   
