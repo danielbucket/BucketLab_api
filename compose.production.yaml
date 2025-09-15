@@ -57,7 +57,7 @@ services:
     expose:
       - "4021"
     volumes:
-      - avatars_data:/app/uploads/avatars
+      - avatars_data:/accounts/uploads/avatars
     depends_on:
       mongoDB:
         condition: service_healthy
