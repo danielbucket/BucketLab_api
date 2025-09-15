@@ -34,7 +34,6 @@ exports.loginAccount = async (req, res) => {
 
     account.logged_in = true;
     account.logged_in_at = new Date().toISOString();
-    account.login_count = (account.login_count || 0) + 1;
 
     await account.save();
 
@@ -43,7 +42,8 @@ exports.loginAccount = async (req, res) => {
       {
         id: account._id,
         email: account.email,
-        permissions: account.permissions
+        permissions: account.permissions,
+        avatar: account.avatar
       },
       JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '30m' }

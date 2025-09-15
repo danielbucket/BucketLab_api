@@ -2,6 +2,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const Account = require('../../../models/account.model');
+const Avatar = require('../../../models/avatar.model');
 
 // Configure multer storage for avatar uploads
 const storage = multer.diskStorage({
@@ -79,14 +80,29 @@ exports.uploadAvatar = async (req, res) => {
       // Read the uploaded file as a buffer and store in MongoDB
       const filePath = req.file.path;
       const fileBuffer = fs.readFileSync(filePath);
-      doc.avatar_data = fileBuffer;
-      doc.avatar_content_type = req.file.mimetype;
+      
+      // Create a new Avatar document
+      const avatar = new Avatar({
+        filename: req.file.filename,
+        avatar_data: fileBuffer,
+        content_type: req.file.mimetype,
+        user_id: doc._id
+      });
+      
+      // Save the avatar to MongoDB
+      const savedAvatar = await avatar.save();
+      
+      // Update the account with reference to the avatar
+      doc.avatar_id = savedAvatar._id;
       await doc.save();
+      
       // Remove the file from disk after saving to DB
       fs.unlink(filePath, () => {});
+      
       return res.status(200).json({
         status: 'success',
         message: 'Avatar uploaded and saved to database.',
+        avatar_id: savedAvatar._id,
         avatar_content_type: req.file.mimetype,
         avatar_size: fileBuffer.length
       });

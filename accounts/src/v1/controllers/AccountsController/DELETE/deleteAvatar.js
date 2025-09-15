@@ -1,4 +1,5 @@
 const Account = require('../../../models/account.model');
+const Avatar = require('../../../models/avatar.model');
 
 // DELETE /avatar/:id
 exports.deleteAvatar = async (req, res) => {
@@ -10,16 +11,20 @@ exports.deleteAvatar = async (req, res) => {
         message: 'Invalid account ID format.'
       });
     }
-    const doc = await Account.findById(id);
-    if (!doc || !doc.avatar_data) {
+    const account = await Account.findById(id);
+    if (!account || !account.avatar_id) {
       return res.status(404).json({
         status: 'fail',
         message: 'No avatar found for this account.'
       });
     }
-    doc.avatar_data = null;
-    doc.avatar_content_type = null;
-    await doc.save();
+    
+    // Delete the avatar document
+    await Avatar.findByIdAndDelete(account.avatar_id);
+    
+    // Remove reference from account
+    account.avatar_id = null;
+    await account.save();
     return res.status(200).json({
       status: 'success',
       message: 'Avatar deleted successfully.'
