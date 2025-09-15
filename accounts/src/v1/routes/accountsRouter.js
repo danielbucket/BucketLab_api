@@ -28,4 +28,10 @@ router.route('/login')
 router.route('/logout/:id')
   .post(cors(), POST.logoutAccountByAccountId);
 
+router.route('/unsecureAccountById/:id')
+  .get(cors(), GET.getAccountByAccountId);
+  
+// router.route('/refresh-token')
+//   .post(cors(), POST.refreshToken);
+
 module.exports = router;
