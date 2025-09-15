@@ -1,6 +1,10 @@
 const BucketLabEmpireUltimateSupreme_AccountsServer = require('./src/v1/app.js');
 const database = require('./src/v1/database');
+const { initializeDirectories } = require('./src/v1/utils/initialize');
 const PORT = 4021;
+
+// Initialize directories needed for the application
+initializeDirectories();
 
 // Initialize database connection
 database.connect()
