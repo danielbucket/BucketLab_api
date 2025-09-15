@@ -52,6 +52,7 @@ services:
       - "4021:4021"
     volumes:
       - ./accounts:/usr/src/accounts
+      - avatars_data_dev:/usr/src/accounts/uploads/avatars
     depends_on:
       mongoDB:
         condition: service_started
@@ -94,8 +95,11 @@ services:
       - bucketLab_internal
     restart: always
 
+
 volumes:
   mongodb_data_dev:
+    driver: local
+  avatars_data_dev:
     driver: local
 
 networks:

@@ -1,22 +1,19 @@
 const router = require('express').Router();
 const cors = require('cors');
-const { POST, PATCH, DELETE, GET } = require('../controllers/AccountsController/index.js');
 const { authorize } = require('../middleware/authorize.js');
+const { POST, PATCH, DELETE, GET } = require('../controllers/AccountsController/index.js');
 
-const buttfinger = (req,res,next) => {
-  console.log("Buttfinger was here");
-  next();
-};
+router.route('/avatar/upload/:id')
+  .post(cors(), authorize, POST.uploadAvatar);
+
+router.route('/avatar/:id')
+  .delete(cors(), authorize, DELETE.deleteAvatar)
+  .get(cors(), GET.getAvatar);
 
 router.route('/')
-  .get(cors(), buttfinger, GET.getAllAccounts)
+  .get(cors(), GET.getAllAccounts)
   .post(cors(), POST.newAccount);
-
-// router.route('/avatar/:id')
-  // .get(cors(), authorize, GET.getAccountAvatarById)
-  // .patch(cors(), authorize, PATCH.updateAccountAvatarById)
-  // .delete(cors(), authorize, DELETE.deleteAccountAvatarById);
-
+  
 router.route('/me')
   .get(cors(), authorize, GET.getAccountByToken);
 
