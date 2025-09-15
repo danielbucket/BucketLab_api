@@ -1,4 +1,5 @@
 const Account = require('../../../models/account.model');
+const Avatar = require('../../../models/avatar.model');
 const path = require('path');
 const fs = require('fs');
 
@@ -16,8 +17,8 @@ exports.getAvatar = async (req, res) => {
         message: 'Invalid account ID format.'
       });
     }
-    const doc = await Account.findById(id);
-    if (!doc || !doc.avatar_data) {
+    const account = await Account.findById(id);
+    if (!account || !account.avatar_id) {
       // Serve default image if not found
       const defaultPath = path.join(__dirname, '../../../../static/default-avatar.png');
       if (fs.existsSync(defaultPath)) {
@@ -30,8 +31,25 @@ exports.getAvatar = async (req, res) => {
         });
       }
     }
-    res.set('Content-Type', doc.avatar_content_type || 'image/png');
-    return res.send(doc.avatar_data);
+    console.log('find Avatar by Account ID:', account.avatar_id);
+    // Get avatar from Avatar model
+    const avatar = await Avatar.findById(account.avatar_id);
+    if (!avatar || !avatar.avatar_data) {
+      // Serve default image if avatar data not found
+      const defaultPath = path.join(__dirname, '../../../../static/default-avatar.png');
+      if (fs.existsSync(defaultPath)) {
+        res.set('Content-Type', 'image/png');
+        return res.send(fs.readFileSync(defaultPath));
+      } else {
+        return res.status(404).json({
+          status: 'fail',
+          message: 'Avatar data not found and no default image available.'
+        });
+      }
+    }
+    
+    res.set('Content-Type', avatar.content_type || 'image/png');
+    return res.send(avatar.avatar_data);
   } catch (error) {
     return res.status(500).json({
       status: 'error',

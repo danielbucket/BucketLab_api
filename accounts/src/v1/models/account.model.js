@@ -3,18 +3,6 @@ const { isEmail } = require('validator');
 const { default: isURL } = require('validator/lib/isURL');
 
 const accountSchema = new Schema({
-  profile_avatar: {
-    type: String,
-    validate: [isURL, 'Please enter a valid URL'],
-  },
-  avatar_data: {
-    type: Buffer,
-    default: null
-  },
-  avatar_content_type: {
-    type: String,
-    default: null
-  },
   first_name: {
     type: String,
     required: true
@@ -51,6 +39,11 @@ const accountSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Message'
   }],
+  avatar_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'Avatar',
+    default: null
+  },
   permissions: {
     type: [String],
     enum: ['user', 'admin', 'superadmin', 'guest'],
@@ -95,4 +88,6 @@ accountSchema.pre('save', async function (next) {
   next();
 });
 
-module.exports = model('Account', accountSchema);
+const Account = model('Account', accountSchema);
+
+module.exports = Account;
