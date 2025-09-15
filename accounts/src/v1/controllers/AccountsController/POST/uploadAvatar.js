@@ -6,7 +6,17 @@ const Account = require('../../../models/account.model');
 // Configure multer storage for avatar uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../../../../uploads/avatars'));
+    const uploadDir = path.join(__dirname, '../../../../uploads/avatars');
+    // Ensure the directory exists
+    if (!fs.existsSync(uploadDir)) {
+      try {
+        console.log(`Creating avatar upload directory: ${uploadDir}`);
+        fs.mkdirSync(uploadDir, { recursive: true });
+      } catch (err) {
+        console.error(`Failed to create upload directory: ${err.message}`);
+      }
+    }
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);

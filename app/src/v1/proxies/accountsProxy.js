@@ -8,6 +8,10 @@ exports.accountsProxy = () => createProxyMiddleware({
   pathRewrite: {
     '^/accounts': '', // Remove /accounts prefix when forwarding to accounts server
   },
+  logLevel: 'debug', // Add debug logging
+  onProxyReq: (proxyReq, req, res) => {
+    console.log(`Proxying request to accounts: ${req.method} ${req.originalUrl} -> ${proxyReq.path}`);
+  },
   onError: (err, req, res) => {
     console.error('Proxy error:', err);
     res.status(500).json({

@@ -12,6 +12,7 @@ app.use(express.json());
 app.use('/', (req, res, next) => {
   req.requestTime = new Date().toISOString();
   console.log(`Request received at Accounts_Server @ ${req.requestTime} for ${req.originalUrl}`);
+  console.log(`Request method: ${req.method}, path: ${req.path}, params:`, req.params);
   next();
 });
 
