@@ -58,7 +58,7 @@ sleep 30
 
 # Check service health
 echo "🏥 Checking service health..."
-SERVICES=("app_server" "auth_server" "laboratory_server" "bucketlab_empire_database")
+SERVICES=("app_server" "accounts_server" "laboratory_server" "bucketlab_empire_database")
 
 for service in "${SERVICES[@]}"; do
     if docker ps --filter "name=$service" --filter "status=running" | grep -q "$service"; then
