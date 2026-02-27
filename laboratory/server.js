@@ -6,7 +6,7 @@ const PORT = 4420;
 database.connect()
   .then(() => {
     BucketLabEmpireUltimateSupreme_LaboratoryServer.listen(PORT, () => {
-      console.log(`BucketLab Empire Ultimate Supreme Laboratory_Server is running on port: ${PORT}`);
+      console.log(`BucketLab Empire Ultimate Supreme Laboratory Server is running on port: ${PORT}`);
     });
   })
   .catch((error) => {

@@ -5,9 +5,9 @@ const GET_methods = require('./GET');
 
 module.exports = Object.freeze(
   Object.assign({},
-    { DELETE: DELETE_methods },
-    { GET: GET_methods },
-    { PATCH: PATCH_methods },
-    { POST: POST_methods }
+    { DELETE_methods },
+    { GET_methods },
+    { PATCH_methods },
+    { POST_methods }
   )
 );
