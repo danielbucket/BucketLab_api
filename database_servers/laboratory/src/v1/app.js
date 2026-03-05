@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-// const laboratoriesRouter = require('./routes/laboratoryRouter.js');
+const laboratoriesRouter = require('./routes/laboratoryRouter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
 app.set('trust proxy', true);
@@ -21,14 +21,14 @@ app.use('/', (req,res,next) => {
   next();
 });
 
-// app.use('/', laboratoriesRouter);
+app.use('/', laboratoriesRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({
     status: 'fail',
     fail_type: 'server_error',
     message: `Can't find ${req.originalUrl} on this server!`
-  });
+  })
 });
 
 module.exports = app;
