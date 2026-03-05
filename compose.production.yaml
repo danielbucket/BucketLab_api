@@ -44,12 +44,12 @@ services:
       start_period: 40s
       retries: 3
 
-  # Accounts Server (Internal Service)
-  accounts_server:
-    container_name: accounts_server
+  # Profiles Server (Internal Service)
+  profiles_server:
+    container_name: profiles_server
     build:
       context: .
-      dockerfile: Dockerfile.accounts
+      dockerfile: Dockerfile.profiles
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
       - NODE_ENV=${APP_RUN_MODE:-prod}
@@ -57,13 +57,61 @@ services:
     expose:
       - "4021"
     volumes:
-      - avatars_data:/accounts/uploads/avatars
+      - avatars_data:/profiles/uploads/avatars
     depends_on:
       mongoDB:
         condition: service_healthy
     networks:
       - bucketLab_internal
     restart: unless-stopped
+
+  # Messages Server (Internal Service)
+  messages_server:
+    container_name: messages_server
+    build:
+      context: .
+      dockerfile: Dockerfile.messages
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
+      - NODE_ENV=${APP_RUN_MODE:-prod}
+      - PORT=4022
+    expose:
+      - "4022"
+    depends_on:
+      mongoDB:
+        condition: service_healthy
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+
+  # Laboratory Server (Internal Service)
+  laboratory_server:
+    container_name: laboratory_server
+    build:
+      context: .
+      dockerfile: Dockerfile.laboratories
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
+      - NODE_ENV=${APP_RUN_MODE:-prod}
+      - PORT=4023
+    expose:
+      - "4023"
+    depends_on:
+      mongoDB:
+        condition: service_healthy
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+  
+  # Let's Encrypt Companion (for SSL Certificates)
+  # certbot:
+  #   container_name: certbot
+  #   image: certbot/certbot:latest
+  #   volumes:
+  #     - certbot_data:/etc/letsencrypt
+  #   networks:
+  #     - bucketLab_internal
+  #   restart: unless-stopped
 
   # MongoDB Database
   mongoDB:

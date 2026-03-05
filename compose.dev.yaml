@@ -1,5 +1,5 @@
 # Development Docker Compose Configuration
-# Live reload, open ports, and relaxed resource limits for local developmentgit ad
+# Live reload, open ports, and relaxed resource limits for local development
 
 services:
   cloudflared:
@@ -19,6 +19,7 @@ services:
       app_server:
         condition: service_started
 
+  # Application Servers
   app_server:
     container_name: app_server_dev
     build:
@@ -39,11 +40,15 @@ services:
       - bucketLab_internal
     restart: always
 
-  accounts_server:
-    container_name: accounts_server_dev
+  # Database Servers
+  ## Each database server has its own container for better isolation and easier debugging during development.
+
+  # Profiles Server
+  profiles_server:
+    container_name: profiles_server_dev
     build:
       context: .
-      dockerfile: Dockerfile.accounts
+      dockerfile: Dockerfile.profiles
     environment:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
       - NODE_ENV=development
@@ -51,8 +56,8 @@ services:
     ports:
       - "4021:4021"
     volumes:
-      - ./accounts:/usr/src/accounts
-      - avatars_data_dev:/usr/src/accounts/uploads/avatars
+      - ./profiles:/usr/src/profiles
+      - ./avatars_data_dev:/usr/src/profiles/uploads/avatars
     depends_on:
       mongoDB:
         condition: service_started
@@ -60,6 +65,28 @@ services:
       - bucketLab_internal
     restart: always
 
+  # Messages Server
+  messages_server:
+    container_name: messages_server_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.messages
+    environment:
+      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
+      - NODE_ENV=development
+      - PORT=4022
+    ports:
+      - "4022:4022"
+    volumes:
+      - ./messages:/usr/src/messages
+    depends_on:
+      mongoDB:
+        condition: service_started
+    networks:
+      - bucketLab_internal
+    restart: always
+
+  # Laboratory Server
   laboratory_server:
     container_name: laboratory_server_dev
     build:
@@ -68,9 +95,9 @@ services:
     environment:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
       - NODE_ENV=development
-      - PORT=4420
+      - PORT=4023
     ports:
-      - "4420:4420"
+      - "4023:4023"
     volumes:
       - ./laboratory:/usr/src/laboratory
     depends_on:
@@ -80,6 +107,7 @@ services:
       - bucketLab_internal
     restart: always
 
+  # MongoDB Server
   mongoDB:
     container_name: bucketlab_empire_database_dev
     image: mongo:7.0
@@ -94,7 +122,6 @@ services:
     networks:
       - bucketLab_internal
     restart: always
-
 
 volumes:
   mongodb_data_dev:
