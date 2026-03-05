@@ -5,7 +5,8 @@ const app = express();
 const { NODE_ENV } = process.env;
 
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
-const { accountsProxy } = require('./proxies/accountsProxy.js');
+const { messagesProxy } = require('./proxies/messagesProxy.js');
+const { profilesProxy } = require('./proxies/profilesProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
@@ -35,13 +36,14 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     timestamp: new Date().toISOString(),
     services: {
-      accounts: '/accounts',
+      profiles: '/profiles',
+      messages: '/messages',
       laboratory: '/laboratory'
     }
   });
 });
 
-app.get('/health', (req, res) => {
+app.get('/health', (req,res) => {
   res.status(200).json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
@@ -49,16 +51,17 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.use('/', (req, res, next) => {
+app.use('/', (req,res,next) => {
   req.requestTime = new Date().toISOString();
   console.log(`Request received at App_Server: ${req.requestTime}`);
   next();
 });
 
 app.use('/laboratory', laboratoryProxy());
-app.use('/accounts', accountsProxy());
+app.use('/messages', messagesProxy());
+app.use('/profiles', profilesProxy());
 
-app.all('*', (req, res) => {
+app.all('*', (req,res) => {
   res.status(404).json({
     message: 'Route not found'
   });
