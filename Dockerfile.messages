@@ -12,17 +12,16 @@ RUN addgroup -g 1001 -S nodejs && \
   adduser -S bucketlab -u 1001
 
 # Copy package files first for better caching
-COPY messages/package*.json ./
+COPY database_servers/messages/package.json ./
 
 # Install dependencies
-RUN npm ci --only=production --no-audit --no-fund && \
-  npm cache clean --force
+RUN npm install --only=production --no-audit --no-fund && npm cache clean --force
 
 # Copy application code
-COPY profiles/ ./
+COPY database_servers/messages/ ./
 
 # Fix ownership
-RUN chown -R bucketlab:nodejs /profiles
+RUN chown -R bucketlab:nodejs /messages
 
 # Switch to non-root user
 USER bucketlab

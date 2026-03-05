@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const messagesRouter = require('./routes/messsagesRouter.js');
+// const messagesRouter = require('./routes/messsagesRouter.js');
 
 app.set('trust proxy', true);
 
@@ -15,7 +15,12 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/', messagesRouter);
+app.use('/', (req,res,next) => {
+  console.log('Request body at Messages Server:', req.body);
+  next();
+});
+
+// app.use('/', messagesRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({

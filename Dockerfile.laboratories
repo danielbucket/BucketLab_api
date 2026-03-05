@@ -12,11 +12,10 @@ RUN addgroup -g 1001 -S nodejs && \
   adduser -S bucketlab -u 1001
 
 # Copy package files first for better caching
-COPY database_servers/laboratory/package*.json ./
+  COPY database_servers/laboratory/package.json ./
 
-# Install dependencies
-RUN npm ci --only=production --no-audit --no-fund && \
-  npm cache clean --force
+  # Install dependencies
+  RUN npm install --only=production --no-audit --no-fund && npm cache clean --force
 
 # Copy application code
 COPY database_servers/laboratory/ ./
