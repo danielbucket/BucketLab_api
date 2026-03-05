@@ -1,6 +1,6 @@
-const Account = require('../../../models/profile.model');
+const Profile = require('../../../models/profile.model');
 
-exports.updateAccountByAccountId = async (req, res) => {
+exports.updateProfileByProfileId = async (req, res) => {
   try {
     const { id } = req.params;
     const { body } = req;
@@ -9,15 +9,15 @@ exports.updateAccountByAccountId = async (req, res) => {
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Invalid account ID format.'
+        message: 'Invalid profile ID format.'
       });
     }
 
-    const doc = await Account.findById(id);
+    const doc = await Profile.findById(id);
     if (!doc) {
       return res.status(404).json({
         status: 'fail',
-        message: 'No account found with that ID.'
+        message: 'No profile found with that ID.'
       });
     }
 
@@ -58,20 +58,20 @@ exports.updateAccountByAccountId = async (req, res) => {
     if (error.name === 'ValidationError') {
       return res.status(400).json({
         status: 'error',
-        message: 'Account update failed.',
+        message: 'Profile update failed.',
         error: error
       });
     }
     if (error.code === 11000) {
       return res.status(400).json({
         status: 'error',
-        message: 'Account update failed.',
+        message: 'Profile update failed.',
         error: 'Duplicate email address'
       });
     }
     return res.status(500).json({
       status: 'error',
-      message: 'Account update failed.',
+      message: 'Profile update failed.',
       error: error.message
     });
   }

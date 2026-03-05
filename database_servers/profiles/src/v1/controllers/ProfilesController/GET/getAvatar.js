@@ -1,4 +1,4 @@
-const Account = require('../../../models/profile.model');
+const Profile = require('../../../models/profile.model');
 const Avatar = require('../../../models/avatar.model');
 const path = require('path');
 const fs = require('fs');
@@ -14,11 +14,12 @@ exports.getAvatar = async (req, res) => {
     if (!id || !id.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Invalid account ID format.'
+        message: 'Invalid profile ID format.'
       });
-    }
-    const account = await Account.findById(id);
-    if (!account || !account.avatar_id) {
+    };
+
+    const profile = await Profile.findById(id);
+    if (!profile || !profile.avatar_id) {
       // Serve default image if not found
       const defaultPath = path.join(__dirname, '../../../../static/default-avatar.png');
       if (fs.existsSync(defaultPath)) {
@@ -27,13 +28,13 @@ exports.getAvatar = async (req, res) => {
       } else {
         return res.status(404).json({
           status: 'fail',
-          message: 'No avatar found for this account and no default image available.'
+          message: 'No avatar found for this profile and no default image available.'
         });
       }
-    }
-    console.log('find Avatar by Account ID:', account.avatar_id);
+    };
+
     // Get avatar from Avatar model
-    const avatar = await Avatar.findById(account.avatar_id);
+    const avatar = await Avatar.findById(profile.avatar_id);
     if (!avatar || !avatar.avatar_data) {
       // Serve default image if avatar data not found
       const defaultPath = path.join(__dirname, '../../../../static/default-avatar.png');
@@ -46,7 +47,7 @@ exports.getAvatar = async (req, res) => {
           message: 'Avatar data not found and no default image available.'
         });
       }
-    }
+    };
     
     res.set('Content-Type', avatar.content_type || 'image/png');
     return res.send(avatar.avatar_data);
@@ -56,5 +57,5 @@ exports.getAvatar = async (req, res) => {
       message: 'Failed to retrieve avatar.',
       error: error.message
     });
-  }
+  };
 };

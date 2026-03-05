@@ -1,13 +1,13 @@
-const { getAllAccounts } = require('./getAllAccounts');
-const { getAccountByAccountId } = require('./getAccountByAccountId');
-const { getAccountByToken } = require('./getAccountByToken');
+const { getAllProfiles } = require('./getAllProfiles');
+const { getProfileByProfileId } = require('./getProfileByProfileId');
+const { getProfileByToken } = require('./getProfileByToken');
 const { getAvatar } = require('./getAvatar');
 
 module.exports = Object.freeze(
   Object.assign({},
-    { getAllAccounts },
-    { getAccountByAccountId },
-    { getAccountByToken },
+    { getAllProfiles },
+    { getProfileByProfileId },
+    { getProfileByToken },
     { getAvatar }
   )
 );

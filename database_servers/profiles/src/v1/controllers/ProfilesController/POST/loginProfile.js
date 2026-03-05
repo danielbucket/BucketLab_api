@@ -1,8 +1,8 @@
-const Account = require('../../../models/profile.model');
+const Profile = require('../../../models/profile.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-exports.loginAccount = async (req, res) => {
+exports.loginProfile = async (req, res) => {
   for (let requiredParameter of ['email', 'password']) {
     if (!req.body[requiredParameter]) {
       return res.status(422).json({
@@ -13,17 +13,16 @@ exports.loginAccount = async (req, res) => {
   }
 
   try {
-    const account = await Account.findOne({ email: req.body.email });
-    if (!account) {
-      console.warn('Account Not Found:', req.body.email);
+    const profile = await Profile.findOne({ email: req.body.email });
+    if (!profile) {
       return res.status(404).json({
         status: 'fail',
         fail_type: 'not_found',
-        message: 'No account found with that email.'
+        message: 'No profile found with that email.'
       });
     }
 
-    const passwordMatch = await bcrypt.compare(req.body.password, account.password);
+    const passwordMatch = await bcrypt.compare(req.body.password, profile.password);
     if (!passwordMatch) {
       return res.status(401).json({
         status: 'fail',
@@ -32,18 +31,18 @@ exports.loginAccount = async (req, res) => {
       });
     }
 
-    account.logged_in = true;
-    account.logged_in_at = new Date().toISOString();
+    profile.logged_in = true;
+    profile.logged_in_at = new Date().toISOString();
 
-    await account.save();
+    await profile.save();
 
     const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key-change-in-production';
     const token = jwt.sign(
       {
-        id: account._id,
-        email: account.email,
-        permissions: account.permissions,
-        avatar: account.avatar
+        id: profile._id,
+        email: profile.email,
+        permissions: profile.permissions,
+        avatar: profile.avatar
       },
       JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '30m' }
@@ -52,10 +51,10 @@ exports.loginAccount = async (req, res) => {
     return res.status(200).json({
       status: 'success',
       message: 'Login successful.',
-      accountData: {
-        first_name: account.first_name,
-        last_name: account.last_name,
-        id: account._id,
+      profileData: {
+        first_name: profile.first_name,
+        last_name: profile.last_name,
+        id: profile._id,
         token: token,
       }
     });

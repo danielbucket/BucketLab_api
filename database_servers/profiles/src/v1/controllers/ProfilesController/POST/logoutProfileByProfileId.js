@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
-const Account = require('../../../models/profile.model');
+const Profile = require('../../../models/profile.model');
 
-exports.logoutAccountByAccountId = async (req, res) => {
+exports.logoutProfileByProfileId = async (req, res) => {
   const id = req.params.id;
 
   if (!ObjectId.isValid(id)) {
@@ -12,13 +12,13 @@ exports.logoutAccountByAccountId = async (req, res) => {
   }
 
   try {
-    const doc = await Account.findById(id);
+    const doc = await Profile.findById(id);
 
     if (!doc) {
       return res.status(404).json({
         id,
         status: 'fail',
-        message: 'No account found with that ID.'
+        message: 'No profile found with that ID.'
       });
     }
 

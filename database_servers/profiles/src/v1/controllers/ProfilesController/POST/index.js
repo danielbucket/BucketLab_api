@@ -1,13 +1,13 @@
-const { loginAccount } = require('./loginAccount.js');
-const { logoutAccountByAccountId } = require('./logoutAccountByAccountId.js');
+const { loginProfile } = require('./loginProfile.js');
+const { logoutProfileByProfileId } = require('./logoutProfileByProfileId.js');
 const { uploadAvatar } = require('./uploadAvatar.js');
-const { newAccount } = require('./newAccount.js');
+const { newProfile } = require('./newProfile.js');
 
 module.exports = Object.freeze(
   Object.assign({}, {
-    loginAccount,
-    logoutAccountByAccountId,
+    loginProfile,
+    logoutProfileByProfileId,
     uploadAvatar,
-    newAccount
+    newProfile
   })
 );

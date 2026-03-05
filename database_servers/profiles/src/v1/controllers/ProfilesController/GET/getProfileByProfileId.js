@@ -1,22 +1,22 @@
-const Account = require('../../../models/profile.model');
+const Profile = require('../../../models/profile.model');
 
-exports.getAccountByAccountId = async (req, res) => {
+exports.getProfileByProfileId = async (req, res) => {
   try {
     const { id } = req.params;
     // Optionally validate ObjectId format if using MongoDB
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Invalid account ID format.'
+        message: 'Invalid profile ID format.'
       });
     }
 
-    // Find the account by ID
-    const doc = await Account.findById(id).lean();
+    // Find the profile by ID
+    const doc = await Profile.findById(id).lean();
     if (!doc) {
       return res.status(404).json({
         status: 'fail',
-        message: 'No account found with that ID.'
+        message: 'No profile found with that ID.'
       });
     };
     
@@ -50,7 +50,7 @@ exports.getAccountByAccountId = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       status: 'error',
-      message: 'Server error retrieving account.',
+      message: 'Server error retrieving profile.',
       error: err.message
     });
   };

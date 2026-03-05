@@ -1,13 +1,13 @@
-const Account = require('../../../models/profile.model');
+const Profile = require('../../../models/profile.model');
 
-exports.getAllAccounts = async (req, res) => {
+exports.getAllProfiles = async (req, res) => {
   try {
-    const found = await Account.find({});
+    const found = await Profile.find({});
 
     if (!found || found.length === 0) {
       return res.status(404).json({
         status: 'fail',
-        message: 'No accounts found.'
+        message: 'No profiles found.'
       });
     } else {
       return res.status(200).json({

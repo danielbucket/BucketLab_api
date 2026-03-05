@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const { corsConfig } = require('./optimization/corsConfig.js');
 // const messagesRouter = require('./routes/messsagesRouter.js');
 
 app.set('trust proxy', true);
