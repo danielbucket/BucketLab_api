@@ -39,11 +39,11 @@ services:
       - bucketLab_internal
     restart: always
 
-  accounts_server:
-    container_name: accounts_server_dev
+  profiles_server:
+    container_name: profiles_server_dev
     build:
       context: .
-      dockerfile: Dockerfile.accounts
+      dockerfile: Dockerfile.profiles
     environment:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
       - NODE_ENV=development
@@ -51,8 +51,8 @@ services:
     ports:
       - "4021:4021"
     volumes:
-      - ./accounts:/usr/src/accounts
-      - avatars_data_dev:/usr/src/accounts/uploads/avatars
+      - ./profiles:/usr/src/profiles
+      - ./avatars_data_dev:/usr/src/profiles/uploads/avatars
     depends_on:
       mongoDB:
         condition: service_started
