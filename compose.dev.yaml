@@ -2,6 +2,7 @@
 # Live reload, open ports, and relaxed resource limits for local development
 
 services:
+  # Cloudflare Tunnel Service
   cloudflared:
     env_file: .env
     container_name: cloudflared_dev
@@ -10,8 +11,7 @@ services:
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
     command: tunnel --no-autoupdate run
-    networks:
-      - bucketLab_internal
+    networks: host  # Required for tunnel to access host services
     volumes:
       - /etc/localtime:/etc/localtime:ro
     restart: always
@@ -53,8 +53,8 @@ services:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
       - NODE_ENV=development
       - PORT=4021
-    ports:
-      - "4021:4021"
+    expose:
+      - "4021"
     volumes:
       - ./profiles:/usr/src/profiles
       - ./avatars_data_dev:/usr/src/profiles/uploads/avatars
@@ -72,16 +72,14 @@ services:
       context: .
       dockerfile: Dockerfile.messages
     environment:
-      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
       - NODE_ENV=development
       - PORT=4022
-    ports:
-      - "4022:4022"
-    volumes:
-      - ./messages:/usr/src/messages
+    expose: 
+      - "4022"
     depends_on:
       mongoDB:
-        condition: service_started
+        condition: service_healthy
     networks:
       - bucketLab_internal
     restart: always
@@ -93,19 +91,17 @@ services:
       context: .
       dockerfile: Dockerfile.laboratory
     environment:
-      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
       - NODE_ENV=development
       - PORT=4023
-    ports:
-      - "4023:4023"
-    volumes:
-      - ./laboratory:/usr/src/laboratory
+    expose:
+      - "4023"
     depends_on:
       mongoDB:
-        condition: service_started
+        condition: service_healthy
     networks:
       - bucketLab_internal
-    restart: always
+    restart: unless-stopped
 
   # MongoDB Server
   mongoDB:
@@ -121,7 +117,7 @@ services:
       - mongodb_data_dev:/data/db
     networks:
       - bucketLab_internal
-    restart: always
+    restart: unless-stopped
 
 volumes:
   mongodb_data_dev:

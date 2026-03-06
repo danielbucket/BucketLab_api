@@ -84,7 +84,7 @@ services:
       - bucketLab_internal
     restart: unless-stopped
 
-  # Laboratory Server (Internal Service)
+  # Laboratory Server
   laboratory_server:
     container_name: laboratory_server
     build:
