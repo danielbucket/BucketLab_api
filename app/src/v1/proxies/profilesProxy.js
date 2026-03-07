@@ -6,7 +6,6 @@ exports.profilesProxy = () => createProxyMiddleware({
   pathRewrite: {
     '^/profiles': '', // Removes /profiles prefix when forwarding to profiles server
   },
-  logLevel: 'debug', // Add debug logging
   onProxyReq: (proxyReq, req, res) => {
     console.log(`Proxying request to profiles: ${req.method} ${req.originalUrl} -> ${proxyReq.path}`);
   },

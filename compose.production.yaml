@@ -103,6 +103,24 @@ services:
       - bucketLab_internal
     restart: unless-stopped
   
+  authorization_server:
+    container_name: authorization_server
+    build:
+      context: .
+      dockerfile: Dockerfile.authorization
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
+      - NODE_ENV=${APP_RUN_MODE:-prod}
+      - PORT=4024
+    expose:
+      - "4024"
+    depends_on:
+      mongoDB:
+        condition: service_healthy
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+
   # Let's Encrypt Companion (for SSL Certificates)
   # certbot:
   #   container_name: certbot
