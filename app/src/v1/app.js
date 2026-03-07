@@ -34,12 +34,7 @@ app.get('/', (req, res) => {
   res.status(200).json({
     message: 'This is the BucketLab.io API Gateway',
     version: '1.0.0',
-    timestamp: new Date().toISOString(),
-    services: {
-      profiles: '/profiles',
-      messages: '/messages',
-      laboratory: '/laboratory'
-    }
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -57,9 +52,9 @@ app.use('/', (req,res,next) => {
   next();
 });
 
-app.use('/laboratory', laboratoryProxy());
-app.use('/messages', messagesProxy());
 app.use('/profiles', profilesProxy());
+app.use('/messages', messagesProxy());
+app.use('/laboratory', laboratoryProxy());
 
 app.all('*', (req,res) => {
   res.status(404).json({
