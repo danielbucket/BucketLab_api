@@ -11,28 +11,56 @@ services:
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
     command: tunnel --no-autoupdate run
-    network_mode: host  # Required for tunnel to access host services
+    network_mode: host
     volumes:
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
-    depends_on:
-      mongoDB:
-        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "pgrep", "cloudflared"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-  # App Server (API Gateway)
+  # MongoDB Server
+  mongodb:
+    container_name: bucketlab_database
+    build:
+      context: .
+      dockerfile: Dockerfile.mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_DATABASE}
+    expose:
+      - "27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+    depends_on:
+      cloudflared:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:27017"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Application Gateway Server
   app_server:
     container_name: app_server
     build:
       context: .
       dockerfile: Dockerfile.app
     environment:
-      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
+      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
       - NODE_ENV=${APP_RUN_MODE:-prod}
       - PORT=4020
     ports:
       - "4020:4020"
     depends_on:
-      mongoDB:
+      mongodb:
         condition: service_healthy
     networks:
       - bucketLab_internal
@@ -44,6 +72,9 @@ services:
       start_period: 40s
       retries: 3
 
+  ## Database Servers
+  ## Each database server has its own container for better isolation and easier debugging during development.
+
   # Profiles Server (Internal Service)
   profiles_server:
     container_name: profiles_server
@@ -51,7 +82,7 @@ services:
       context: .
       dockerfile: Dockerfile.profiles
     environment:
-      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
+      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
       - NODE_ENV=${APP_RUN_MODE:-prod}
       - PORT=4021
     expose:
@@ -59,8 +90,8 @@ services:
     volumes:
       - avatars_data:/profiles/uploads/avatars
     depends_on:
-      mongoDB:
-        condition: service_healthy
+      app_server:
+        condition: service_started
     networks:
       - bucketLab_internal
     restart: unless-stopped
@@ -78,18 +109,18 @@ services:
     expose:
       - "4022"
     depends_on:
-      mongoDB:
-        condition: service_healthy
+      app_server:
+        condition: service_started
     networks:
       - bucketLab_internal
     restart: unless-stopped
 
-  # Laboratory Server
+  # Laboratory Server (Internal Service)
   laboratory_server:
     container_name: laboratory_server
     build:
       context: .
-      dockerfile: Dockerfile.laboratories
+      dockerfile: Dockerfile.laboratory
     environment:
       - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
       - NODE_ENV=${APP_RUN_MODE:-prod}
@@ -97,12 +128,31 @@ services:
     expose:
       - "4023"
     depends_on:
-      mongoDB:
-        condition: service_healthy
+      app_server:
+        condition: service_started
     networks:
       - bucketLab_internal
     restart: unless-stopped
   
+  # Authentication Server (Internal Service)
+  authentication_server:
+    container_name: authentication_server
+    build:
+      context: .
+      dockerfile: Dockerfile.authentication
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongoDB:27017/?authSource=admin"
+      - NODE_ENV=${APP_RUN_MODE:-prod}
+      - PORT=4024
+    expose:
+      - "4024"
+    depends_on:
+      app_server:
+        condition: service_started
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+
   # Let's Encrypt Companion (for SSL Certificates)
   # certbot:
   #   container_name: certbot
@@ -112,29 +162,6 @@ services:
   #   networks:
   #     - bucketLab_internal
   #   restart: unless-stopped
-
-  # MongoDB Database
-  mongoDB:
-    container_name: bucketlab_empire_database
-    image: mongo:7.0
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: "${MONGO_DB_USERNAME}"
-      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_DB_PASSWORD}"
-      MONGO_INITDB_DATABASE: "bucketlab"
-    expose:
-      - "27017"
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - bucketLab_internal
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "mongosh", "--port", "27017", "--eval", "db.adminCommand('ping')", "--quiet"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
-
 
 volumes:
   mongodb_data:

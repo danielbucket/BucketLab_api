@@ -1,4 +1,4 @@
-const MessagesServer = require('./src/v1/app.js');
+const Messages_Server = require('./src/v1/app.js');
 const database = require('./src/v1/database/index.js');
 const { initializeDirectories } = require('./src/v1/utils/initialize.js');
 const PORT = 4022;
@@ -9,7 +9,7 @@ initializeDirectories();
 // Initialize database connection
 database.connect()
   .then(() => {
-    MessagesServer.listen(PORT, () => {
+    Messages_Server.listen(PORT, () => {
       console.log(`BucketLab Messages Server listening on port ${PORT}`);
     });
   })

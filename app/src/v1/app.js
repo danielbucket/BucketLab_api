@@ -7,6 +7,8 @@ const { NODE_ENV } = process.env;
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
 const { messagesProxy } = require('./proxies/messagesProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
+const { authMiddleware } = require('./middleware/authMiddleware.js');
+const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
@@ -38,6 +40,7 @@ app.get('/', (req, res) => {
   });
 });
 
+
 app.get('/health', (req,res) => {
   res.status(200).json({
     status: 'healthy',
@@ -51,6 +54,10 @@ app.use('/', (req,res,next) => {
   console.log(`Request received at App_Server: ${req.requestTime}`);
   next();
 });
+
+app.use('/authentication', authenticationProxy());
+
+// app.use('/*', authMiddleware()); // Apply authentication middleware to all routes except /authorize
 
 app.use('/profiles', profilesProxy());
 app.use('/messages', messagesProxy());
