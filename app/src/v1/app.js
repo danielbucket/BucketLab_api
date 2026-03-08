@@ -8,7 +8,7 @@ const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
 const { messagesProxy } = require('./proxies/messagesProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
 const { authMiddleware } = require('./middleware/authMiddleware.js');
-const { authProxy } = require('./proxies/authProxy.js');
+const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
@@ -55,7 +55,7 @@ app.use('/', (req,res,next) => {
   next();
 });
 
-app.use('/authorize', newProxy());
+app.use('/authentication', authenticationProxy());
 
 // app.use('/*', authMiddleware()); // Apply authentication middleware to all routes except /authorize
 

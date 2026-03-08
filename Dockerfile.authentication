@@ -21,7 +21,7 @@ RUN addgroup -g 1001 -S nodejs && \
 COPY database_servers/authentication/ ./
 
 # Fix ownership
-RUN chown -R bucketlab:nodejs /authentication
+RUN chown -R bucketlab:nodejs /authentication  
 # Switch to non-root user
 USER bucketlab
 

@@ -15,6 +15,6 @@ function initializeDirectories() {
   }
   
   console.log('File initialization completed.');
-}
+};
 
 module.exports = { initializeDirectories };

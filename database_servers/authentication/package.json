@@ -1,7 +1,7 @@
 {
-  "name": "bucketlab_laboratory_server",
+  "name": "bucketlab_authentication_server",
   "version": "0.4.20",
-  "description": "BucketLab Server - Laboratory API",
+  "description": "BucketLab Server - Authentication API",
   "main": "server.js",
   "scripts": {
     "test": "NODE_ENV=test jest --verbose --runInBand",

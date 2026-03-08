@@ -1,4 +1,4 @@
-const ProfilesServer = require('./src/v1/app.js');
+const Profiles_Server = require('./src/v1/app.js');
 const database = require('./src/v1/database/index.js');
 const { initializeDirectories } = require('./src/v1/utils/initialize.js');
 const PORT = 4021;
@@ -9,7 +9,7 @@ initializeDirectories();
 // Initialize database connection
 database.connect()
   .then(() => {
-    ProfilesServer.listen(PORT, () => {
+    Profiles_Server.listen(PORT, () => {
       console.log(`BucketLab Profiles Server listening on port ${PORT}`);
     });
   })
