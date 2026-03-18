@@ -11,20 +11,31 @@ router.route('/avatar/:id')
   .get(cors(), GET.getAvatar);
 
 router.route('/')
-  .get(cors(), GET.getAllProfiles)
-  .post(cors(), POST.newProfile);
-  
+  .get(cors(), GET.getAllProfiles);
+
+router.route('/create')
+  .post(cors(), POST.createProfile);
+
 router.route('/me')
+// This route exists, but it's endpoint isn't written in a useful way.
+// It will need to be refactored to be more useful.
+// I think it's a genuine example of AI generated slop, just look at it.
+// For now it serves as a placeholder for the "get profile by token" functionality.
   .get(cors(), authorize, GET.getProfileByToken);
+
 router.route('/:id')
-  .get(cors(), authorize, GET.getProfileByProfileId)
-  .patch(cors(), authorize, PATCH.updateProfileByProfileId)
+  .get(cors(), authorize, GET.getProfileByProfileId);
+
+router.route('/:id/update')
+  .patch(cors(), authorize, PATCH.updateProfileByProfileId);
+  
+router.route('/:id/delete')
   .delete(cors(), authorize, DELETE.deleteProfileByProfileId);
 
-router.route('/login')
+router.route('/auth/login')
   .post(cors(), POST.loginProfile);
 
-router.route('/logout/:id')
+router.route('/auth/logout/:id')
   .post(cors(), POST.logoutProfileByProfileId);
 
 router.route('/unsecureProfileById/:id')

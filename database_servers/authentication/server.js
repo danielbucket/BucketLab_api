@@ -9,8 +9,17 @@ initializeDirectories();
 // Initialize database connection
 database.connect()
 .then(() => {
-  Authentication_Server.listen(PORT, () => {
+  const server = Authentication_Server.listen(PORT, () => {
     console.log(`BucketLab Authentication Server listening on port ${PORT}`);
+  });
+  
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down gracefully...');
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
   });
 })
 .catch((error) => {

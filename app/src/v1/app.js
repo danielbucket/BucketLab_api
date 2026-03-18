@@ -55,13 +55,11 @@ app.use('/', (req,res,next) => {
   next();
 });
 
-app.use('/authentication', authenticationProxy());
+app.use('/auth', authenticationProxy());
 
-// app.use('/*', authMiddleware()); // Apply authentication middleware to all routes except /authorize
-
-app.use('/profiles', profilesProxy());
-app.use('/messages', messagesProxy());
-app.use('/laboratory', laboratoryProxy());
+app.use('/profiles', authMiddleware(), profilesProxy());
+app.use('/messages', authMiddleware(), messagesProxy());
+app.use('/laboratory', authMiddleware(), laboratoryProxy());
 
 app.all('*', (req,res) => {
   res.status(404).json({

@@ -1,5 +1,8 @@
 # Dockerfile for Laboratory Service - Linux Deployment
-FROM node:22.14.0-alpine
+FROM node:22-alpine
+
+# Update npm to latest version
+RUN npm install -g npm@latest
 
 # Install required packages
 RUN apk --no-cache add wget curl

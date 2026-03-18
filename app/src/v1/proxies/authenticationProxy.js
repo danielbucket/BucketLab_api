@@ -4,7 +4,7 @@ exports.authenticationProxy = () => createProxyMiddleware({
     target: 'http://authentication_server:4024',
     changeOrigin: true,
     pathRewrite: {
-      '^/authentication': '', // Removes /authentication prefix when forwarding to authentication server
+      '^/auth': '', // Removes /auth prefix when forwarding to authentication server
     },
     onError: (err, req, res) => {
       console.error('Proxy error:', err);

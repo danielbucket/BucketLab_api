@@ -16,11 +16,6 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/', (req,res,next) => {
-  console.log('Request body at Authorization Server:', req.body);
-  next();
-});
-
 app.use('/', authorizationRouter);
 
 app.all('/*', (req, res) => {
