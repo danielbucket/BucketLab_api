@@ -12,7 +12,7 @@ const { POST } = require('../controllers/AuthorizationController/index.js');
 //   .delete(cors(), authorize, DELETE.deleteAuthorizationById);
 
 router.route('/login')
-.post(cors(), POST.loginAuthorization);
+  .post(cors(), POST.loginAuthorization);
 
 router.route('/register')
   .post(cors(), POST.registerAuthorization);
@@ -20,8 +20,8 @@ router.route('/register')
 // router.route('/refresh-token')
 //   .post(cors(), POST.refreshTokenAuthorization);
 
-router.route('/logout/:id')
-  .post(cors(), POST.logoutAuthorizationByProfileId);
+// router.route('/logout/:id')
+//   .post(cors(), POST.logoutAuthorizationByProfileId);
 
 // router.route('/unsecureAuthorizationById/:id')
 //   .get(cors(), GET.getAuthorizationById);

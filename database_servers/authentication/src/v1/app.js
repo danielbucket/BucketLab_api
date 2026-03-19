@@ -16,7 +16,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/', authorizationRouter);
+app.use('/v1', authorizationRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({

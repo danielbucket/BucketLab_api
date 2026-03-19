@@ -1,6 +1,6 @@
 const { NODE_ENV } = process.env;
 
-const whitelist = ['https://bucketlab.io'];
+const whitelist = ['https://bucketlab.io', 'http://localhost:8081'];
 
 exports.corsConfig = () => {
   return {

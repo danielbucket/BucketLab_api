@@ -57,9 +57,9 @@ app.use('/', (req,res,next) => {
 
 app.use('/auth', authenticationProxy());
 
-app.use('/profiles', authMiddleware(), profilesProxy());
-app.use('/messages', authMiddleware(), messagesProxy());
-app.use('/laboratory', authMiddleware(), laboratoryProxy());
+app.use('/profiles', authMiddleware, profilesProxy());
+app.use('/messages', authMiddleware, messagesProxy());
+app.use('/laboratory', authMiddleware, laboratoryProxy());
 
 app.all('*', (req,res) => {
   res.status(404).json({
