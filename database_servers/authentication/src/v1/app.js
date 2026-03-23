@@ -11,10 +11,16 @@ app.use(express.json());
 
 app.use('/', (req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(`Request received at Authentication Server @ ${req.requestTime} for ${req.originalUrl}`);
-  console.log(`Request method: ${req.method}, path: ${req.path}, params:`, req.params);
+  // make a creative log message that includes the request method, path, and params with some styling for better visibility in the logs
+  console.log(`\n--- Incoming Request ---`);
+  console.log(`Time: ${req.requestTime}`);
+  console.log(`Method: ${req.method}`);
+  console.log(`Path: ${req.path}`);
+  console.log(`Params:`, req.params);
+  console.log(`-----------------------\n`);
   next();
 });
+
 
 app.use('/', authRouter);
 

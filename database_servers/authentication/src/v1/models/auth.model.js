@@ -19,12 +19,21 @@ const authSchema = new Schema({
     enum: ['user', 'admin', 'superadmin', 'guest'],
     default: ['guest']
   },
+
+  // This should be immutable, but only after its been set once,
+  // because we need to set it when creating the authentication document,
+  // and it should be based on the profile id that is created in the profiles server.
+  // So we can't set it as immutable right away, but we can enforce that it can't be
+  // changed after it's been set.
   depends_on_profile: {
     type: Schema.Types.ObjectId,
-    ref: 'profile',
-    required: true,
+    required: false,
     unique: true,
-    immutable: true
+    sparse: true, // Allows multiple null values without violating unique constraint
+    immutable: function() {
+      // If depends_on_profile is already set, make it immutable
+      return !!this.depends_on_profile;
+    }
   },
   logged_in: {
     type: Boolean,

@@ -7,7 +7,6 @@ const { NODE_ENV } = process.env;
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
 const { messagesProxy } = require('./proxies/messagesProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
-const { createProfileProxy } = require('./proxies/createProfileProxy.js');
 const { authMiddleware } = require('./middleware/authMiddleware.js');
 const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
@@ -58,7 +57,7 @@ app.use('/*', (req, res, next) => {
 
 app.use('/v1/auth', authenticationProxy()); // Proxy authentication requests to authentication server
 
-// app.use('/profiles', authMiddleware, profilesProxy());
+app.use('/profiles', authMiddleware, profilesProxy());
 app.use('/messages', authMiddleware, messagesProxy());
 app.use('/laboratory', authMiddleware, laboratoryProxy());
 

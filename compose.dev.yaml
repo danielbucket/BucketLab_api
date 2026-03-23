@@ -16,7 +16,7 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "pgrep", "cloudflared"]
-      interval: 20s
+      interval: 30s
       timeout: 10s
       retries: 5
 
@@ -42,7 +42,7 @@ services:
         condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:27017"]
-      interval: 20s
+      interval: 30s
       timeout: 10s
       retries: 5
 
