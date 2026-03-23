@@ -7,6 +7,7 @@ const { NODE_ENV } = process.env;
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
 const { messagesProxy } = require('./proxies/messagesProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
+const { createProfileProxy } = require('./proxies/createProfileProxy.js');
 const { authMiddleware } = require('./middleware/authMiddleware.js');
 const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
@@ -31,7 +32,7 @@ app.use('/*', (req, res, next) => {
   next()
 });
 
-app.get('/', (req, res) => {
+app.get('/hello-world', (req, res) => {
   console.log('Request received at:', req.requestTime);
   res.status(200).json({
     message: 'This is the BucketLab.io API Gateway',
@@ -39,7 +40,6 @@ app.get('/', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
-
 
 app.get('/health', (req,res) => {
   res.status(200).json({
@@ -49,15 +49,16 @@ app.get('/health', (req,res) => {
   });
 });
 
-app.use('/', (req,res,next) => {
+app.use('/*', (req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(`Request received at App_Server: ${req.requestTime}`);
+  console.log(`Request received at App Server @ ${req.requestTime} for ${req.originalUrl}`);
+  console.log(`App Server running in ${NODE_ENV} mode`);
   next();
 });
 
-app.use('/auth', authenticationProxy());
+app.use('/v1/auth', authenticationProxy()); // Proxy authentication requests to authentication server
 
-app.use('/profiles', authMiddleware, profilesProxy());
+// app.use('/profiles', authMiddleware, profilesProxy());
 app.use('/messages', authMiddleware, messagesProxy());
 app.use('/laboratory', authMiddleware, laboratoryProxy());
 

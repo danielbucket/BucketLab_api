@@ -16,7 +16,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/v1', profilesRouterV1);
+app.use('/', profilesRouterV1);
 
 app.all('/*', (req, res) => {
   res.status(404).json({

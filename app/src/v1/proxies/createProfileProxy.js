@@ -2,8 +2,8 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const cors = require('cors');
 const { corsConfig } = require('../optimization/corsConfig.js');
 
-exports.authenticationProxy = () => (req, res, next) => {
-  console.log(`Authentication Proxy received request for ${req.originalUrl} at ${new Date().toISOString()}`);
+exports.createProfileProxy = () => (req, res, next) => {
+  console.log('Request received at Create Profile Proxy @', new Date().toISOString());
   // Handle OPTIONS requests for CORS preflight
   if (req.method === 'OPTIONS') {
     return cors(corsConfig())(req, res, next);
@@ -11,10 +11,10 @@ exports.authenticationProxy = () => (req, res, next) => {
   
   // For other requests, apply the proxy
   createProxyMiddleware({
-    target: 'http://authentication_server:4024',
+    target: 'http://profiles_server:4021',
     changeOrigin: true,
     pathRewrite: {
-      '^/profiles/create': '/create-auth', // Rewrites /profiles/create to /create-auth for authentication server
+      '^/v1/auth/profiles': '/create', // Removes /v1/auth/profiles prefix when forwarding to profiles server
     },
     onProxyRes: (proxyRes, req, res) => {
       // Ensure CORS headers are properly forwarded
@@ -27,7 +27,7 @@ exports.authenticationProxy = () => (req, res, next) => {
       console.error('Proxy error:', err);
       res.status(500).json({
         status: 'fail',
-        message: 'Internal server error while proxying to Authentication Server.'
+        message: 'Internal server error while proxying to Profiles Server.'
       })
     }
   })(req, res, next);

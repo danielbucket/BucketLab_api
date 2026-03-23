@@ -16,7 +16,7 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "pgrep", "cloudflared"]
-      interval: 30s
+      interval: 20s
       timeout: 10s
       retries: 5
 
@@ -25,7 +25,7 @@ services:
     container_name: bucketlab_database_dev
     build:
       context: .
-      dockerfile: Dockerfile.mongodb
+      dockerfile: docker/dev/Dockerfile.mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
@@ -42,7 +42,7 @@ services:
         condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:27017"]
-      interval: 30s
+      interval: 20s
       timeout: 10s
       retries: 5
 
@@ -65,7 +65,7 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081"]
-      interval: 30s
+      interval: 20s
       timeout: 10s
       retries: 5
     profiles:
@@ -76,10 +76,10 @@ services:
     container_name: app_server_dev
     build:
       context: .
-      dockerfile: Dockerfile.app
+      dockerfile: docker/dev/Dockerfile.app
     environment:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
-      - NODE_ENV=development
+      - NODE_ENV=${APP_RUN_MODE:-development}
       - PORT=4020
     ports:
       - "4020:4020"
@@ -93,7 +93,7 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4020/health"]
-      interval: 30s
+      interval: 20s
       timeout: 10s
       retries: 3
 
@@ -105,10 +105,10 @@ services:
     container_name: profiles_server_dev
     build:
       context: .
-      dockerfile: Dockerfile.profiles
+      dockerfile: docker/dev/Dockerfile.profiles
     environment:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
-      - NODE_ENV=development
+      - NODE_ENV=${APP_RUN_MODE:-development}
       - PORT=4021
     expose:
       - "4021"
@@ -127,10 +127,10 @@ services:
     container_name: messages_server_dev
     build:
       context: .
-      dockerfile: Dockerfile.messages
+      dockerfile: docker/dev/Dockerfile.messages
     environment:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
-      - NODE_ENV=development
+      - NODE_ENV=${APP_RUN_MODE:-development}
       - PORT=4022
     expose: 
       - "4022"
@@ -146,10 +146,10 @@ services:
     container_name: laboratory_server_dev
     build:
       context: .
-      dockerfile: Dockerfile.laboratory
+      dockerfile: docker/dev/Dockerfile.laboratory
     environment:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
-      - NODE_ENV=development
+      - NODE_ENV=${APP_RUN_MODE:-development}
       - PORT=4023
     expose:
       - "4023"
@@ -167,10 +167,10 @@ services:
     container_name: authentication_server_dev
     build:
       context: .
-      dockerfile: Dockerfile.authentication
+      dockerfile: docker/dev/Dockerfile.authentication
     environment:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
-      - NODE_ENV=development
+      - NODE_ENV=${APP_RUN_MODE:-development}
       - PORT=4024
     expose:
       - "4024"

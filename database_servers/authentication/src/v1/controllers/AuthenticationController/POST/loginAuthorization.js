@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 exports.loginAuthorization = async (req, res) => {
+  console.log('LOGIN REQUEST BODY:', req.body);
   // Validate required parameters
   for (let requiredParameter of ['email', 'password']) {
     if (!req.body[requiredParameter]) {

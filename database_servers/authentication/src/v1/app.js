@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const authorizationRouter = require('./routes/authorizationRouter.js');
+const authRouter = require('./routes/authRouter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
 app.set('trust proxy', true);
@@ -11,12 +11,12 @@ app.use(express.json());
 
 app.use('/', (req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(`Request received at Authorization Server @ ${req.requestTime} for ${req.originalUrl}`);
+  console.log(`Request received at Authentication Server @ ${req.requestTime} for ${req.originalUrl}`);
   console.log(`Request method: ${req.method}, path: ${req.path}, params:`, req.params);
   next();
 });
 
-app.use('/v1', authorizationRouter);
+app.use('/', authRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({
