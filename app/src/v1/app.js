@@ -8,7 +8,6 @@ const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
 const { messagesProxy } = require('./proxies/messagesProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
-const { authMiddleware } = require('./middleware/authMiddleware.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 

@@ -30,19 +30,16 @@ exports.createAuthentication = async (req, res) => {
       password: req.body.password
     });
 
-    console.log('Created AuthModel instance, password before save:', newAuth.password);
     await newAuth.save();
-    console.log('After save, password in document:', newAuth.password);
 
     try {
       // Send a request directly to the profiles server to create a new profile for this authentication document
-      const profileBody = {
+      const profileBody = Object.assign({}, {
         depends_on_auth: newAuth._id,
         email: newAuth.email,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-      };
-      console.log('Sending profile creation request with body:', profileBody);
+      });
       
       const profileResponse = await fetch('http://profiles_server:4021/create', {
         method: 'POST',
@@ -50,7 +47,6 @@ exports.createAuthentication = async (req, res) => {
         body: JSON.stringify(profileBody)
       });
     } catch (error) {
-      console.error('Error communicating with profiles server:', error);
       return res.status(500).json({
         status: 'error',
         message: 'Authentication created, but an error occurred while creating the associated profile.',
@@ -60,13 +56,9 @@ exports.createAuthentication = async (req, res) => {
     
     res.status(201).json({
       status: 'success',
-      data: {
-        id: newAuth._id,
-        token: newAuth.JWT_token,
-      }
+      data: { id: newAuth._id }
     });
   } catch (error) {
-    console.error('Error creating new authentication:', error);
     res.status(500).json({
       status: 'error',
       message: 'An error occurred while creating the authentication.'

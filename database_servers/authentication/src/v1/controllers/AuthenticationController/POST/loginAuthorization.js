@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 
 exports.loginAuthorization = async (req, res) => {
   const { body } = req;
-  console.log('LOGIN REQUEST BODY:', body);
   // Validate required parameters
   for (let requiredParameter of ['email', 'password']) {
     if (!body[requiredParameter]) {
@@ -26,11 +25,8 @@ exports.loginAuthorization = async (req, res) => {
     };
 
     // Compare the provided password with the hashed password in the database
-    console.log('Comparing provided password with hashed password in database...');
-    console.log('Provided password:', body.password);
-    console.log('Hashed password in database:', doc.password);
     const passwordMatch = await bcrypt.compare(body.password, doc.password);
-    console.log('Password match result:', passwordMatch);
+
     if (!passwordMatch) {
       return res.status(401).json({
         status: 'fail',
@@ -43,34 +39,30 @@ exports.loginAuthorization = async (req, res) => {
     doc.logged_in = true;
     doc.logged_in_at = new Date().toISOString();
 
-    // Save the updated document to the database
-    await doc.save();
-
     // Generate a JWT token for the logged-in user
     const JWT_SECRET = process.env.JWT_SECRET;
     const token = jwt.sign(
       {
         id: doc._id,
-        email: doc.email,
-        permissions: doc.permissions
+        email: doc.email
       },
       JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '30m' }
+      { expiresIn: process.env.JWT_EXPIRES_IN }
     );
+
+    // Save the updated document to the database
+    await doc.save();
 
     // Return a success response with the profile data and token
     return res.status(200).json({
       status: 'success',
       message: 'Login successful.',
       profileData: {
-        first_name: doc.first_name,
-        last_name: doc.last_name,
         id: doc._id,
-        token: token,
+        token: token
       }
     });
   } catch (error) {
-    console.error('Login error:', error);
     return res.status(500).json({
       status: 'error',
       message: 'Database operation failed.',

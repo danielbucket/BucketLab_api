@@ -16,11 +16,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/',(req,res,next) => {
-  console.log('Request headers:', req.headers);
-  console.log('Request body:', req.body);
-  next();
-}, profilesRouter);
+app.use('/', profilesRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({
