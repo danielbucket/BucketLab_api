@@ -13,8 +13,10 @@ exports.authenticationProxy = () => (req, res, next) => {
   createProxyMiddleware({
     target: 'http://authentication_server:4024',
     changeOrigin: true,
-    pathRewrite: {
-      '^/profiles/create': '/create-auth', // Rewrites /profiles/create to /create-auth for authentication server
+    // pathRewrite: { '^/profiles/create': '/create-auth' },
+    pathRewrite: { '^/profiles': '' },
+    onProxyReq: (proxyReq, req, res) => {
+      console.log(`Proxying request to profiles: ${req.method} ${req.originalUrl} -> ${proxyReq.path}`);
     },
     onProxyRes: (proxyRes, req, res) => {
       // Ensure CORS headers are properly forwarded

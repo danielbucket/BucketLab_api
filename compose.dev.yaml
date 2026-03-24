@@ -16,7 +16,7 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "pgrep", "cloudflared"]
-      interval: 30s
+      interval: 10s
       timeout: 10s
       retries: 5
 
@@ -42,7 +42,7 @@ services:
         condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:27017"]
-      interval: 30s
+      interval: 10s
       timeout: 10s
       retries: 5
 
@@ -172,6 +172,8 @@ services:
       - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
       - NODE_ENV=${APP_RUN_MODE:-development}
       - PORT=4024
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
     expose:
       - "4024"
     volumes:

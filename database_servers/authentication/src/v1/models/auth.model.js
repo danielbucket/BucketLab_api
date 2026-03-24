@@ -19,6 +19,10 @@ const authSchema = new Schema({
     enum: ['user', 'admin', 'superadmin', 'guest'],
     default: ['guest']
   },
+  JWT_token: {
+    type: String,
+    default: null
+  },
 
   // This should be immutable, but only after its been set once,
   // because we need to set it when creating the authentication document,
@@ -62,15 +66,23 @@ const bcrypt = require('bcrypt');
 
 // Pre-save hook to hash the password before saving the auth document
 authSchema.pre('save', async function(next) {
+  console.log('Pre-save hook called for auth model');
+  console.log('isModified password:', this.isModified('password'));
+  console.log('Password before hashing:', this.password);
+  
   if (this.isModified('password')) {
     try {
+      console.log('Hashing password...');
       const salt = await bcrypt.genSalt(10);
       this.password = await bcrypt.hash(this.password, salt);
+      console.log('Password hashed successfully:', this.password);
       next();
     } catch (err) {
+      console.error('Error hashing password:', err);
       next(err);
     }
   } else {
+    console.log('Password not modified, skipping hash');
     next();
   }
 });

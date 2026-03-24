@@ -3,10 +3,11 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 exports.loginAuthorization = async (req, res) => {
-  console.log('LOGIN REQUEST BODY:', req.body);
+  const { body } = req;
+  console.log('LOGIN REQUEST BODY:', body);
   // Validate required parameters
   for (let requiredParameter of ['email', 'password']) {
-    if (!req.body[requiredParameter]) {
+    if (!body[requiredParameter]) {
       return res.status(422).json({
         status: 'error',
         message: `Missing required parameter: ${requiredParameter}.`
@@ -15,8 +16,7 @@ exports.loginAuthorization = async (req, res) => {
   };
   
   try {
-    // Find the authorization document by email
-    const doc = await AuthModel.findOne({ email: req.body.email }).lean();
+    const doc = await AuthModel.findOne({ email: body.email });
     if (!doc) {
       return res.status(404).json({
         status: 'fail',
@@ -26,10 +26,11 @@ exports.loginAuthorization = async (req, res) => {
     };
 
     // Compare the provided password with the hashed password in the database
-    const profileData = await doc.json();
-
-    // Compare the provided password with the hashed password in the database
-    const passwordMatch = await bcrypt.compare(req.body.password, profileData.password);
+    console.log('Comparing provided password with hashed password in database...');
+    console.log('Provided password:', body.password);
+    console.log('Hashed password in database:', doc.password);
+    const passwordMatch = await bcrypt.compare(body.password, doc.password);
+    console.log('Password match result:', passwordMatch);
     if (!passwordMatch) {
       return res.status(401).json({
         status: 'fail',

@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const profilesRouterV1 = require('./routes/profilesRouterV1.js');
+const profilesRouter = require('./routes/profilesRouter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
 app.set('trust proxy', true);
@@ -16,7 +16,11 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/', profilesRouterV1);
+app.use('/',(req,res,next) => {
+  console.log('Request headers:', req.headers);
+  console.log('Request body:', req.body);
+  next();
+}, profilesRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({

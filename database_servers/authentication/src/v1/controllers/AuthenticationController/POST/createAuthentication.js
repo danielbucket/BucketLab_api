@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const AuthModel = require('../../../models/auth.model');
 
 exports.createAuthentication = async (req, res) => {
@@ -23,44 +23,47 @@ exports.createAuthentication = async (req, res) => {
       });
     };
 
-    // Hash the password before saving
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-    req.body.password = hashedPassword;
-
+    // Password will be hashed by the model's pre-save hook
     // Create a new authentication document
     const newAuth = new AuthModel({
       email: req.body.email,
-      password: req.body.password,
+      password: req.body.password
     });
 
+    console.log('Created AuthModel instance, password before save:', newAuth.password);
     await newAuth.save();
+    console.log('After save, password in document:', newAuth.password);
 
     try {
-      // Send a request to the profiles server to create a new profile for this authentication document
-      const profileData = {
+      // Send a request directly to the profiles server to create a new profile for this authentication document
+      const profileBody = {
         depends_on_auth: newAuth._id,
         email: newAuth.email,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
       };
-
+      console.log('Sending profile creation request with body:', profileBody);
+      
       const profileResponse = await fetch('http://profiles_server:4021/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData)
+        body: JSON.stringify(profileBody)
       });
     } catch (error) {
-      console.error('Error creating profile for new authentication:', error);
+      console.error('Error communicating with profiles server:', error);
       return res.status(500).json({
         status: 'error',
-        message: 'Authentication created, but an error occurred while creating the associated profile.'
+        message: 'Authentication created, but an error occurred while creating the associated profile.',
+        error: error.message
       });
     };
     
     res.status(201).json({
       status: 'success',
-      data: { id: newAuth._id }
+      data: {
+        id: newAuth._id,
+        token: newAuth.JWT_token,
+      }
     });
   } catch (error) {
     console.error('Error creating new authentication:', error);
