@@ -6,8 +6,8 @@ const { jwtAuthMiddleware } = require('../middleware/jwtAuthMiddleware.js');
 router.route('/create')
   .post(cors(), POST.createProfile);
 
-router.route('/:id')
-  .get(cors(), jwtAuthMiddleware, GET.getProfileByProfileId);
+router.route('/me')
+  .get(cors(), jwtAuthMiddleware, GET.getProfileByToken);
  
 
 // router.route('/avatar/upload/:id')

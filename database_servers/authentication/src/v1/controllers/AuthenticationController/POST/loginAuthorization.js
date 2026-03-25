@@ -26,6 +26,7 @@ exports.loginAuthorization = async (req, res) => {
 
     // Compare the provided password with the hashed password in the database
     const passwordMatch = await bcrypt.compare(body.password, doc.password);
+    console.log('Password comparison result:', passwordMatch);
 
     if (!passwordMatch) {
       return res.status(401).json({
@@ -39,33 +40,38 @@ exports.loginAuthorization = async (req, res) => {
     doc.logged_in = true;
     doc.logged_in_at = new Date().toISOString();
 
-    // Generate a JWT token for the logged-in user
+    // Save the updated document to the database first
+    await doc.save();
+
+    // Generate a JWT token for the logged-in user (after successful save)
     const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET is not defined in environment variables');
+    }
+
     const token = jwt.sign(
       {
         id: doc._id,
-        email: doc.email
+        email: doc.email,
+        permissions: doc.permissions
       },
       JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      { expiresIn: process.env.JWT_EXPIRES_IN || '30m' }
     );
 
-    // Save the updated document to the database
-    await doc.save();
+    console.log('JWT token generated successfully for user:', doc.email);
 
-    // Return a success response with the profile data and token
+    // Return a success response with the token
     return res.status(200).json({
       status: 'success',
       message: 'Login successful.',
-      profileData: {
-        id: doc._id,
-        token: token
-      }
+      token: token
     });
   } catch (error) {
+    console.error('Login error:', error.message);
     return res.status(500).json({
       status: 'error',
-      message: 'Database operation failed.',
+      message: 'Login failed. An error occurred during authentication.',
       error: error.message
     });
   }

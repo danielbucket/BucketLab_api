@@ -14,7 +14,7 @@ exports.profilesProxy = () => (req, res, next) => {
       proxyRes.headers['Access-Control-Allow-Origin'] = req.headers.origin || '*';
       proxyRes.headers['Access-Control-Allow-Credentials'] = 'true';
       proxyRes.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH, OPTIONS';
-      proxyRes.headers['Access-Control-Allow-Headers'] = 'Content-Type';
+      proxyRes.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
     },
     onError: (err, req, res) => {
       console.error('Proxy error:', err);
