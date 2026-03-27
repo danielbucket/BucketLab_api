@@ -18,10 +18,9 @@ const accountSchema = new Schema({
     lowercase: true,
     validate: [isEmail, 'Please enter a valid email address'],
   },
-  password: {
+  notes: {
     type: String,
-    required: true,
-    minlength: 6
+    default: ''
   },
   website: {
     type: String,
@@ -29,7 +28,7 @@ const accountSchema = new Schema({
   },
   company: {
     type: String,
-    // default: ''
+    default: ''
   },
   phone: {
     type: Schema.Types.Mixed, // Allows for various phone formats, including numbers and strings
@@ -44,26 +43,13 @@ const accountSchema = new Schema({
     ref: 'Avatar',
     default: null
   },
-  permissions: {
-    type: [String],
-    enum: ['user', 'admin', 'superadmin', 'guest'],
-    default: ['guest']
-  },
-  logged_in: {
-    type: Boolean,
-    default: false
-  },
-  logged_in_at: {
-    type: Date,
-    default: null
-  },
-  last_logout_at: {
-    type: Date,
-    default: null
-  },
-  login_count: {
-    type: Number,
-    default: 0
+  // this field is to be created after the profile is created in the profiles server, using the id returned from the authentication server when creating the auth record
+  depends_on_auth: {
+    type: Schema.Types.ObjectId,
+    ref: 'auth',
+    required: true,
+    unique: true,
+    immutable: true
   },
   created_at: {
     type: Date,

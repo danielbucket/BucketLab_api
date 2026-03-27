@@ -13,8 +13,17 @@ initializeDirectories();
 // is fully operational before accepting requests.
 database.connect()
   .then(() => {
-    Laboratory_Server.listen(PORT, () => {
+    const server = Laboratory_Server.listen(PORT, () => {
       console.log(`BucketLab Laboratory Server listening on port ${PORT}`);
+    });
+    
+    // Graceful shutdown
+    process.on('SIGTERM', () => {
+      console.log('SIGTERM received, shutting down gracefully...');
+      server.close(() => {
+        console.log('Server closed');
+        process.exit(0);
+      });
     });
   })
   .catch((error) => {

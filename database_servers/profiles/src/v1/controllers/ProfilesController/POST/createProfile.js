@@ -1,20 +1,17 @@
 const Profile = require('../../../models/profile.model');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 
-
-exports.newProfile = async (req, res) => {
+exports.createProfile = async (req, res) => {
   const { body } = req;
   
-  for (let requiredParameter of ['first_name', 'last_name', 'email', 'password']) {
-    if (!body[requiredParameter]) {
+  for (let requiredParameter of ['first_name', 'last_name', 'email', 'depends_on_auth']) {
+    if (!req.body?.[requiredParameter]) {
       return res.status(422).send({
         status: 'error',
         message: `Missing required parameter: ${requiredParameter}.`
       });
     }
-  };
-  
+  }
+
   try {
     const found = await Profile.exists({ email: body.email });
     if (found) {
@@ -22,21 +19,19 @@ exports.newProfile = async (req, res) => {
         status: 'fail',
         message: 'Profile with that email already exists.'
       });
-    };
+    }
 
     // Password hashing is handled by the Profile model's pre-save hook
+    const newProfileData = Object.assign({}, {
+      first_name: body.first_name,
+      last_name: body.last_name,
+      email: body.email,
+      depends_on_auth: body.depends_on_auth
+    });
     const createdProfile = await Profile.create(body);
 
-    const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key-change-in-production';
-    const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '30m';
-    const token = jwt.sign({
-        id: createdProfile._id,
-        email: createdProfile.email
-      },
-      JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
-    );
-
+    await createdProfile.save();
+    
     return res.status(201).json({
       status: 'success',
       message: 'Profile created successfully.',
@@ -45,7 +40,6 @@ exports.newProfile = async (req, res) => {
         last_name: createdProfile.last_name,
         email: createdProfile.email,
         id: createdProfile._id,
-        token: token
       }
     })
   } catch (err) {

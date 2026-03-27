@@ -6,8 +6,7 @@
   "scripts": {
     "test": "NODE_ENV=test jest --verbose --runInBand",
     "test:watch": "NODE_ENV=test jest --watch --verbose",
-    "test:ci": "NODE_ENV=test jest --verbose --coverage",
-    "test:silent": "NODE_ENV=test jest --silent",
+    "test:coverage": "NODE_ENV=test jest --verbose --coverage",
     "start:dev": "NODE_ENV=development nodemon ./server.js",
     "start:prod": "NODE_ENV=production node ./server.js"
   },

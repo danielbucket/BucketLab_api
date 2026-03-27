@@ -1,8 +1,8 @@
-# Dockerfile for Laboratory Service - Linux Deployment
-FROM node:22.14.0-alpine
+# Dockerfile for Laboratory Service - Production
+FROM node:22-alpine
 
 # Install required packages
-RUN apk --no-cache add wget curl
+RUN apk --no-cache add curl
 
 # Create app directory
 WORKDIR /laboratory
@@ -11,11 +11,12 @@ WORKDIR /laboratory
 RUN addgroup -g 1001 -S nodejs && \
   adduser -S bucketlab -u 1001
 
-# Copy package files first for better caching
-  COPY database_servers/laboratory/package.json ./
+# Copy package files for dependency caching
+COPY database_servers/laboratory/package*.json ./
 
-  # Install dependencies
-  RUN npm install --only=production --no-audit --no-fund && npm cache clean --force
+# Install only production dependencies
+RUN npm ci --only=production --no-audit --no-fund && \
+  npm cache clean --force
 
 # Copy application code
 COPY database_servers/laboratory/ ./
@@ -28,7 +29,7 @@ USER bucketlab
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:4023/ || exit 1
+  CMD curl -f http://localhost:4023/health || exit 1
 
 # Expose port
 EXPOSE 4023

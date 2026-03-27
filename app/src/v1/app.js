@@ -4,11 +4,10 @@ const cors = require('cors');
 const app = express();
 const { NODE_ENV } = process.env;
 
+const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
 const { messagesProxy } = require('./proxies/messagesProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
-const { authMiddleware } = require('./middleware/authMiddleware.js');
-const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
@@ -31,15 +30,14 @@ app.use('/*', (req, res, next) => {
   next()
 });
 
-app.get('/', (req, res) => {
+app.get('/hello-world', (req, res) => {
   console.log('Request received at:', req.requestTime);
   res.status(200).json({
     message: 'This is the BucketLab.io API Gateway',
-    version: '1.0.0',
+    version: '4.2.0',
     timestamp: new Date().toISOString()
   });
 });
-
 
 app.get('/health', (req,res) => {
   res.status(200).json({
@@ -49,19 +47,11 @@ app.get('/health', (req,res) => {
   });
 });
 
-app.use('/', (req,res,next) => {
-  req.requestTime = new Date().toISOString();
-  console.log(`Request received at App_Server: ${req.requestTime}`);
-  next();
-});
+app.use('/v1/auth', authenticationProxy());
 
-app.use('/authentication', authenticationProxy());
-
-// app.use('/*', authMiddleware()); // Apply authentication middleware to all routes except /authorize
-
-app.use('/profiles', profilesProxy());
-app.use('/messages', messagesProxy());
-app.use('/laboratory', laboratoryProxy());
+app.use('/v1/profiles', profilesProxy());
+// app.use('/v1/messages', messagesProxy());
+// app.use('/v1/laboratory', laboratoryProxy());
 
 app.all('*', (req,res) => {
   res.status(404).json({

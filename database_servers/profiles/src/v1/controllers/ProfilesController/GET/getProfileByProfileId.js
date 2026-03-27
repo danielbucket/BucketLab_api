@@ -2,50 +2,45 @@ const Profile = require('../../../models/profile.model');
 
 exports.getProfileByProfileId = async (req, res) => {
   try {
-    const { id } = req.params;
-    // Optionally validate ObjectId format if using MongoDB
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      return res.status(400).json({
+    // Get user info from JWT headers set by jwtAuthMiddleware
+    const userEmail = req.headers['x-user-email'];
+    const userId = req.headers['x-user-id'];
+
+    if (!userEmail || !userId) {
+      return res.status(401).json({
         status: 'fail',
-        message: 'Invalid profile ID format.'
+        message: 'User authentication required. Email or ID missing from token.'
       });
     }
 
-    // Find the profile by ID
-    const doc = await Profile.findById(id).lean();
+    console.log(`Fetching profile for authenticated user: ${userEmail}`);
+
+    // Find the profile by email (which is unique and matches the authenticated user)
+    const doc = await Profile.findOne({ email: userEmail }).lean();
     if (!doc) {
       return res.status(404).json({
         status: 'fail',
-        message: 'No profile found with that ID.'
+        message: 'No profile found for authenticated user.'
       });
     };
     
     // Only return non-sensitive fields
-    const {
-      profile_avatar,
-      first_name,
-      last_name,
-      email,
-      website,
-      company,
-      phone,
-      messages,
-      created_at
-    } = doc;
+    const profileData = Object.assign({}, {
+      id: _id,
+      avatar: doc.profile_avatar,
+      first_name: doc.first_name,
+      last_name: doc.last_name,
+      email: doc.email,
+      website: doc.website,
+      company: doc.company,
+      phone: doc.phone,
+      messages: doc.messages,
+      created_at: doc.created_at
+    });
 
     return res.status(200).json({
       status: 'success',
-      data: {
-        profile_avatar,
-        first_name,
-        last_name,
-        email,
-        website,
-        company,
-        phone,
-        messages,
-        created_at
-      }
+      data: profileData
     });
   } catch (err) {
     return res.status(500).json({
