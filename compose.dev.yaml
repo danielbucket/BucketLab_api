@@ -41,10 +41,11 @@ services:
       cloudflared:
         condition: service_started
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:27017"]
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
-      timeout: 10s
+      timeout: 5s
       retries: 5
+      start_period: 40s
 
   # Mongo Express for DB GUI (debug tool)
   mongo-express:
@@ -117,8 +118,8 @@ services:
       - ./profiles:/usr/src/profiles
       - ./avatars_data_dev:/usr/src/profiles/uploads/avatars
     depends_on:
-      app_server:
-        condition: service_started
+      mongodb:
+        condition: service_healthy
     networks:
       - bucketLab_internal
     restart: always
@@ -136,8 +137,8 @@ services:
     expose: 
       - "4022"
     depends_on:
-      app_server:
-        condition: service_started
+      mongodb:
+        condition: service_healthy
     networks:
       - bucketLab_internal
     restart: always
@@ -157,13 +158,13 @@ services:
     volumes:
       - ./laboratory:/usr/src/laboratory
     depends_on:
-      app_server:
-        condition: service_started
+      mongodb:
+        condition: service_healthy
     networks:
       - bucketLab_internal
     restart: always
 
-# Authentication Server (Internal Service)
+  # Authentication Server (Internal Service)
   authentication_server:
     container_name: authentication_server_dev
     build:
@@ -180,8 +181,8 @@ services:
     volumes:
       - ./authentication:/usr/src/authentication
     depends_on:
-      app_server:
-        condition: service_started
+      mongodb:
+        condition: service_healthy
     networks:
       - bucketLab_internal
     restart: always
