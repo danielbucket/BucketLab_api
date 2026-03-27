@@ -13,9 +13,9 @@ exports.authenticationProxy = () => (req, res, next) => {
   createProxyMiddleware({
     target: 'http://authentication_server:4024',
     changeOrigin: true,
-    pathRewrite: { '^/profiles': '' },
+    pathRewrite: { '^/v1/auth': '' }, // Remove /v1/auth prefix when forwarding to auth server
     onProxyReq: (proxyReq, req, res) => {
-      console.log(`Proxying request to profiles: ${req.method} ${req.originalUrl} -> ${proxyReq.path}`);
+      console.log(`Proxying request to auth server: ${req.method} ${req.originalUrl} -> ${proxyReq.path}`);
     },
     onProxyRes: (proxyRes, req, res) => {
       // Ensure CORS headers are properly forwarded
