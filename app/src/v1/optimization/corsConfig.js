@@ -9,6 +9,7 @@ exports.corsConfig = () => {
     maxAge: 86400, // 24 hours in seconds
     exposedHeaders: ['Content-Length', 'X-Response-Time'],
     origin: (origin, callback) => {
+      console.log(`CORS check for origin: ${origin} at ${new Date().toISOString()}`);
       if (NODE_ENV === 'development') {
         return callback(null, true); // Allow all origins in development
       }
