@@ -47,11 +47,11 @@ app.get('/health', (req,res) => {
   });
 });
 
-app.use('/v1/auth', authenticationProxy());
+app.use('/auth', authenticationProxy());
 
-app.use('/v1/profiles', profilesProxy());
-// app.use('/v1/messages', messagesProxy());
-// app.use('/v1/laboratory', laboratoryProxy());
+app.use('/profiles', profilesProxy());
+// app.use('/messages', messagesProxy());
+// app.use('/laboratory', laboratoryProxy());
 
 app.all('*', (req,res) => {
   res.status(404).json({
