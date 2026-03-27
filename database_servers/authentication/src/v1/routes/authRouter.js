@@ -8,4 +8,7 @@ router.route('/create')
 router.route('/login')
   .post(cors(), POST.loginAuthorization);
 
+router.route('/logout')
+  .post(cors(), POST.logout);
+
 module.exports = router;
