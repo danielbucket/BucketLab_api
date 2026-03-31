@@ -4,7 +4,7 @@ exports.messagesProxy = () => createProxyMiddleware({
     target: 'http://messages_server:4022',
     changeOrigin: true,
     pathRewrite: {
-      '^/messages': '', // Remove /messages prefix when forwarding to messages server
+      '^/messages': '',
     },
     onError: (err,req,res) => {
       console.error('Proxy error:', err);

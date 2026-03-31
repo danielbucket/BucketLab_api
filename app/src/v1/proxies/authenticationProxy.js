@@ -12,14 +12,12 @@ exports.authenticationProxy = () => (req, res, next) => {
     target: 'http://authentication_server:4024',
     changeOrigin: true,
     pathRewrite: { '^/auth': '' },
-    onProxyReq: (proxyReq, req, res) => {
-      console.log(`Proxying request to auth server: ${req.method} ${req.originalUrl} -> ${proxyReq.path}`);
-    },
     onProxyRes: (proxyRes, req, res) => {
       proxyRes.headers['Access-Control-Allow-Origin'] = req.headers.origin || '*';
       proxyRes.headers['Access-Control-Allow-Credentials'] = 'true';
       proxyRes.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH, OPTIONS';
       proxyRes.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
+      proxyRes.headers['X-Auth-Server'] = 'true'; // Custom header to indicate response is from authentication server
     },
     onError: (err, req, res) => {
       console.error('Proxy error:', err);

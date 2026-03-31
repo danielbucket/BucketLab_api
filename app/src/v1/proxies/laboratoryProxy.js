@@ -4,7 +4,7 @@ exports.laboratoryProxy = () => createProxyMiddleware({
     target: 'http://laboratory_server:4023',
     changeOrigin: true,
     pathRewrite: {
-      '^/laboratory': '', // Removes /laboratory prefix when forwarding to laboratory server
+      '^/laboratory': '',
     },
     onError: (err, req, res) => {
       console.error('Proxy error:', err);

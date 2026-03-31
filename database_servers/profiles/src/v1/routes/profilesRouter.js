@@ -9,27 +9,11 @@ router.route('/create')
 router.route('/me')
   .get(cors(), jwtAuthMiddleware, GET.getProfileByToken);
  
+router.route('/update')
+  .patch(cors(), jwtAuthMiddleware, PATCH.updateProfileByProfileToken);
 
-// router.route('/avatar/upload/:id')
-//   .post(cors(), authorize, POST.uploadAvatar);
-
-// router.route('/avatar/:id')
-//   .delete(cors(), authorize, DELETE.deleteAvatar)
-//   .get(cors(), GET.getAvatar);
-
-// router.route('/')
-  // .get(cors(), GET.getAllProfiles);
-
-
-
-// router.route('/:id/update')
-//   .patch(cors(), authorize, PATCH.updateProfileByProfileId);
-  
-// router.route('/:id/delete')
-//   .delete(cors(), authorize, DELETE.deleteProfileByProfileId);
-
-// router.route('/unsecureProfileById/:id')
-//   .get(cors(), GET.getProfileByProfileId);
+router.route('/delete/:id')
+  .delete(cors(), DELETE.deleteProfile);
   
 // router.route('/refresh-token')
 //   .post(cors(), POST.refreshToken);

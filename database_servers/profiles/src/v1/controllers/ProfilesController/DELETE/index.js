@@ -1,9 +1,7 @@
-const { deleteProfileByProfileId } = require('./deleteProfileByProfileId.js');
-const { deleteAvatar } = require('./deleteAvatar.js');
+const { deleteProfile } = require('./deleteProfile.js');
 
 module.exports = Object.freeze(
   Object.assign({},
-    { deleteProfileByProfileId },
-    { deleteAvatar }
+    { deleteProfile }
   )
 );
