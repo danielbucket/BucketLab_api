@@ -24,7 +24,6 @@ exports.createAuthentication = async (req, res) => {
     };
 
     // Password will be hashed by the model's pre-save hook
-    // Create a new authentication document
     const newAuth = new AuthModel({
       email: req.body.email,
       password: req.body.password

@@ -2,11 +2,6 @@ const jwt = require('jsonwebtoken');
 const Profile = require('../../../models/profile.model');
 
 exports.getProfileByToken = async (req, res) => {
-  console.log('Received request to get profile by token', {
-    headers: req.headers,
-    originalUrl: req.originalUrl,
-    method: req.method
-  });
   try {
     // Extract token from Authorization header
     const authHeader = req.headers['authorization'];
@@ -43,8 +38,6 @@ exports.getProfileByToken = async (req, res) => {
         message: 'Invalid token structure. Email or ID missing.'
       });
     }
-
-    console.log(`Fetching profile for user from token: ${email}`);
 
     // Find profile by email (which matches the authenticated user)
     const profileData = await Profile.findOne({ email }).lean();
