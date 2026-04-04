@@ -2,12 +2,11 @@
 
 BucketLab API is a backend service designed to manage and process data for the BucketLab application. It provides a set of RESTful endpoints to handle various operations such as user management and storage, inter-user communications.
 This api can be deployed on virtually any arm64 computer with an installed Docker deamon.
-It was built on a macBook, but it is live-served from from an active RaspberryPi 5 deployment that houses a containerized instance of the BucketLab Empire.
+It was built on a macBook, but it is live-served from an active Raspberry Pi5 deployment that houses a containerized instance of the BucketLab Empire.
 Baby steps. One empirical baby-step at a time.
 
 ## Features
 - User authentication and authorization
-- Interuser communications
 - Data encryption and tokenization
 - Data management and processing
 - Analytics and reporting
