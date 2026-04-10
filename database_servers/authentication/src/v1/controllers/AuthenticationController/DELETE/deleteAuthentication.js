@@ -40,7 +40,7 @@ exports.deleteAuthentication = async (req, res) => {
     }
 
     // Find authentication record by email (which matches the authenticated user)
-    const doc = await Authentication.findOne({ email });
+    const doc = await Authentication.findOne({ _id: id, email });
     if (!doc) {
       return res.status(404).json({
         status: 'fail',
@@ -48,15 +48,8 @@ exports.deleteAuthentication = async (req, res) => {
       });
     }
 
-    const { password } = req.body;
-    if (!password) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Password is required to delete authentication.'
-      });
-    }
-    
     // Use bcrypt to compare hashed password
+    const { password } = req.body;
     const passwordMatch = await bcrypt.compare(password, doc.password);
     if (!passwordMatch) {
       return res.status(403).json({
@@ -79,16 +72,6 @@ exports.deleteAuthentication = async (req, res) => {
         status: 'error',
         message: 'Authentication record verified, but an error occurred while deleting the associated profile.',
         error: error.message
-      });
-    }
-
-    if (!profileResponse.ok) {
-      const errorText = await profileResponse.text();
-      return res.status(500).json({
-        status: 'error',
-        message: 'Authentication record verified, but failed to delete the associated profile.',
-        profileResponseStatus: profileResponse.status,
-        profileResponseBody: errorText
       });
     }
 

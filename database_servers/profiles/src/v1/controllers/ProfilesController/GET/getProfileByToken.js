@@ -2,46 +2,19 @@ const jwt = require('jsonwebtoken');
 const Profile = require('../../../models/profile.model');
 
 exports.getProfileByToken = async (req, res) => {
+  const { email, id } = req.user;
+
   try {
-    // Extract token from Authorization header
-    const authHeader = req.headers['authorization'];
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!email || !id) {
       return res.status(401).json({
         status: 'fail',
-        message: 'Authorization token required. Use Bearer token in Authorization header.'
+        message: 'User authentication required. Email or ID missing from token.'
       });
     }
 
-    const token = authHeader.split(' ')[1];
-    const JWT_SECRET = process.env.JWT_SECRET;
-
-    if (!JWT_SECRET) {
-      throw new Error('JWT_SECRET is not defined in environment variables');
-    }
-
-    // Verify and decode the token
-    let decoded;
-    try {
-      decoded = jwt.verify(token, JWT_SECRET);
-    } catch (err) {
-      return res.status(403).json({
-        status: 'fail',
-        message: 'Invalid or expired token.'
-      });
-    }
-
-    // Extract email and id from decoded token
-    const { email, id } = decoded;
-    if (!email || !id) {
-      return res.status(403).json({
-        status: 'fail',
-        message: 'Invalid token structure. Email or ID missing.'
-      });
-    }
-
-    // Find profile by email (which matches the authenticated user)
-    const profileData = await Profile.findOne({ email }).lean();
-    if (!profileData) {
+    // Find profile by depends_on_auth (which matches the authenticated user's ID)
+    const doc = await Profile.findOne({ depends_on_auth: id }).lean();
+    if (!doc || doc.email !== email) {
       return res.status(404).json({
         status: 'fail',
         message: 'No profile found for authenticated user.'
@@ -50,15 +23,15 @@ exports.getProfileByToken = async (req, res) => {
 
     // Return profile data
     const profileResponse = {
-      id: profileData._id,
-      first_name: profileData.first_name,
-      last_name: profileData.last_name,
-      email: profileData.email,
-      website: profileData.website,
-      company: profileData.company,
-      phone: profileData.phone,
-      messages: profileData.messages,
-      created_at: profileData.created_at
+      id: doc._id,
+      first_name: doc.first_name,
+      last_name: doc.last_name,
+      email: doc.email,
+      website: doc.website,
+      company: doc.company,
+      phone: doc.phone,
+      messages: doc.messages,
+      created_at: doc.created_at
     };
 
     return res.status(200).json({

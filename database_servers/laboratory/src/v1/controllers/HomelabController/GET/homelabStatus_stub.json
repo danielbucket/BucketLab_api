@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "message": "Homelab status retrieved successfully",
+  "data": {
+    "status": "All systems operational",
+    "uptime": "99.99%",
+    "lastChecked": "2023-10-05T12:00:00Z"
+  }
+}

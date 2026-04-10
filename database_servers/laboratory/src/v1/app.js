@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const laboratoriesRouter = require('./routes/laboratoryRouter.js');
+const laboratoryRouter = require('./routes/laboratoryRouter.js');
+const homelabRouter = require('./routes/homelabRouter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
 app.set('trust proxy', true);
@@ -21,7 +22,8 @@ app.use('/', (req,res,next) => {
   next();
 });
 
-app.use('/', laboratoriesRouter);
+app.use('/', laboratoryRouter);
+app.use('/homelab', homelabRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({

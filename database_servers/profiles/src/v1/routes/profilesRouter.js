@@ -12,6 +12,7 @@ router.route('/me')
 router.route('/update')
   .patch(cors(), jwtAuthMiddleware, PATCH.updateProfileByProfileToken);
 
+  // This route can only be received from the authentication server
 router.route('/delete/:id')
   .delete(cors(), DELETE.deleteProfile);
   
