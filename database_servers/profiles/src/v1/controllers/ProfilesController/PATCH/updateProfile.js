@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Profile = require('../../../models/profile.model');
 
-exports.updateProfileByProfileToken = async (req, res) => {
+exports.updateProfile = async (req, res) => {
   const { email, id } = req.user;
 
   try {

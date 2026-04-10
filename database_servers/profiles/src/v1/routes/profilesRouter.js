@@ -10,7 +10,7 @@ router.route('/me')
   .get(cors(), jwtAuthMiddleware, GET.getProfileByToken);
  
 router.route('/update')
-  .patch(cors(), jwtAuthMiddleware, PATCH.updateProfileByProfileToken);
+  .patch(cors(), jwtAuthMiddleware, PATCH.updateProfile);
 
   // This route can only be received from the authentication server
 router.route('/delete/:id')
