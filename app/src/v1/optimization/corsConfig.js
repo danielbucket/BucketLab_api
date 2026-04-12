@@ -10,13 +10,14 @@ exports.corsConfig = () => {
     exposedHeaders: ['Content-Length', 'X-Response-Time'],
     origin: (origin, callback) => {
       if (NODE_ENV === 'development') {
+        console.log(`CORS request from origin: ${origin}`);
         return callback(null, true); // Allow all origins in development
       }
 
       if (whitelist.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {
-        callback(new Error(`You shall not pass, maf'k! Because: ${origin} is not allowed`));
+        callback(new Error(`Dude, you can't be here. You're not on the whitelist, bruh.`));
       }
     },
     credentials: true,

@@ -25,6 +25,7 @@ const authSchema = new Schema({
     default: null
   },
   depends_on_profile: {
+    ref: 'Profile',
     type: Schema.Types.ObjectId,
     required: false,
     unique: true,
@@ -33,18 +34,17 @@ const authSchema = new Schema({
       return !!this.depends_on_profile;
     }
   },
-  logged_in: {
-    type: Boolean,
-    default: false
-  },
-  logged_in_at: {
-    type: Date,
-    default: null
-  },
-  last_logout_at: {
-    type: Date,
-    default: null
-  },
+  access_records: [{
+    type: Schema.Types.ObjectId,
+    ref: 'AccessRecord',
+    default: [],
+    validate: {
+      validator: function(value) {
+        return Array.isArray(value);
+      },
+      message: 'Access records must be an array of ObjectIds'
+    }
+  }],
   created_at: {
     type: Date,
     immutable: true,

@@ -10,6 +10,8 @@ const { messagesProxy } = require('./proxies/messagesProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
+const { singleOriginKey_auth } = require('./optimization/singleOriginKey_auth.js');
+
 
 if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -25,31 +27,30 @@ app.options('/*', cors(corsConfig())); // Pre-flight request for all routes
 
 app.use(cors(corsConfig()));
 app.use(rateLimiter());
-app.use('/*', (req, res, next) => {
+app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  next()
+  next();
 });
 
+app.use(singleOriginKey_auth);
+
 app.get('/hello-world', (req, res) => {
-  console.log('Request received at:', req.requestTime);
   res.status(200).json({
-    message: 'This is the BucketLab.io API Gateway',
+    message: 'Hello, world. You have found the BucketLab.io API Gateway.',
     version: '4.2.0',
     timestamp: new Date().toISOString()
   });
 });
-
-app.get('/health', (req,res) => {
+app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'healthy',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    timestamp: new Date().toISOString()
   });
 });
 
 app.use('/auth', authenticationProxy());
-
 app.use('/profiles', profilesProxy());
+
 // app.use('/messages', messagesProxy());
 // app.use('/laboratory', laboratoryProxy());
 
