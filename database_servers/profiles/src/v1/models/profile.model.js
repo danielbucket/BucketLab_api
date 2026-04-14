@@ -17,6 +17,7 @@ const accountSchema = new Schema({
     unique: true,
     lowercase: true,
     validate: [isEmail, 'Please enter a valid email address'],
+    immutable: true
   },
   notes: {
     type: String,
