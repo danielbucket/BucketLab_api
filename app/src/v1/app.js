@@ -7,9 +7,12 @@ const { NODE_ENV } = process.env;
 const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
 const { messagesProxy } = require('./proxies/messagesProxy.js');
+const { helloWorldProxy } = require('./proxies/helloWorldProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
+const helloWorldMiddleware = require('./middleware/helloWorldMiddlewear.js');
+const healthCheckRouter = require('./serviceEndpoints/health-check.js');
 
 if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -30,25 +33,10 @@ app.use('/*', (req, res, next) => {
   next()
 });
 
-app.get('/hello-world', (req, res) => {
-  console.log('Request received at:', req.requestTime);
-  res.status(200).json({
-    message: 'This is the BucketLab.io API Gateway',
-    version: '4.2.0',
-    timestamp: new Date().toISOString()
-  });
-});
 
-app.get('/health', (req,res) => {
-  res.status(200).json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
-});
-
+app.use('/health', healthCheckRouter);
+app.use('/hello-world', helloWorldMiddleware, helloWorldProxy());
 app.use('/auth', authenticationProxy());
-
 app.use('/profiles', profilesProxy());
 // app.use('/messages', messagesProxy());
 // app.use('/laboratory', laboratoryProxy());

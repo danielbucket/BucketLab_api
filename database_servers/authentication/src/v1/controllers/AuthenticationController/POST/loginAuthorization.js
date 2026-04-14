@@ -26,8 +26,6 @@ exports.loginAuthorization = async (req, res) => {
 
     // Compare the provided password with the hashed password in the database
     const passwordMatch = await bcrypt.compare(body.password, doc.password);
-    console.log('Password comparison result:', passwordMatch);
-
     if (!passwordMatch) {
       return res.status(401).json({
         status: 'fail',
@@ -49,8 +47,7 @@ exports.loginAuthorization = async (req, res) => {
       throw new Error('JWT_SECRET is not defined in environment variables');
     }
 
-    const token = jwt.sign(
-      {
+    const token = jwt.sign({
         id: doc._id,
         email: doc.email,
         permissions: doc.permissions
@@ -59,8 +56,6 @@ exports.loginAuthorization = async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES_IN || '30m' }
     );
 
-    console.log('JWT token generated successfully for user:', doc.email);
-
     // Return a success response with the token
     return res.status(200).json({
       status: 'success',
@@ -68,7 +63,6 @@ exports.loginAuthorization = async (req, res) => {
       token: token
     });
   } catch (error) {
-    console.error('Login error:', error.message);
     return res.status(500).json({
       status: 'error',
       message: 'Login failed. An error occurred during authentication.',

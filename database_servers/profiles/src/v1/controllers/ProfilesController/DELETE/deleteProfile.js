@@ -23,8 +23,7 @@ exports.deleteProfile = async (req, res) => {
     }
 
     return res.status(200).json({
-      status: 'success',
-      message: `Profile associated with auth ID ${authId} deleted successfully.`
+      status: 'success'
     });
   } catch (err) {
     return res.status(500).json({
