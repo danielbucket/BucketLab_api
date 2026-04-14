@@ -1,6 +1,7 @@
 const Profile = require('../../../models/profile.model');
 
 exports.deleteProfile = async (req, res) => {
+  console.log('Received request to delete profile with params:', req.params);
   try {
     // Verify that the request has come from the authentication server
     // by checking for a custom header set by the authentication proxy
@@ -15,7 +16,9 @@ exports.deleteProfile = async (req, res) => {
     const authId = req.params.id;
     // The id from auth server is the authentication record's ID, stored in depends_on_auth field
     const deletedProfile = await Profile.findOneAndDelete({ depends_on_auth: authId });
+    console.log('Deleted profile result:', deletedProfile);
     if (!deletedProfile) {
+      console.log(`No profile found with authentication ID ${authId} for deletion.`);
       return res.status(404).json({
         status: 'fail',
         message: `No profile found with authentication ID ${authId}.`
