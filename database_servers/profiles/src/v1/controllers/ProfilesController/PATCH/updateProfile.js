@@ -45,11 +45,11 @@ exports.updateProfile = async (req, res) => {
     }
 
     doc.updated_at = Date.now();
-    const saved = await doc.save();
 
+    const updated = await doc.save();
     return res.status(200).json({
       status: 'success',
-      profile: { ...saved }
+      profile: updated
     });
   } catch (error) {
     return res.status(500).json({

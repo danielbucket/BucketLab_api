@@ -3,7 +3,6 @@ const Profile = require('../../../models/profile.model');
 
 exports.getProfileByToken = async (req, res) => {
   const { email, id } = req.user;
-
   try {
     if (!email || !id) {
       return res.status(401).json({
@@ -39,7 +38,6 @@ exports.getProfileByToken = async (req, res) => {
       profile: profileResponse
     });
   } catch (error) {
-    console.error('Error fetching profile by token:', error.message);
     return res.status(500).json({
       status: 'error',
       message: 'An error occurred while fetching profile.',

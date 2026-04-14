@@ -17,7 +17,7 @@ const authSchema = new Schema({
   },
   permissions: {
     type: [String],
-    enum: ['user', 'admin', 'superadmin', 'guest'],
+    enum: ['traveler', 'admin', 'superadmin', 'guest'],
     default: ['guest']
   },
   JWT_token: {

@@ -12,11 +12,8 @@ router.route('/me')
 router.route('/update')
   .patch(cors(), jwtAuthMiddleware, PATCH.updateProfile);
 
-  // This route can only be received from the authentication server
+// This route can only be received from the authentication server
 router.route('/delete/:id')
   .delete(cors(), DELETE.deleteProfile);
-  
-// router.route('/refresh-token')
-//   .post(cors(), POST.refreshToken);
 
 module.exports = router;
