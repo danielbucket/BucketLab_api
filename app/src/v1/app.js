@@ -33,13 +33,11 @@ app.use('/*', (req, res, next) => {
   next()
 });
 
-
 app.use('/health', healthCheckRouter);
 app.use('/hello-world', helloWorldMiddleware, helloWorldProxy());
 app.use('/auth', authenticationProxy());
 app.use('/profiles', profilesProxy());
-// app.use('/messages', messagesProxy());
-// app.use('/laboratory', laboratoryProxy());
+app.use('/laboratory', laboratoryProxy());
 
 app.all('*', (req,res) => {
   res.status(404).json({

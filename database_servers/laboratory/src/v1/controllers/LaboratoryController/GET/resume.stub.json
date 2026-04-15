@@ -1,0 +1,213 @@
+{
+  "title": "Resume",
+  "description": "This is a stubbed description for the resume page.",
+  "workExperience": [
+    {
+      "company": "ArborCraft Tree Services",
+      "location": "Golden, CO",
+      "website": "https://arborcraftservices.com/",
+      "role": "Owner/Operator",
+      "duration": "2020 - Present",
+      "description": "Manage and operate a tree service business, providing tree care and maintenance services to residential and commercial clients.",
+      "achievements": [
+        "Founded and grew a small business startup, boosting customer base by 100% while managing operations and project success.",
+        "Implemented efficient scheduling and resource management strategies, reducing operational costs by 15% and improving service delivery.",
+        "Successfully completed over 500 tree care projects, maintaining a 95% customer satisfaction rate through quality service and effective communication.",
+        "Cultivated strong client relationships, leading to a 30% increase in repeat business through transparent communication and trust-building.",
+        "Built and mainrtained a strong online presence, increasing brand visibility and attracting new customers."
+      ],
+      "requirements": [
+        "Daily operations include client consultations, project management, and team leadership.",
+        "Organize and manage a team of 3 employees, ensuring efficient workflow and high-quality service delivery.",
+        "Strong analytical skills and ability to identify market opportunities.",
+        "Excellent communication and interpersonal skills.",
+        "Office management and organizational skills, including scheduling, invoicing, and customer relationship management.",
+        "Physical fitness and ability to perform manual labor, including climbing and working at heights."
+      ]
+    },
+    {
+      "company": "BucketLab.io",
+      "location": "Denver, CO",
+      "website": "https://bucketlab.io/",
+      "role": "Software Engineer / Full Stack Developer",
+      "duration": "2023 - Present",
+      "description": "Working on various projects related to web development and cloud services.",
+      "achievements": [
+        "Contributed to the development of a scalable web application, improving performance by 30% and enhancing user experience.",
+        "Built and maintained a homelab infrastructure, optimizing resource utilization.",
+        "Implemented CI/CD pipelines, reducing deployment time by 50% and increasing deployment frequency.",
+        "Successfully developed and deployed microservices, improving system modularity and scalability."
+      ],
+      "requirements": [
+        "Proficient in JavaScript, React, Node.js, and cloud technologies.",
+        "Experience with agile development methodologies and version control systems.",
+        "Strong problem-solving skills and ability to work in a collaborative team environment."
+      ]
+    },
+    {
+      "company": "Coral Creek Music",
+      "location": "Denver, CO",
+      "website": "https://www.coralcreekmusic.com/",
+      "role": "Music Festival Site-Ops Manager",
+      "duration": "2023 - Present",
+      "description": "Manage site operations for a music festival, including logistics, vendor coordination, and on-site management.",
+      "achievements": [
+        "Successfully coordinated logistics for a multi-day music festival, ensuring smooth operations and high attendee satisfaction.",
+        "Implemented a vendor management system, improving communication and efficiency among festival vendors.",
+        "Developed and executed on-site management plans, resulting in a 20% increase in operational efficiency.",
+        "Led a team of volunteers and staff during the festival, fostering a collaborative and positive work environment.",
+        "Cultivated strong relationships with vendors and stakeholders, contributing to the overall success of the festival."
+      ],
+      "requirements": [
+        "Experience in event management and logistics coordination.",
+        "Strong organizational and communication skills.",
+        "Ability to manage a team and work under pressure during events."
+      ]
+    },
+    {
+      "company": "Pedal Pushers Cyclery",
+      "location": "Golden, CO",
+      "website": "https://www.pedalpusherscyclery.com/",
+      "role": "Bicycle Mechanic / Retail Sales Associate",
+      "duration": "2013 - 2015",
+      "description": "Provided bicycle repair and maintenance services to customers, ensuring high-quality workmanship and customer satisfaction.",
+      "achievements": [
+        "Successfully repaired and maintained bicycles, maintaining a high standard of workmanship and customer satisfaction.",
+        "Implemented efficient repair processes, reducing turnaround time by 20% and increasing customer throughput.",
+        "Cultivated strong customer relationships, leading to a 25% increase in repeat business through excellent service and communication.",
+        "Trained and mentored junior mechanics, improving team skills and performance."
+      ],
+      "requirements": [
+        "Proficient in bicycle repair and maintenance techniques.",
+        "Strong problem-solving skills and attention to detail.",
+        "Excellent customer service skills and ability to communicate effectively with customers."
+      ]
+    },
+    {
+      "company": "Town of Avon Recreation Department",
+      "location": "Avon, CO",
+      "website": "https://www.avon.org/2046/Recreation",
+      "role": "Front Desk Supervisor",
+      "duration": "2007 - 2013",
+      "description": "Managed front desk operations for a recreation department, providing excellent customer service and ensuring smooth operations.",
+      "achievements": [
+        "Successfully managed front desk operations, ensuring efficient service delivery and high customer satisfaction.",
+        "Implemented a new scheduling system, improving efficiency and reducing wait times for customers.",
+        "Cultivated strong relationships with customers, leading to increased community engagement and participation in recreational programs.",
+        "Trained and supervised front desk staff, improving team performance and customer service quality."
+      ],
+      "requirements": [
+        "Experience in customer service and front desk operations.",
+        "Strong organizational and communication skills.",
+        "Ability to manage a team and work in a fast-paced environment."
+      ]
+    },
+    {
+      "company": "USMC - United States Marine Corps",
+      "location": "Various Locations",
+      "website": "https://www.marines.mil/",
+      "role": "Electrician / Motor Transport Operator",
+      "duration": "2002 - 2006",
+      "description": "Served in the United States Marine Corps, performing various roles including electrician and motor transport operator.",
+      "achievements": [
+        "Successfully completed military training and served in various roles, demonstrating adaptability and commitment to service.",
+        "Received commendations for outstanding performance and dedication to duty.",
+        "Cultivated strong teamwork and leadership skills through military service."
+      ],
+      "requirements": [
+        "Military training and experience in various roles.",
+        "Strong discipline, teamwork, and leadership skills.",
+        "Ability to adapt to various environments and situations."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Turing School of Software & Design",
+      "degree": "Front End Engineering",
+      "duration": "2017 - 2018",
+      "description": "Studied various aspects of computer science, including algorithms, data structures, and software engineering."
+    }
+  ],
+  "projects": [
+    {
+      "name": "Personal Portfolio Website",
+      "description": "Developed a personal portfolio website to showcase my projects and skills.",
+      "technologies": ["React", "CSS", "JavaScript", "ExpressJS", "MongoDB"],
+      "link": "https://bucketlab.io"
+    },
+    {
+      "name": "Homelab Infrastructure",
+      "description": "Built and maintained a homelab infrastructure for testing and learning about various technologies.",
+      "technologies": ["Docker", "Kubernetes", "Linux"],
+      "link": "https://api.bucketlab.io/health"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "CompTIA A+",
+      "issuer": "CompTIA",
+      "date": "2026"
+    },
+    {
+      "name": "CompTIA Network+",
+      "issuer": "CompTIA",
+      "date": "2026"
+    },
+    {
+      "name": "Suspension Technology Certification",
+      "issuer": "United Bicycle Institute",
+      "date": "2013"
+    },
+    {
+      "name": "Wheel Builder Certification",
+      "issuer": "United Bicycle Institute",
+      "date": "2013"
+    },
+    {
+      "name": "Professional Repair and Shop Operations Certification",
+      "issuer": "United Bicycle Institute",
+      "date": "2013"
+    },
+    {
+      "name": "Advanced Mechanics Certification",
+      "issuer": "United Bicycle Institute",
+      "date": "2013"
+    },
+    {
+      "name": "Crowd Managers Training",
+      "issuer": "Fire Marshal's Support Services",
+      "date": "2026"
+    }
+  ],
+  "hobbies": [
+    "Cycling",
+    "Music",
+    "Traveling",
+    "Gardening",
+    "Cycling",
+    "Rafting",
+    "Camping",
+    "Technology and Gadgets",
+    "DIY Projects"
+  ],
+  "skills": [
+    "JavaScript",
+    "React",
+    "Node.js",
+    "Python",
+    "Docker",
+    "ExpressJS",
+    "MongoDB",
+    "RESTful APIs",
+    "Git",
+    "Agile Development",
+    "Problem Solving",
+    "Team Collaboration",
+    "Project Management",
+    "Customer Service",
+    "Tree Care and Maintenance",
+    "Business Management",
+    "Bicycle Repair and Maintenance"
+  ]
+}
