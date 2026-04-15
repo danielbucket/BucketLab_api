@@ -17,12 +17,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/', (req,res,next) => {
-  console.log('Request body at Laboratory Server:', req.body);
-  next();
-});
-
-app.use('/', laboratoryRouter);
+app.use('/', laboratoryRouter);``
 app.use('/homelab', homelabRouter);
 
 app.all('/*', (req, res) => {

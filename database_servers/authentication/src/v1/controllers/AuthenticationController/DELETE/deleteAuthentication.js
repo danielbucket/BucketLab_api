@@ -41,7 +41,6 @@ exports.deleteAuthentication = async (req, res) => {
 
     // Find authentication record by email (which matches the authenticated user)
     const doc = await Authentication.findOne({ _id: id, email });
-    console.log('Authentication record found for deletion:', doc);
     if (!doc) {
       return res.status(404).json({
         status: 'fail',
@@ -52,7 +51,6 @@ exports.deleteAuthentication = async (req, res) => {
     // Use bcrypt to compare hashed password
     const { password } = req.body;
     const passwordMatch = await bcrypt.compare(password, doc.password);
-    console.log('Password match result:', passwordMatch);
     if (!passwordMatch) {
       console.log('Password mismatch for user:', email);
       return res.status(403).json({
@@ -80,7 +78,6 @@ exports.deleteAuthentication = async (req, res) => {
 
     // Delete the authentication record
     await Authentication.deleteOne({ email });
-
     res.status(200).json({
       status: 'success',
       message: 'Authentication record deleted successfully.'
