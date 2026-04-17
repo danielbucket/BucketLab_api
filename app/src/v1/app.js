@@ -6,7 +6,6 @@ const { NODE_ENV } = process.env;
 
 const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
-const { messagesProxy } = require('./proxies/messagesProxy.js');
 const { helloWorldProxy } = require('./proxies/helloWorldProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
