@@ -16,4 +16,6 @@ router.route('/update')
 router.route('/delete/:id')
   .delete(cors(), DELETE.deleteProfile);
 
+router.route('/get-all-profiles').get(GET.getAllProfiles);
+
 module.exports = router;
