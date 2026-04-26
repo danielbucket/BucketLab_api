@@ -157,6 +157,27 @@ services:
       - bucketLab_internal
     restart: unless-stopped
 
+  # Administration Server (Internal Service)
+  administration_server:
+    container_name: administration_server
+    build:
+      context: .
+      dockerfile: docker/prod/Dockerfile.administration
+    environment:
+      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
+      - NODE_ENV=${APP_RUN_MODE:-prod}
+      - PORT=4027
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+    expose:
+      - "4027"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - bucketLab_internal
+    restart: unless-stopped
+
   # Let's Encrypt Companion (for SSL Certificates)
   # certbot:
   #   container_name: certbot

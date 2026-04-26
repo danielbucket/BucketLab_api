@@ -1,10 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const authRouter = require('./routes/authRouter.js');
-const permissionsRouter = require('./routes/permissionsRouter.js');
-const { permissionsMiddleware } = require('./middleware/permissionsMiddleware.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
+const { permissionsRouter } = require('./routes/permissionsRouter.js');
 
 app.set('trust proxy', true);
 
@@ -13,13 +11,19 @@ app.use(express.json());
 
 app.use('/', (req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(`Request received at Authentication Server @ ${req.requestTime} for ${req.originalUrl}`);
+  console.log(`Request received at Administration Server @ ${req.requestTime} for ${req.originalUrl}`);
   console.log(`Request method: ${req.method}, path: ${req.path}, params:`, req.params);
   next();
 });
 
-app.use('/permissions', permissionsMiddleware, permissionsRouter);
-app.use('/', authRouter);
+app.use('/health', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'BucketLab Administration Server is healthy and operational.'
+  });
+});
+
+app.use('/permissions', permissionsRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({

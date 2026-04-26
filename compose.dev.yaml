@@ -187,6 +187,29 @@ services:
       - bucketLab_internal
     restart: always
 
+  # Administration Server (Internal Service)
+  administration_server:
+    container_name: administration_server_dev
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile.administration
+    environment:
+      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
+      - NODE_ENV=${APP_RUN_MODE:-development}
+      - PORT=4025
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+    expose:
+      - "4025"
+    volumes:
+      - ./administration:/usr/src/administration
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - bucketLab_internal
+    restart: always
+
 volumes:
   mongodb_data_dev:
     driver: local

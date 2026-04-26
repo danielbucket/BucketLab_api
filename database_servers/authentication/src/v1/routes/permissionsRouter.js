@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const cors = require('cors');
-const { GET } = require('../controllers/PermissionsController/index.js');
-
-const { permissionsList } = require('../utils/permissionsList.js');
+const { GET } = require('../../../../administration/src/v1/controllers/PermissionsController/index.js');
 
 router.route('/request-permissions')
-  .GET(cors(), GET.requestPermissions);
+  .get(cors(), GET.requestPermissions);
+
+module.exports = router;

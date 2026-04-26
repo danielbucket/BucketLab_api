@@ -32,3 +32,6 @@
 **/dist
 LICENSE
 README.md
+data/
+avatars_data_dev/
+profiles/uploads/

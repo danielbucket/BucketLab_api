@@ -7,6 +7,9 @@ const seedAuthData = [
     permissions: [
       { name: 'empire' }
     ],
+    permissions: [
+      { name: 'empire', approval_status: 'approved' },
+    ],
     logged_in: false
   },
   {
