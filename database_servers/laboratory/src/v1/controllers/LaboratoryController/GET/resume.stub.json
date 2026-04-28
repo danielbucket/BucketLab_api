@@ -1,14 +1,6 @@
 {
   "title": "Resume",
   "description": "This is a stubbed description for the resume page.",
-  "contactInformation": {
-    "name": "Daniel Ludwick",
-    "email": "daniel@bucketlab.io",
-    "phone": "(760) 208-5071",
-    "location": "Golden, CO",
-    "linkedin": "www.linkedin.com/in/daniel-ludwick",
-    "github": "https://github.com/danielbucket"
-  },
   "workExperience": [
     {
       "company": "ArborCraft Tree Services",
@@ -20,9 +12,9 @@
       "achievements": [
         "Founded and grew a small business startup, boosting customer base by 100% while managing operations and project success.",
         "Implemented efficient scheduling and resource management strategies, reducing operational costs by 15% and improving service delivery.",
-        "Successfully completed over 500 tree care projects, maintaining a 99% customer satisfaction rate through quality service and effective communication.",
+        "Successfully completed over 500 tree care projects, maintaining a 95% customer satisfaction rate through quality service and effective communication.",
         "Cultivated strong client relationships, leading to a 30% increase in repeat business through transparent communication and trust-building.",
-        "Built and maintained a strong online presence, increasing brand visibility and attracting new customers."
+        "Built and mainrtained a strong online presence, increasing brand visibility and attracting new customers."
       ],
       "requirements": [
         "Daily operations include client consultations, project management, and team leadership.",
@@ -146,9 +138,15 @@
     },
     {
       "name": "Homelab Infrastructure",
-      "description": "Built and maintained a homelab infrastructure for testing and learning about various technologies.",
-      "technologies": ["Docker", "Kubernetes", "Linux"],
+      "description": "Built and maintained a homelab infrastructure for dev-ops, testing, and learning about various technologies.",
+      "technologies": ["Docker", "NodeJS", "Linux"],
       "link": "https://api.bucketlab.io/health"
+    },
+    {
+      "name": "Toyota T100 Overland Build",
+      "description": "Building a 'go anywhere' overland vehicle. This project involves various aspects of automotive repair and maintenance, including fabrication, diagnostics, and automotive wiring.",
+      "technologies": ["Automotive Tools", "Fabrication", "Diagnostics", "Automotive Wiring"],
+      "link": "https://bucketlab.io/mythtaT100"
     }
   ],
   "certifications": [
@@ -193,6 +191,7 @@
     "Music",
     "Traveling",
     "Gardening",
+    "Cycling",
     "Rafting",
     "Camping",
     "Technology and Gadgets",
@@ -202,7 +201,6 @@
     "JavaScript",
     "React",
     "Node.js",
-    "Python",
     "Docker",
     "ExpressJS",
     "MongoDB",
@@ -213,8 +211,12 @@
     "Team Collaboration",
     "Project Management",
     "Customer Service",
-    "Tree Care and Maintenance",
+    "Tree Care",
     "Business Management",
-    "Bicycle Repair and Maintenance"
+    "Bicycle Repair",
+    "Event Management and Logistics",
+    "Military Training",
+    "Automotive Repair ",
+    "Fabrication"
   ]
 }
