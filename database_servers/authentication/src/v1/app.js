@@ -2,8 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const authRouter = require('./routes/authRouter.js');
-const permissionsRouter = require('./routes/permissionsRouter.js');
-const { permissionsMiddleware } = require('./middleware/permissionsMiddleware.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 
 app.set('trust proxy', true);
@@ -18,7 +16,6 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/permissions', permissionsMiddleware, permissionsRouter);
 app.use('/', authRouter);
 
 app.all('/*', (req, res) => {

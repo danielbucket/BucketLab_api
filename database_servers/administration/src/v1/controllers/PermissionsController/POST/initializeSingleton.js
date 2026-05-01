@@ -1,4 +1,4 @@
-const Administration = require('../../models/admin.model');
+const Administration = require('../../../models/admin.model');
 
 /**
  * POST Controller: Initialize the Administration singleton.

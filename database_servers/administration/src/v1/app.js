@@ -2,8 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const { corsConfig } = require('./optimization/corsConfig.js');
-const { permissionsRouter } = require('./routes/permissionsRouter.js');
-
+const permissionsRouter = require('./routes/permissionsRouter.js');
+const { permissionsMiddleware } = require('./middleware/permissionsMiddleware.js');
 app.set('trust proxy', true);
 
 app.use(cors(corsConfig()));
@@ -23,7 +23,7 @@ app.use('/health', (req, res) => {
   });
 });
 
-app.use('/permissions', permissionsRouter);
+app.use('/permissions', permissionsMiddleware, permissionsRouter);
 
 app.all('/*', (req, res) => {
   res.status(404).json({

@@ -1,4 +1,4 @@
-const Administration = require('../../models/admin.model');
+const Administration = require('../../../models/admin.model.js');
 
 exports.requestPermissions = async (req, res) => {
   const { user } = req;

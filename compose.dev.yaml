@@ -41,11 +41,27 @@ services:
       cloudflared:
         condition: service_started
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD", "mongosh", "--eval", "db.version()"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 40s
+      retries: 15
+      start_period: 60s
+
+  # MongoDB Init Helper - wait for MongoDB to be ready with user initialized
+  mongodb-init:
+    image: mongo:7.0
+    container_name: mongodb_init_helper
+    command: >
+      mongosh "mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/admin?authSource=admin" --eval "
+        db.adminCommand('ping');
+        print('MongoDB ready with authenticated user');
+      "
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - bucketLab_internal
+    restart: no
 
   # Mongo Express for DB GUI (debug tool)
   mongo-express:
@@ -87,8 +103,8 @@ services:
     volumes:
       - ./app:/usr/src/app
     depends_on:
-      mongodb:
-        condition: service_healthy
+      mongodb-init:
+        condition: service_completed_successfully
     networks:
       - bucketLab_internal
     restart: always
@@ -118,8 +134,8 @@ services:
       - ./profiles:/usr/src/profiles
       - ./avatars_data_dev:/usr/src/profiles/uploads/avatars
     depends_on:
-      mongodb:
-        condition: service_healthy
+      mongodb-init:
+        condition: service_completed_successfully
     networks:
       - bucketLab_internal
     restart: always
@@ -137,8 +153,8 @@ services:
     expose: 
       - "4022"
     depends_on:
-      mongodb:
-        condition: service_healthy
+      mongodb-init:
+        condition: service_completed_successfully
     networks:
       - bucketLab_internal
     restart: always
@@ -158,8 +174,8 @@ services:
     volumes:
       - ./laboratory:/usr/src/laboratory
     depends_on:
-      mongodb:
-        condition: service_healthy
+      mongodb-init:
+        condition: service_completed_successfully
     networks:
       - bucketLab_internal
     restart: always
@@ -181,8 +197,8 @@ services:
     volumes:
       - ./authentication:/usr/src/authentication
     depends_on:
-      mongodb:
-        condition: service_healthy
+      mongodb-init:
+        condition: service_completed_successfully
     networks:
       - bucketLab_internal
     restart: always
@@ -204,8 +220,8 @@ services:
     volumes:
       - ./administration:/usr/src/administration
     depends_on:
-      mongodb:
-        condition: service_healthy
+      mongodb-init:
+        condition: service_completed_successfully
     networks:
       - bucketLab_internal
     restart: always

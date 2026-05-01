@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const cors = require('cors');
-const { GET } = require('../../../../administration/src/v1/controllers/PermissionsController/index.js');
+const { GET } = require('../controllers/PermissionsController/GET/index.js');
 
 router.route('/request-permissions')
   .get(cors(), GET.requestPermissions);

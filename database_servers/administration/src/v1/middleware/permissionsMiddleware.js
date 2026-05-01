@@ -1,4 +1,5 @@
 const { permissionsList } = require('../utils/permissionsList.js');
+
 exports.permissionsMiddleware = (req, res, next) => {
   const requestedPermission = req.body.permission;
   
