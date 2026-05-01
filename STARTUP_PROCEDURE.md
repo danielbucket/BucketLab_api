@@ -45,15 +45,15 @@ The BucketLab API is a **microservices-based architecture** with 8 Docker contai
 #### Step 1.1: Docker Compose Reads Configuration
 - Parses `compose.dev.yaml` file
 - Identifies all service dependencies
-- Loads environment variables from `.env` and `.env.dev`
+- Loads environment variables from `.env.dev` (development environment only)
 - Removes orphan containers (if `--remove-orphans` flag used)
 
-**Key Environment Variables Loaded:**
+**Key Environment Variables Loaded (from .env.dev):**
 ```
 MONGO_DB_USERNAME = empirical_explorer
 MONGO_DB_PASSWORD = hg48s.2s9dFF.EZpoopin
 MONGO_DB_DATABASE = bucketlab
-JWT_SECRET = [from .env]
+JWT_SECRET = [from .env.dev]
 TUNNEL_TOKEN = [from .env.dev]
 ```
 
@@ -102,7 +102,7 @@ authentication_server, administration_server (all depend on mongodb-init:complet
 **Container:** `cloudflared_dev`
 **Image:** `cloudflare/cloudflared:latest`
 **What it does:**
-- Reads `TUNNEL_TOKEN` from `.env.dev`
+- Reads `TUNNEL_TOKEN` from `.env.dev` (development environment config)
 - Establishes secure tunnel to Cloudflare's network
 - Allows external access to your local API without exposing your IP
 - Provides HTTPS endpoint for remote connections
@@ -446,7 +446,8 @@ healthcheck:
 **Symptom:** Exit code 1, "Command createUser requires authentication"
 **Cause:** Using wrong credentials or MongoDB not ready
 **Solution:** 
-- Verify `.env` file has correct `MONGO_DB_USERNAME` and `MONGO_DB_PASSWORD`
+- Verify `.env.dev` file has correct `MONGO_DB_USERNAME` and `MONGO_DB_PASSWORD` (development)
+- Verify `.env` file for production environments
 - Ensure MongoDB is actually healthy before init runs
 - Check if persistent volume has old database without the user
 
@@ -523,24 +524,35 @@ All 6 app services (parallel)
 ## Environment Variable Flow
 
 ### From Files
+**Development Environment:**
 ```
-.env (global config)
-.env.dev (development specific)
+.env.dev (all development configuration)
     ↓
-docker compose reads these
+docker compose -f compose.dev.yaml reads this
     ↓
-${VARIABLE_NAME} substitutions in compose.yaml
+${VARIABLE_NAME} substitutions in compose.dev.yaml
     ↓
 Environment variables passed to containers
 ```
 
-### Example: MONGO_URI
+**Production Environment:**
 ```
-.env contains:
+.env (all production configuration)
+    ↓
+docker compose -f compose.production.yaml reads this
+    ↓
+${VARIABLE_NAME} substitutions in compose.production.yaml
+    ↓
+Environment variables passed to containers
+```
+
+### Example: MONGO_URI (Development)
+```
+.env.dev contains:
     MONGO_DB_USERNAME=empirical_explorer
     MONGO_DB_PASSWORD=hg48s.2s9dFF.EZpoopin
 
-compose.yaml references:
+compose.dev.yaml references:
     MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@mongodb:27017/?authSource=admin
 
 Container receives:
@@ -825,9 +837,9 @@ COPY . .
 ## Summary: Complete Startup Flow
 
 ```
-docker compose up --build --remove-orphans
+docker compose -f compose.dev.yaml up --build --remove-orphans
     ↓
-Read compose.dev.yaml + .env + .env.dev
+Read compose.dev.yaml + .env.dev
     ↓
 Build Docker images (Node 22, MongoDB, etc)
     ↓
