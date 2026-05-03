@@ -8,6 +8,7 @@ const { authenticationProxy } = require('./proxies/authenticationProxy.js');
 const { laboratoryProxy } = require('./proxies/laboratoryProxy.js');
 const { helloWorldProxy } = require('./proxies/helloWorldProxy.js');
 const { profilesProxy } = require('./proxies/profilesProxy.js');
+const { administrationProxy } = require('./proxies/administrationProxy.js');
 const { rateLimiter } = require('./optimization/rateLimiter.js');
 const { corsConfig } = require('./optimization/corsConfig.js');
 const helloWorldMiddleware = require('./middleware/helloWorldMiddlewear.js');
@@ -37,6 +38,7 @@ app.use('/hello-world', helloWorldMiddleware, helloWorldProxy());
 app.use('/auth', authenticationProxy());
 app.use('/profiles', profilesProxy());
 app.use('/laboratory', laboratoryProxy());
+app.use('/administration', administrationProxy());
 
 app.all('*', (req,res) => {
   res.status(404).json({

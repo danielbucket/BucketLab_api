@@ -1,6 +1,9 @@
 FROM mongo:7.0
 
-# Install curl for healthchecks (simpler than installing full MongoDB tools)
+# Install curl for healthchecks
 RUN apt-get update && \
     apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/*
+
+# Copy initialization script
+COPY docker/dev/mongo-init.js /docker-entrypoint-initdb.d/01-mongo-init.js

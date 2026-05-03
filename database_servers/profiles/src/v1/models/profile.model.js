@@ -63,13 +63,12 @@ const accountSchema = new Schema({
   }
 });
 
-
 const bcrypt = require('bcrypt');
 
 // Pre-save hook to hash password if modified
 accountSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
-    const saltRounds = 10;
+    const saltRounds = 5;
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
   next();

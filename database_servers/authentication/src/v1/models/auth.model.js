@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const { Schema, model } = require('mongoose');
 const { isEmail } = require('validator');
+const { embeddedPermissionsSchema } = require('./permissions.schema.js');
 
 const authSchema = new Schema({
   email: {
@@ -16,13 +17,12 @@ const authSchema = new Schema({
     minlength: 6
   },
   permissions: {
-    type: [String],
-    enum: ['traveler', 'admin', 'superadmin', 'guest'],
-    default: ['guest']
-  },
-  JWT_token: {
-    type: String,
-    default: null
+    type: [embeddedPermissionsSchema],
+    default: [
+      { name: 'guest' },
+      { name: 'read:profile' },
+      { name: 'delete:profile' }
+    ]
   },
   depends_on_profile: {
     type: Schema.Types.ObjectId,

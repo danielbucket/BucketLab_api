@@ -38,23 +38,49 @@ yarn install
 ```
 
 ### 3. Configure Environment Variables
+
+#### For Development:
+Create a `.env.dev` file in the root directory and add the required environment variables:
+```
+MONGO_DB_PASSWORD=your_password_for_mongoDB
+MONGO_DB_USERNAME=your_username_for_mongoDB
+MONGO_DB_DATABASE=bucketlab
+TUNNEL_TOKEN=your_cloudflared_tunnel_token
+JWT_SECRET=your_development_secret_key
+JWT_EXPIRES_IN=7d
+```
+
+#### For Production:
 Create a `.env` file in the root directory and add the required environment variables:
 ```
-MONGO_DB_PASSWORD=your_password for mongoDB
-MONGO_DB_USERNAME=your_username for mongoDB
-TUNNEL_TOKEN=cloudflared tunnel token
-JWT_SECRET=your_secret_key
+MONGO_DB_PASSWORD=your_production_password_for_mongoDB
+MONGO_DB_USERNAME=your_production_username_for_mongoDB
+MONGO_DB_DATABASE=bucketlab
+TUNNEL_TOKEN=your_production_cloudflared_tunnel_token
+JWT_SECRET=your_production_secret_key
+JWT_EXPIRES_IN=24h
+APP_RUN_MODE=production
 ```
 
 ### 4. Start the Application
 
-## Production:
+#### Development:
+```bash
+docker compose -f compose.dev.yaml up --build -d
+```
+
+#### Production:
 ```bash
 docker compose -f compose.production.yaml up --build -d
 ```
-### ...and to stop:
+
+### To Stop the Application:
 ```bash
+# Development
 docker compose -f compose.dev.yaml down
+
+# Production
+docker compose -f compose.production.yaml down
 ```
 
 ## Development:

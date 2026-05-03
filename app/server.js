@@ -1,7 +1,7 @@
-const BucketLab_API_Server = require('./src/v1/app.js');
+const app = require('./src/v1/app.js');
 const PORT = 4020;
 
-const server = BucketLab_API_Server.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`BucketLab API Server is running on port: ${PORT}`);
 });
 
