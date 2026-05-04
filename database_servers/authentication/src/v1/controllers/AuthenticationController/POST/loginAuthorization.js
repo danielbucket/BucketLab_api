@@ -19,8 +19,7 @@ exports.loginAuthorization = async (req, res) => {
     if (!doc) {
       return res.status(404).json({
         status: 'fail',
-        fail_type: 'email_not_found',
-        message: 'No authorization found for that email.'
+        fail_type: 'email_not_found'
       });
     };
 
@@ -29,9 +28,8 @@ exports.loginAuthorization = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({
         status: 'fail',
-        fail_type: 'invalid_password',
-        message: 'Invalid password.'
-      });
+        fail_type: 'invalid_password'
+      })
     };
 
     // Update the logged_in status and logged_in_at timestamp
@@ -44,7 +42,7 @@ exports.loginAuthorization = async (req, res) => {
     // Generate a JWT token for the logged-in user (after successful save)
     const JWT_SECRET = process.env.JWT_SECRET;
     if (!JWT_SECRET) {
-      throw new Error('JWT_SECRET is not defined in environment variables');
+      throw new Error('JWT_SECRET is not defined in environment variables')
     }
 
     const token = jwt.sign({
@@ -55,7 +53,7 @@ exports.loginAuthorization = async (req, res) => {
       JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '30m' }
     );
-
+    
     // Return a success response with the token
     return res.status(200).json({
       status: 'success',
