@@ -1,4 +1,13 @@
 const rateLimit = require('express-rate-limit');
+const { NODE_ENV } = process.env;
+
+// In development mode, we can disable rate limiting for easier testing
+if (NODE_ENV === 'development') {
+  console.log('Rate limiting is disabled in development mode');
+  exports.rateLimiter = (req, res, next) => next();
+} else {
+  console.log('Rate limiting is enabled.');
+}
 
 exports.rateLimiter = () => rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
